@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script>(function(){var c="LFN2025",k="lfn_quiz_access";try{if(localStorage.getItem(k)!==c){window.location.href="../index.html"}}catch(e){window.location.href="../index.html"}})();</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LFN Drug Quiz | Lidocaine (Section 12.46)</title>
+    <style>
+        :root { --primary: #16a34a; --primary-light: #22c55e; --accent: #15803d; --success: #16a34a; --danger: #dc2626; --bg-light: #f0fdf4; --bg-card: #ffffff; --text-primary: #1e293b; --text-secondary: #475569; --border: #e2e8f0; --shadow: 0 4px 6px -1px rgba(0,0,0,0.1); --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #f0fdf4 0%, #86efac 50%, #16a34a 100%); min-height: 100vh; color: var(--text-primary); line-height: 1.6; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+
+        /* ── Header ── */
+        .header { background: linear-gradient(135deg, #15803d 0%, #16a34a 100%); color: white; padding: 30px; border-radius: 16px; margin-bottom: 25px; text-align: center; box-shadow: var(--shadow-lg); }
+        .header h1 { font-size: 1.8rem; margin-bottom: 8px; }
+        .header .subtitle { opacity: 0.9; font-size: 1rem; }
+        .header .drug-class { display: inline-block; background: rgba(255,255,255,0.2); padding: 5px 15px; border-radius: 20px; margin-top: 10px; font-size: 0.85rem; }
+        .badge-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 12px; }
+        .indication-badge { padding: 5px 12px; border-radius: 15px; font-size: 0.75rem; font-weight: 600; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); }
+
+        /* ── Quick Reference ── */
+        .quick-reference { background: var(--bg-card); border-radius: 12px; margin-bottom: 25px; box-shadow: var(--shadow); overflow: hidden; }
+        .qr-header { background: linear-gradient(135deg, #15803d 0%, #16a34a 100%); color: white; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; }
+        .qr-header h3 { font-size: 1rem; margin: 0; }
+        .qr-toggle { font-size: 1.2rem; transition: transform 0.3s ease; }
+        .qr-toggle.collapsed { transform: rotate(-90deg); }
+        .qr-body { padding: 0; max-height: 5000px; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s ease; }
+        .qr-body.collapsed { max-height: 0; padding: 0; }
+        .qr-body-inner { padding: 20px; }
+        .qr-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 2px solid var(--border); }
+        .qr-tab { padding: 8px 16px; border-radius: 8px; border: 2px solid var(--border); background: white; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; color: var(--text-secondary); white-space: nowrap; }
+        .qr-tab:hover { border-color: var(--primary-light); color: var(--primary); }
+        .qr-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .qr-panel { display: none; }
+        .qr-panel.active { display: block; }
+
+        /* ── Dose Table ── */
+        .dose-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-bottom: 10px; }
+        .dose-table th { background: linear-gradient(135deg, #14532d 0%, #16a34a 100%); color: white; padding: 10px 12px; text-align: left; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .dose-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+        .dose-table tr:last-child td { border-bottom: none; }
+        .dose-table tr:nth-child(even) td { background: #f0fdf4; }
+        .dose-table .indication-cell { font-weight: 600; color: var(--accent); min-width: 110px; }
+        .dose-table .dose-cell { font-family: 'Courier New', monospace; font-size: 0.82rem; line-height: 1.6; }
+        .dose-detail { color: var(--text-secondary); font-size: 0.78rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+
+        /* ── Ref Grid Items ── */
+        .ref-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .ref-item { background: var(--bg-light); padding: 12px; border-radius: 8px; }
+        .ref-label { font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; font-weight: 600; }
+        .ref-value { font-weight: 600; color: var(--text-primary); font-size: 0.88rem; }
+        .ref-item.warning { background: #fef3c7; border: 1px solid #fde047; }
+        .ref-item.warning .ref-label { color: #92400e; }
+        .ref-item.warning .ref-value { color: #78350f; font-size: 0.84rem; }
+        .ref-item.critical { background: #fee2e2; border: 2px solid #fecaca; }
+        .ref-item.critical .ref-label { color: #991b1b; }
+        .ref-item.critical .ref-value { color: #7f1d1d; }
+        .ref-item.info { background: #eff6ff; border: 1px solid #bfdbfe; }
+        .ref-item.info .ref-label { color: #1e40af; }
+        .ref-item.info .ref-value { color: #1e3a8a; }
+        .ref-item.success { background: #f0fdf4; border: 1px solid #bbf7d0; }
+        .ref-item.success .ref-label { color: #166534; }
+        .ref-item.success .ref-value { color: #14532d; }
+        .ref-item.purple { background: #f5f3ff; border: 1px solid #ddd6fe; }
+        .ref-item.purple .ref-label { color: #5b21b6; }
+        .ref-item.purple .ref-value { color: #4c1d95; }
+        .ref-item.green { background: #ecfdf5; border: 1px solid #6ee7b7; }
+        .ref-item.green .ref-label { color: #15803d; }
+        .ref-item.green .ref-value { color: #14532d; }
+
+        /* ── Consideration List ── */
+        .consideration-list { list-style: none; padding: 0; }
+        .consideration-list li { padding: 10px 12px 10px 36px; position: relative; border-bottom: 1px solid #f1f5f9; font-size: 0.88rem; line-height: 1.6; }
+        .consideration-list li:last-child { border-bottom: none; }
+        .consideration-list li::before { content: attr(data-num); position: absolute; left: 6px; top: 10px; width: 22px; height: 22px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; }
+
+        /* ── Warning / Danger Boxes ── */
+        .warning-box { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border: 2px solid #f59e0b; border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+        .warning-box .warn-title { font-weight: 700; color: #92400e; font-size: 0.85rem; margin-bottom: 8px; }
+        .warning-box p { color: #78350f; font-size: 0.85rem; line-height: 1.7; }
+        .danger-box { background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); border: 2px solid #ef4444; border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+        .danger-box .warn-title { font-weight: 700; color: #991b1b; font-size: 0.85rem; margin-bottom: 8px; }
+        .danger-box p { color: #7f1d1d; font-size: 0.85rem; line-height: 1.7; }
+
+        /* ── IO Comparison Strip ── */
+        .io-strip { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+        .io-card { padding: 12px 14px; border-radius: 10px; }
+        .io-card.adult { background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); border: 2px solid #4ade80; }
+        .io-card.peds { background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border: 2px solid #60a5fa; }
+        .io-label { font-size: 0.7rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .io-card.adult .io-label { color: #166534; }
+        .io-card.peds .io-label { color: #1e40af; }
+        .io-dose { font-size: 1rem; font-weight: 800; color: var(--text-primary); margin-bottom: 4px; }
+        .io-detail { font-size: 0.78rem; line-height: 1.5; }
+        .io-card.adult .io-detail { color: #14532d; }
+        .io-card.peds .io-detail { color: #1e3a8a; }
+
+        /* ── Infusion Math Visual ── */
+        .infusion-math { background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 2px solid #34d399; border-radius: 12px; padding: 16px; margin-top: 14px; }
+        .infusion-math .ref-label { color: #15803d; margin-bottom: 10px; }
+        .infusion-eq { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 8px; align-items: center; text-align: center; }
+        .infusion-eq-box { background: white; border-radius: 8px; padding: 10px; }
+        .infusion-eq-val { font-size: 1.1rem; font-weight: 800; color: #15803d; }
+        .infusion-eq-label { font-size: 0.7rem; color: var(--text-secondary); }
+        .infusion-eq-sign { font-size: 1.3rem; font-weight: 800; color: #15803d; }
+
+        /* ── Quiz Styles ── */
+        .progress-section { background: var(--bg-card); border-radius: 12px; padding: 20px 25px; margin-bottom: 25px; box-shadow: var(--shadow); }
+        .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px; }
+        .progress-title { font-weight: 600; color: var(--primary); }
+        .progress-stats { display: flex; gap: 20px; font-size: 0.9rem; color: var(--text-secondary); }
+        .progress-bar-container { height: 10px; background: var(--border); border-radius: 5px; overflow: hidden; }
+        .progress-bar { height: 100%; background: linear-gradient(90deg, #22c55e 0%, #16a34a 100%); border-radius: 5px; transition: width 0.4s ease; }
+
+        .question-card { background: var(--bg-card); border-radius: 16px; box-shadow: var(--shadow-lg); overflow: hidden; margin-bottom: 25px; }
+        .question-header { background: linear-gradient(135deg, #15803d 0%, #16a34a 100%); color: white; padding: 20px 25px; display: flex; justify-content: space-between; align-items: center; }
+        .question-number { font-size: 1.1rem; font-weight: 600; }
+        .question-type { padding: 5px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; }
+        .question-type.clinical { background: #22c55e; }
+        .question-type.critical { background: #7c3aed; }
+        .question-type.recall { background: #3b82f6; }
+        .question-type.calculation { background: #f59e0b; }
+        .question-body { padding: 30px; }
+
+        .scenario-box { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border-left: 4px solid #16a34a; padding: 20px; border-radius: 0 10px 10px 0; margin-bottom: 20px; }
+        .scenario-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--primary); font-weight: 700; margin-bottom: 10px; }
+        .scenario-text { font-size: 1rem; color: var(--text-primary); line-height: 1.7; }
+        .vital-signs { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 10px; margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border); }
+        .vital-item { text-align: center; padding: 8px; background: white; border-radius: 8px; }
+        .vital-label { font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; }
+        .vital-value { font-size: 0.95rem; font-weight: 700; color: var(--primary); }
+
+        .question-text { font-size: 1.15rem; font-weight: 500; color: var(--text-primary); margin-bottom: 25px; line-height: 1.7; }
+        .options-list { display: flex; flex-direction: column; gap: 12px; }
+        .option-btn { display: flex; align-items: flex-start; padding: 16px 20px; background: var(--bg-light); border: 2px solid var(--border); border-radius: 10px; cursor: pointer; transition: all 0.2s ease; text-align: left; }
+        .option-btn:hover:not(.disabled) { border-color: var(--accent); background: white; transform: translateX(5px); }
+        .option-btn.correct { border-color: var(--success); background: rgba(22, 163, 74, 0.1); }
+        .option-btn.incorrect { border-color: var(--danger); background: rgba(220, 38, 38, 0.1); }
+        .option-btn.disabled { cursor: default; }
+        .option-letter { width: 32px; height: 32px; min-width: 32px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; margin-right: 15px; font-size: 0.9rem; }
+        .option-btn.correct .option-letter { background: var(--success); }
+        .option-btn.incorrect .option-letter { background: var(--danger); }
+        .option-text { flex: 1; font-size: 1rem; line-height: 1.5; }
+
+        .rationale-box { margin-top: 25px; padding: 25px; border-radius: 12px; background: #f8fafc; display: none; }
+        .rationale-box.show { display: block; }
+        .mechanism-section { background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-radius: 12px; padding: 20px; margin-bottom: 15px; }
+        .mechanism-section h4 { color: #1e40af; margin-bottom: 12px; font-size: 1rem; }
+        .mechanism-section p { color: #1e3a8a; font-size: 0.95rem; line-height: 1.8; }
+        .clinical-pearl-box { background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); border-radius: 12px; padding: 20px; margin-bottom: 15px; }
+        .clinical-pearl-box h4 { color: #166534; margin-bottom: 12px; font-size: 1rem; }
+        .clinical-pearl-box p { color: #14532d; font-size: 0.95rem; line-height: 1.8; }
+        .protocol-box { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border-radius: 12px; padding: 20px; }
+        .protocol-box h4 { color: #15803d; margin-bottom: 12px; font-size: 1rem; }
+        .protocol-box p { color: #14532d; font-size: 0.95rem; line-height: 1.8; font-family: 'Courier New', monospace; }
+
+        .nav-buttons { display: flex; justify-content: space-between; gap: 15px; padding: 0 30px 30px; }
+        .nav-btn { padding: 14px 28px; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+        .nav-btn.primary { background: var(--primary); color: white; }
+        .nav-btn.primary:hover { background: var(--primary-light); }
+        .nav-btn.secondary { background: var(--border); color: var(--text-secondary); }
+        .nav-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* ── Results ── */
+        .results-card { background: var(--bg-card); border-radius: 16px; box-shadow: var(--shadow-lg); padding: 40px; text-align: center; display: none; }
+        .results-card.show { display: block; }
+        .results-icon { width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 2.5rem; }
+        .results-icon.excellent { background: rgba(22, 163, 74, 0.15); }
+        .results-icon.good { background: rgba(22, 163, 74, 0.1); }
+        .results-icon.needs-work { background: rgba(220, 38, 38, 0.15); }
+        .results-title { font-size: 1.8rem; font-weight: 700; color: var(--primary); }
+        .results-score { font-size: 3rem; font-weight: 800; margin: 20px 0; }
+        .results-score.excellent { color: var(--success); }
+        .results-score.good { color: var(--accent); }
+        .results-score.needs-work { color: var(--danger); }
+        .results-message { color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 30px; }
+        .results-breakdown { display: flex; justify-content: center; gap: 40px; margin-bottom: 30px; }
+        .breakdown-item { text-align: center; }
+        .breakdown-value { font-size: 1.5rem; font-weight: 700; }
+        .breakdown-label { font-size: 0.85rem; color: var(--text-secondary); }
+
+        .disclaimer { text-align: center; font-size: 0.72rem; color: var(--text-secondary); margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.6); border-radius: 8px; line-height: 1.5; }
+
+        @media (max-width: 600px) {
+            body { padding: 10px; }
+            .header { padding: 20px 15px; border-radius: 12px; }
+            .header h1 { font-size: 1.5rem; }
+            .qr-header { padding: 14px 16px; }
+            .qr-body-inner { padding: 15px; }
+            .qr-tabs { gap: 4px; }
+            .qr-tab { padding: 6px 10px; font-size: 0.72rem; }
+            .dose-table { font-size: 0.78rem; }
+            .dose-table th, .dose-table td { padding: 8px 6px; }
+            .ref-grid { grid-template-columns: 1fr; }
+            .io-strip { grid-template-columns: 1fr; }
+            .infusion-eq { grid-template-columns: 1fr; gap: 6px; }
+            .infusion-eq-sign { font-size: 1rem; }
+            .question-body { padding: 20px; }
+            .nav-buttons { flex-direction: column; padding: 0 20px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" style="position:fixed;top:0;left:0;right:0;z-index:9999;display:flex;align-items:center;gap:8px;padding:12px 20px;background:rgba(12,25,41,0.95);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#94a3b8;font-size:0.82rem;font-weight:600;text-decoration:none;font-family:-apple-system,sans-serif;border-bottom:1px solid rgba(148,163,184,0.12);"><span style="font-size:1.1rem">←</span> All Quizzes</a>
+    <div style="height:46px"></div>
+    <div class="container">
+        <!-- ══════════════ HEADER ══════════════ -->
+        <div class="header">
+            <h1>💚 Lidocaine</h1>
+            <p class="subtitle">LFN Protocol Section 12.46 | Clinical Application Quiz</p>
+            <span class="drug-class">Antiarrhythmic Agent, Class Ib / Local Anesthetic</span>
+            <div class="badge-container">
+                <span class="indication-badge">🫀 Cardiac Arrest</span>
+                <span class="indication-badge">⚡ Tachycardias</span>
+                <span class="indication-badge">💉 Local Anesthesia</span>
+                <span class="indication-badge">🦴 IO Pain Management</span>
+            </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════ -->
+        <!-- EXPANDED QUICK REFERENCE                   -->
+        <!-- ══════════════════════════════════════════ -->
+        <div class="quick-reference" id="quickRef">
+            <div class="qr-header" onclick="toggleQuickRef()">
+                <h3>📋 Quick Reference — Lidocaine (12.46)</h3>
+                <span class="qr-toggle" id="qrToggle">▼</span>
+            </div>
+            <div class="qr-body" id="qrBody">
+                <div class="qr-body-inner">
+                    <div class="qr-tabs" id="qrTabs">
+                        <button class="qr-tab active" data-tab="dosing">Dosing & Indications</button>
+                        <button class="qr-tab" data-tab="pharmacology">Pharmacology</button>
+                        <button class="qr-tab" data-tab="considerations">Considerations</button>
+                        <button class="qr-tab" data-tab="warnings">Warnings & Precautions</button>
+                    </div>
+
+                    <!-- ── TAB 1: DOSING & INDICATIONS ── -->
+                    <div class="qr-panel active" id="panel-dosing">
+                        <div style="overflow-x: auto;">
+                            <table class="dose-table">
+                                <thead><tr><th>Indication</th><th>Adult Dose</th><th>Pediatric Dose</th></tr></thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="indication-cell">Cardiac Arrest<br><span class="dose-detail">Medical</span></td>
+                                        <td class="dose-cell">1–1.5 mg/kg<br><span class="dose-detail">Repeat: 0.5–0.75 mg/kg<br>Max 3 doses or 3 mg/kg</span></td>
+                                        <td class="dose-cell">1 mg/kg IV</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="indication-cell">Post-ROSC<br><span class="dose-detail">Management</span></td>
+                                        <td class="dose-cell">1–4 mg/min<br><span class="dose-detail">Initiate if ROSC obtained after bolus dose during resuscitation</span></td>
+                                        <td class="dose-cell"><span class="dose-detail">No LFN Standing Order</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="indication-cell">Tachycardias</td>
+                                        <td class="dose-cell">1–1.5 mg/kg<br><span class="dose-detail">Repeat: 0.5–0.75 mg/kg q 3–5 min<br>Max 3 doses or 3 mg/kg</span></td>
+                                        <td class="dose-cell"><span class="dose-detail">No LFN Standing Order</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="indication-cell">Local Anesthesia<br><span class="dose-detail">Chest Tube</span></td>
+                                        <td class="dose-cell">Up to 5 mL of 2% solution<br><span class="dose-detail">Fanning injection to cover diffuse area<br>Max dose 4 mg/kg</span></td>
+                                        <td class="dose-cell">Same as adult if &gt;25 kg<br><span class="dose-detail">Max dose 0.2 mL/kg if &lt;25 kg</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="indication-cell">IO Pain<br><span class="dose-detail">Management</span></td>
+                                        <td class="dose-cell">40 mg IO over 120 sec<br><span class="dose-detail">Allow to dwell for 60 seconds</span></td>
+                                        <td class="dose-cell">Same as adult if &gt;20 kg<br><span class="dose-detail">If &lt;20 kg: 0.5 mg/kg IO over 120 sec<br>Dwell 60 sec • Max 40 mg</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Key dose strips -->
+                        <div class="ref-grid" style="margin-top: 18px;">
+                            <div class="ref-item green">
+                                <div class="ref-label">Cardiac Arrest (Adult)</div>
+                                <div class="ref-value">1–1.5 mg/kg IV</div>
+                            </div>
+                            <div class="ref-item green">
+                                <div class="ref-label">Cardiac Arrest (Peds)</div>
+                                <div class="ref-value">1 mg/kg IV</div>
+                            </div>
+                            <div class="ref-item success">
+                                <div class="ref-label">Post-ROSC Infusion</div>
+                                <div class="ref-value">1–4 mg/min</div>
+                            </div>
+                            <div class="ref-item warning">
+                                <div class="ref-label">Max Total Dose</div>
+                                <div class="ref-value">3 doses or 3 mg/kg</div>
+                            </div>
+                        </div>
+
+                        <!-- IO Pain comparison -->
+                        <div style="margin-top: 18px;">
+                            <div class="ref-label" style="margin-bottom: 8px; font-size: 0.75rem; font-weight: 700;">🦴 IO PAIN MANAGEMENT — By Patient Size</div>
+                            <div class="io-strip">
+                                <div class="io-card adult">
+                                    <div class="io-label">Adult / Peds &gt;20 kg</div>
+                                    <div class="io-dose">40 mg IO</div>
+                                    <div class="io-detail">Over 120 seconds<br>Allow to dwell 60 seconds<br>Flush after dwell time</div>
+                                </div>
+                                <div class="io-card peds">
+                                    <div class="io-label">Pediatric &lt;20 kg</div>
+                                    <div class="io-dose">0.5 mg/kg IO</div>
+                                    <div class="io-detail">Over 120 seconds<br>Allow to dwell 60 seconds<br>Max dose 40 mg</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Infusion math -->
+                        <div class="infusion-math">
+                            <div class="ref-label">💊 Recommended Infusion Mixture</div>
+                            <div class="infusion-eq">
+                                <div class="infusion-eq-box">
+                                    <div class="infusion-eq-val">1 gram</div>
+                                    <div class="infusion-eq-label">Lidocaine</div>
+                                </div>
+                                <div class="infusion-eq-sign">÷</div>
+                                <div class="infusion-eq-box">
+                                    <div class="infusion-eq-val">250 mL</div>
+                                    <div class="infusion-eq-label">Diluent</div>
+                                </div>
+                                <div class="infusion-eq-sign">=</div>
+                                <div class="infusion-eq-box">
+                                    <div class="infusion-eq-val">4 mg/mL</div>
+                                    <div class="infusion-eq-label">Concentration</div>
+                                </div>
+                            </div>
+                            <p style="font-size: 0.8rem; color: #14532d; margin-top: 10px; text-align: center;">💡 <strong>Infusion Rate:</strong> 1–4 mg/min = 15–60 mL/hr at this concentration</p>
+                        </div>
+
+                        <div class="ref-grid" style="margin-top: 14px;">
+                            <div class="ref-item info">
+                                <div class="ref-label">Chest Tube (Local)</div>
+                                <div class="ref-value">Up to 5 mL of 2% • Max 4 mg/kg</div>
+                            </div>
+                            <div class="ref-item info">
+                                <div class="ref-label">Chest Tube (Peds &lt;25 kg)</div>
+                                <div class="ref-value">Max 0.2 mL/kg of 2% solution</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ── TAB 2: PHARMACOLOGY ── -->
+                    <div class="qr-panel" id="panel-pharmacology">
+                        <div class="ref-grid" style="margin-bottom: 18px;">
+                            <div class="ref-item purple">
+                                <div class="ref-label">Pharmacologic Category</div>
+                                <div class="ref-value">Antiarrhythmic Agent, Class Ib; Local Anesthetic</div>
+                            </div>
+                            <div class="ref-item info">
+                                <div class="ref-label">Trade Name</div>
+                                <div class="ref-value">Xylocaine</div>
+                            </div>
+                        </div>
+
+                        <div class="ref-grid" style="margin-bottom: 18px;">
+                            <div class="ref-item success">
+                                <div class="ref-label">Onset</div>
+                                <div class="ref-value">3 minutes</div>
+                            </div>
+                            <div class="ref-item success">
+                                <div class="ref-label">Peak</div>
+                                <div class="ref-value">10 minutes</div>
+                            </div>
+                            <div class="ref-item success">
+                                <div class="ref-label">Duration</div>
+                                <div class="ref-value">2 hours</div>
+                            </div>
+                        </div>
+
+                        <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-radius: 10px; padding: 16px; margin-bottom: 14px;">
+                            <div class="ref-label" style="color: #1e40af; margin-bottom: 8px;">Mechanism of Action</div>
+                            <p style="font-size: 0.88rem; color: #1e3a8a; line-height: 1.8;"><strong>Suppresses automaticity in the His-Purkinje system</strong> and by <strong>elevating electrical stimulation threshold</strong> of ventricle during diastole. As a Class Ib antiarrhythmic, it stabilizes ventricular myocardium by blocking sodium channels in their inactivated state.</p>
+                        </div>
+
+                        <!-- Class Ib MOA visual -->
+                        <div style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 2px solid #34d399; border-radius: 10px; padding: 16px; margin-bottom: 14px;">
+                            <div class="ref-label" style="color: #15803d; margin-bottom: 10px;">🫀 Class Ib Antiarrhythmic — How It Works</div>
+                            <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center; text-align: center;">
+                                <div style="background: white; border-radius: 8px; padding: 12px;">
+                                    <div style="font-size: 0.72rem; font-weight: 700; color: #991b1b; text-transform: uppercase;">Abnormal Automaticity</div>
+                                    <div style="font-size: 0.95rem; font-weight: 800; color: #991b1b;">His-Purkinje</div>
+                                    <div style="font-size: 0.72rem; color: var(--text-secondary);">Ectopic impulses / re-entry</div>
+                                </div>
+                                <div style="font-size: 1.8rem;">🚫⚡</div>
+                                <div style="background: white; border-radius: 8px; padding: 12px;">
+                                    <div style="font-size: 0.72rem; font-weight: 700; color: #15803d; text-transform: uppercase;">Stabilized Myocardium</div>
+                                    <div style="font-size: 0.95rem; font-weight: 800; color: #15803d;">↑ Threshold</div>
+                                    <div style="font-size: 0.72rem; color: var(--text-secondary);">Suppressed ectopy</div>
+                                </div>
+                            </div>
+                            <p style="font-size: 0.78rem; color: #14532d; margin-top: 10px; text-align: center;">Lidocaine is selective for ventricular tissue — it is NOT effective for supraventricular arrhythmias</p>
+                        </div>
+
+                        <!-- Dual role visual -->
+                        <div style="background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); border: 2px solid #c4b5fd; border-radius: 10px; padding: 16px; margin-bottom: 14px;">
+                            <div class="ref-label" style="color: #5b21b6; margin-bottom: 8px;">💊 Dual Role — Antiarrhythmic & Local Anesthetic</div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                                <div style="background: white; border-radius: 8px; padding: 10px; text-align: center;">
+                                    <div style="font-size: 0.72rem; font-weight: 700; color: #15803d; text-transform: uppercase;">Antiarrhythmic (IV)</div>
+                                    <div style="font-size: 0.88rem; font-weight: 800; color: var(--text-primary);">Class Ib</div>
+                                    <div style="font-size: 0.72rem; color: var(--text-secondary);">VF/VT, ventricular ectopy</div>
+                                </div>
+                                <div style="background: white; border-radius: 8px; padding: 10px; text-align: center;">
+                                    <div style="font-size: 0.72rem; font-weight: 700; color: #7c3aed; text-transform: uppercase;">Local Anesthetic</div>
+                                    <div style="font-size: 0.88rem; font-weight: 800; color: var(--text-primary);">Amide-type</div>
+                                    <div style="font-size: 0.72rem; color: var(--text-secondary);">Chest tube, IO pain</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ref-grid" style="margin-bottom: 14px;">
+                            <div class="ref-item info">
+                                <div class="ref-label">Recommended Mixture</div>
+                                <div class="ref-value">1 gram / 250 mL (4 mg/mL)</div>
+                            </div>
+                            <div class="ref-item info">
+                                <div class="ref-label">Infusion Rate</div>
+                                <div class="ref-value">1–4 mg/min post-ROSC</div>
+                            </div>
+                        </div>
+
+                        <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-radius: 10px; padding: 16px;">
+                            <div class="ref-label" style="color: #92400e; margin-bottom: 8px;">Adverse Reactions</div>
+                            <p style="font-size: 0.85rem; color: #78350f; line-height: 1.7;">Drowsiness, dizziness, light-headedness. At toxic levels: seizures, respiratory depression, cardiovascular collapse.</p>
+                        </div>
+                    </div>
+
+                    <!-- ── TAB 3: CONSIDERATIONS ── -->
+                    <div class="qr-panel" id="panel-considerations">
+                        <ol class="consideration-list">
+                            <li data-num="1"><strong>Doses and indications should follow current ACLS guidelines.</strong> Lidocaine is an alternative to amiodarone for VF/pulseless VT.</li>
+                            <li data-num="2">Post-ROSC infusion (1–4 mg/min) should <strong>only be initiated if ROSC was obtained after a lidocaine bolus</strong> during resuscitation.</li>
+                            <li data-num="3">For <strong>tachycardias</strong>, may repeat 0.5–0.75 mg/kg every 3–5 minutes to a maximum of 3 doses or 3 mg/kg total.</li>
+                            <li data-num="4"><strong>IO Pain:</strong> Administer slowly (120 seconds) and allow 60-second dwell time before flushing for local anesthetic effect.</li>
+                            <li data-num="5">For <strong>chest tube local anesthesia</strong>, use fanning injection technique to cover a diffuse area. Lidocaine vials are not sterile — do not contact sterile field or gloves.</li>
+                        </ol>
+
+                        <div style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); border-radius: 10px; padding: 16px; margin-top: 14px; margin-bottom: 14px;">
+                            <div class="ref-label" style="color: #166534; margin-bottom: 8px;">💡 Clinical Context — Cardiac Arrest</div>
+                            <div style="font-size: 0.85rem; color: #14532d; line-height: 1.8;">
+                                <p style="margin-bottom: 8px;"><strong>Lidocaine vs Amiodarone:</strong> Both are used for refractory VF/pulseless VT. Lidocaine is an alternative antiarrhythmic per current ACLS guidelines. The initial dose is 1–1.5 mg/kg with repeat doses of 0.5–0.75 mg/kg.</p>
+                                <p><strong>Post-ROSC strategy:</strong> If ROSC was achieved after a lidocaine bolus, initiate maintenance infusion at 1–4 mg/min to prevent recurrent arrhythmia. Use recommended mixture of 1 gram / 250 mL (4 mg/mL).</p>
+                            </div>
+                        </div>
+
+                        <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-radius: 10px; padding: 16px; margin-bottom: 14px;">
+                            <div class="ref-label" style="color: #1e40af; margin-bottom: 8px;">🔑 IO Pain Management Key Points</div>
+                            <div style="font-size: 0.85rem; color: #1e3a8a; line-height: 1.8;">
+                                <p style="margin-bottom: 8px;"><strong>Adults and peds &gt;20 kg:</strong> 40 mg IO over 120 seconds. Allow to dwell for 60 seconds before flushing.</p>
+                                <p style="margin-bottom: 8px;"><strong>Peds &lt;20 kg:</strong> 0.5 mg/kg IO over 120 seconds. Allow to dwell 60 seconds. Maximum dose 40 mg.</p>
+                                <p><strong>Mechanism:</strong> Slow administration and dwell time allow lidocaine to provide local anesthetic effect at the IO site before flushing with fluids.</p>
+                            </div>
+                        </div>
+
+                        <div style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border-radius: 10px; padding: 16px; margin-bottom: 14px;">
+                            <div class="ref-label" style="color: #15803d; margin-bottom: 8px;">🩺 Chest Tube Local Anesthesia</div>
+                            <div style="font-size: 0.85rem; color: #14532d; line-height: 1.7;">
+                                <p style="margin-bottom: 8px;">Inject up to <strong>5 mL of 2% solution</strong>, fanning out with injection to cover diffuse area. Max dose <strong>4 mg/kg</strong>.</p>
+                                <p style="margin-bottom: 8px;"><strong>Pediatric (&lt;25 kg):</strong> Max dose of 0.2 mL/kg.</p>
+                                <p><strong>Technique:</strong> Inject subcutaneously under the skin, advance to bone and inject periosteum of the rib above, then move superior and inject the intercostal muscle. Lidocaine vials are not sterile — should not contact sterile field or gloves.</p>
+                            </div>
+                        </div>
+
+                        <div style="background: #f5f3ff; border: 1px solid #ddd6fe; border-radius: 10px; padding: 16px;">
+                            <div class="ref-label" style="color: #5b21b6; margin-bottom: 8px;">Pregnancy Considerations</div>
+                            <p style="font-size: 0.85rem; color: #4c1d95; line-height: 1.7;">Doses and indications should follow current ACLS guidelines. Appropriate medications should not be withheld due to concerns of fetal teratogenicity.</p>
+                        </div>
+                    </div>
+
+                    <!-- ── TAB 4: WARNINGS & PRECAUTIONS ── -->
+                    <div class="qr-panel" id="panel-warnings">
+                        <div class="danger-box">
+                            <div class="warn-title">🚨 CONTRAINDICATION — Amide-Type Hypersensitivity</div>
+                            <p>Contraindicated in patients with a <strong>history of hypersensitivity to amide-type local anesthetics</strong>. Cross-reactivity may occur with other amide agents (bupivacaine, mepivacaine, prilocaine, ropivacaine). Obtain allergy history before administration.</p>
+                        </div>
+
+                        <div class="danger-box">
+                            <div class="warn-title">🚨 CONTRAINDICATION — Supraventricular Dysrhythmias</div>
+                            <p>Contraindicated in patients with <strong>supraventricular dysrhythmias (SVT)</strong>. Lidocaine is selective for ventricular tissue and is ineffective — and potentially harmful — in supraventricular arrhythmias. Always confirm rhythm is ventricular in origin before administering.</p>
+                        </div>
+
+                        <div class="danger-box">
+                            <div class="warn-title">🚨 CONTRAINDICATION — Heart Block</div>
+                            <p>Contraindicated in patients with <strong>heart block</strong>. Lidocaine suppresses automaticity and can worsen conduction delays, potentially causing complete heart block or asystole in patients with existing conduction abnormalities.</p>
+                        </div>
+
+                        <div class="warning-box">
+                            <div class="warn-title">⚠️ Liver or Renal Disease</div>
+                            <p><strong>Use with caution in patients with liver or renal disease.</strong> Lidocaine is hepatically metabolized. Impaired liver function reduces clearance, increasing risk of toxicity. Reduce dose or extend intervals in patients with significant hepatic impairment.</p>
+                        </div>
+
+                        <div class="warning-box">
+                            <div class="warn-title">⚠️ CHF, Hypoxia & Respiratory Depression</div>
+                            <p>Use with caution in patients with <strong>CHF, marked hypoxia, respiratory depression, hypovolemia, or shock</strong>. These conditions reduce hepatic blood flow, impairing lidocaine metabolism and increasing toxicity risk. Hypoxia also lowers the seizure threshold for lidocaine toxicity.</p>
+                        </div>
+
+                        <div class="warning-box">
+                            <div class="warn-title">⚠️ Myasthenia Gravis & Debilitated Patients</div>
+                            <p>Use with caution in patients with <strong>myasthenia gravis</strong>, debilitated patients, and the elderly. Lidocaine may potentiate neuromuscular weakness. Elderly patients have reduced hepatic clearance and may require dose adjustments.</p>
+                        </div>
+
+                        <div class="warning-box">
+                            <div class="warn-title">⚠️ Malignant Hyperthermia Risk</div>
+                            <p>Use with caution in patients with a <strong>family history of malignant hyperthermia</strong> (fulminant hypermetabolism). While amide local anesthetics have not been definitively linked to triggering MH, caution is warranted in susceptible individuals.</p>
+                        </div>
+
+                        <div class="warning-box">
+                            <div class="warn-title">⚠️ Drug Interaction — Metoprolol</div>
+                            <p><strong>Metoprolol may increase serum concentration of lidocaine.</strong> Beta-blockers reduce hepatic blood flow, impairing lidocaine clearance. Monitor for signs of toxicity (drowsiness, dizziness, seizures) when co-administering.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ══════════════ PROGRESS ══════════════ -->
+        <div class="progress-section" id="progressSection">
+            <div class="progress-header"><span class="progress-title">Lidocaine Clinical Scenarios</span><div class="progress-stats"><span id="questionCount">Question 1 of 10</span><span id="scoreDisplay">Score: 0/0</span></div></div>
+            <div class="progress-bar-container"><div class="progress-bar" id="progressBar" style="width: 10%"></div></div>
+        </div>
+
+        <!-- ══════════════ QUESTION CARD ══════════════ -->
+        <div class="question-card" id="questionCard">
+            <div class="question-header"><span class="question-number" id="questionNumber">Question 1</span><span class="question-type recall" id="questionType">Recall</span></div>
+            <div class="question-body">
+                <div class="scenario-box" id="scenarioBox"><div class="scenario-label">📍 Scenario</div><div class="scenario-text" id="scenarioText"></div><div class="vital-signs" id="vitalSigns"></div></div>
+                <p class="question-text" id="questionText"></p>
+                <div class="options-list" id="optionsList"></div>
+                <div class="rationale-box" id="rationaleBox"></div>
+            </div>
+            <div class="nav-buttons"><button class="nav-btn secondary" id="prevBtn" onclick="prevQuestion()">← Previous</button><button class="nav-btn primary" id="nextBtn" onclick="nextQuestion()">Next →</button></div>
+        </div>
+
+        <!-- ══════════════ RESULTS ══════════════ -->
+        <div class="results-card" id="resultsCard"><div class="results-icon" id="resultsIcon">🏆</div><h2 class="results-title">Quiz Complete!</h2><div class="results-score" id="resultsScore">0%</div><p class="results-message" id="resultsMessage"></p><div class="results-breakdown"><div class="breakdown-item"><div class="breakdown-value" id="correctCount" style="color: var(--success)">0</div><div class="breakdown-label">Correct</div></div><div class="breakdown-item"><div class="breakdown-value" id="incorrectCount" style="color: var(--danger)">0</div><div class="breakdown-label">Incorrect</div></div><div class="breakdown-item"><div class="breakdown-value" id="totalQuestions" style="color: var(--primary)">10</div><div class="breakdown-label">Total</div></div></div><button class="nav-btn primary" onclick="restartQuiz()">🔄 Try Again</button></div>
+
+        <div class="disclaimer">
+            ⚕️ I created this quiz for my own study benefit.
+            Please refer to the official Life Flight Network Patient Care Guidelines for all clinical decision making.
+        </div>
+    </div>
+
+    <script>
+        /* ── Quick Reference Toggle & Tabs ── */
+        function toggleQuickRef() {
+            document.getElementById('qrBody').classList.toggle('collapsed');
+            document.getElementById('qrToggle').classList.toggle('collapsed');
+        }
+        document.querySelectorAll('.qr-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.qr-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.qr-panel').forEach(p => p.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+            });
+        });
+
+        /* ── Quiz Data ── */
+        const quizData = [
+            {
+                type: "recall", scenario: "A patient is in refractory VF cardiac arrest. Amiodarone is not available.", vitals: { "Rhythm": "VF", "Shocks": "3" },
+                question: "What is the initial cardiac arrest dose of lidocaine?",
+                options: ["0.5 mg/kg IV", "1–1.5 mg/kg IV", "3–5 mg/kg IV", "10 mg/kg IV"], correct: 1,
+                rationale: `<div class="mechanism-section"><h4>🔬 Mechanism</h4><p>Lidocaine suppresses automaticity in the His-Purkinje system and elevates the electrical stimulation threshold, helping to terminate ventricular fibrillation.</p></div><div class="clinical-pearl-box"><h4>💡 Pearl</h4><p>Initial cardiac arrest dose: 1–1.5 mg/kg IV. This achieves therapeutic levels to suppress ventricular dysrhythmias. Repeat with 0.5–0.75 mg/kg.</p></div><div class="protocol-box"><h4>📖 Protocol</h4><p>LFN 12.46 – Cardiac Arrest: 1–1.5 mg/kg, repeat 0.5–0.75 mg/kg, max 3 doses or 3 mg/kg.</p></div>`
+            },
+            {
+                type: "recall", scenario: "", vitals: {},
+                question: "What is the maximum total lidocaine dose for cardiac arrest or tachycardias?",
+                options: ["1.5 mg/kg", "3 mg/kg (or 3 doses)", "5 mg/kg", "10 mg/kg"], correct: 1,
+                rationale: `<div class="mechanism-section"><h4>🔬 Mechanism</h4><p>Exceeding the maximum dose increases risk of CNS toxicity (seizures, drowsiness) and cardiovascular collapse. The ceiling prevents accumulation to toxic levels.</p></div><div class="clinical-pearl-box"><h4>💡 Pearl</h4><p>Maximum is 3 doses or 3 mg/kg total — whichever is reached first. This applies to both cardiac arrest and tachycardia indications.</p></div><div class="protocol-box"><h4>📖 Protocol</h4><p>LFN 12.46 – Max 3 doses or 3 mg/kg for cardiac arrest and tachycardias.</p></div>`
+            },
+            {
+                type: "clinical", scenario: "Patient achieved ROSC after receiving lidocaine bolus during VF arrest. You are preparing for transport.", vitals: { "Rhythm": "NSR", "BP": "110/72", "HR": "88" },
+                question: "What is the appropriate post-ROSC infusion rate?",
+                options: ["0.5 mg/min", "1–4 mg/min", "10 mg/min", "No infusion needed"], correct: 1,
+                rationale: `<div class="mechanism-section"><h4>🔬 Mechanism</h4><p>Maintenance infusion sustains therapeutic lidocaine levels to prevent recurrent ventricular arrhythmias after successful resuscitation.</p></div><div class="clinical-pearl-box"><h4>💡 Pearl</h4><p>Post-ROSC infusion: 1–4 mg/min. Only initiate if ROSC was obtained after a lidocaine bolus during resuscitation. Use 1 gram / 250 mL mixture (4 mg/mL).</p></div><div class="protocol-box"><h4>📖 Protocol</h4><p>LFN 12.46 – Post-ROSC: 1–4 mg/min. Initiate if ROSC obtained after bolus dose during resuscitation.</p></div>`
+            },
+            {
+                type: "recall", scenario: "You are preparing an IO line on an adult trauma patient.", vitals: { "Access": "IO tibia" },
+                question: "What is the adult IO pain management dose of lidocaine?",
+                options: ["20 mg over 60 seconds", "40 mg over 120 seconds, dwell 60 seconds", "100 mg IV push", "10 mg over 30 seconds"], correct: 1,
+                rationale: `<div class="mechanism-section"><h4>🔬 Mechanism</h4><p>Slow administration allows lidocaine to disperse through the marrow cavity. The 60-second dwell time permits local anesthetic effect at the IO site before flushing.</p></div><div class="clinical-pearl-box"><h4>💡 Pearl</h4><p>Adult IO pain: 40 mg over 120 seconds, allow to dwell for 60 seconds. The dwell time is critical — flushing too early reduces anesthetic effectiveness.</p></div><div class="protocol-box"><h4>📖 Protocol</h4><p>LFN 12.46 – IO Pain: 40 mg IO over 120 sec, dwell 60 sec.</p></div>`
+            },
+            {
+                type: "calculation", scenario: "A 15 kg pediatric patient requires IO access and is in significant pain.", vitals: { "Weight": "15 kg", "Access": "IO tibia" },
+                question: "What is the appropriate lidocaine dose for IO pain in this patient?",
+                options: ["7.5 mg (0.5 mg/kg)", "15 mg (1 mg/kg)", "40 mg (adult dose)", "3 mg (0.2 mg/kg)"], correct: 0,
+                rationale: `<div class="mechanism-section"><h4>🔬 Mechanism</h4><p>Weight-based dosing at 0.5 mg/kg for children under 20 kg ensures appropriate local anesthesia without exceeding safe limits for smaller patients.</p></div><div class="clinical-pearl-box"><h4>💡 Pearl</h4><p>Peds &lt;20 kg: 0.5 mg/kg IO. For 15 kg: 0.5 × 15 = 7.5 mg. Still administer over 120 seconds and dwell 60 seconds. Max dose is 40 mg.</p></div><div class="protocol-box"><h4>📖 Protocol</h4><p>LFN 12.46 – IO Pain Peds &lt;20 kg: 0.5 mg/kg IO over 120 sec, dwell 60 sec, max 40 mg.</p></div>`
+            },
+            {
+                type: "critical", scenario: "Monitor shows a narrow complex tachycardia consistent with SVT at 180 bpm.", vitals: { "Rhythm": "SVT", "HR": "180", "BP": "102/68" },
+                question: "Is lidocaine appropriate for SVT?",
+                options: ["No — SVT is a contraindication", "Yes — use standard dose", "Yes — use half dose", "Yes — first-line for SVT"], correct: 0,
+                rationale: `<div class="mechanism-section"><h4>🔬 Mechanism</h4><p>Lidocaine acts selectively on ventricular tissue by suppressing automaticity in the His-Purkinje system. It has no therapeutic effect on supraventricular tissue and may be harmful.</p></div><div class="clinical-pearl-box"><h4>💡 Pearl</h4><p>SVT is a contraindication. Lidocaine is ineffective for supraventricular arrhythmias. Consider adenosine, vagal maneuvers, or calcium channel blockers for SVT instead.</p></div><div class="protocol-box"><h4>📖 Protocol</h4><p>LFN 12.46 – Contraindications: Supraventricular dysrhythmias, heart block, amide-type hypersensitivity.</p></div>`
+            },
+            {
+                type: "recall", scenario: "", vitals: {},
+                question: "What is lidocaine's mechanism of action as an antiarrhythmic?",
+                options: ["Calcium channel blockade", "Suppresses automaticity in His-Purkinje; elevates electrical stimulation threshold", "Beta receptor blockade", "Alpha receptor stimulation"], correct: 1,
+                rationale: `<div class="mechanism-section"><h4>🔬 Mechanism</h4><p>Lidocaine is a Class Ib antiarrhythmic that blocks sodium channels in their inactivated state, preferentially affecting depolarized (ischemic) tissue. This suppresses ectopic ventricular impulses.</p></div><div class="clinical-pearl-box"><h4>💡 Pearl</h4><p>Class Ib = sodium channel blocker with rapid kinetics. It shortens the action potential duration and suppresses ventricular ectopy without significantly affecting normal conduction.</p></div><div class="protocol-box"><h4>📖 Protocol</h4><p>LFN 12.46 – MOA: Suppresses automaticity in His-Purkinje system; elevates electrical stimulation threshold of ventricle during diastole.</p></div>`
+            },
+            {
+                type: "recall", scenario: "You are performing a chest tube insertion on a conscious patient.", vitals: { "Procedure": "Chest tube" },
+                question: "What is the chest tube local anesthesia dose of lidocaine?",
+                options: ["Up to 5 mL of 2% solution, fanning injection, max 4 mg/kg", "1 mL of 1% solution", "20 mL of 2% solution", "No local anesthesia is used for chest tubes"], correct: 0,
+                rationale: `<div class="mechanism-section"><h4>🔬 Mechanism</h4><p>Local infiltration with 2% lidocaine blocks sodium channels in peripheral nerves, preventing pain signal transmission at the chest tube insertion site.</p></div><div class="clinical-pearl-box"><h4>💡 Pearl</h4><p>Up to 5 mL of 2% solution with fanning technique. Max 4 mg/kg. For peds &lt;25 kg: max 0.2 mL/kg. Remember — lidocaine vials are NOT sterile, do not contact sterile field.</p></div><div class="protocol-box"><h4>📖 Protocol</h4><p>LFN 12.46 – Chest Tube: Up to 5 mL of 2% solution, fan injection, max 4 mg/kg. Peds &lt;25 kg: max 0.2 mL/kg.</p></div>`
+            },
+            {
+                type: "recall", scenario: "", vitals: {},
+                question: "What is the pediatric cardiac arrest dose of lidocaine?",
+                options: ["1 mg/kg IV", "0.1 mg/kg IV", "5 mg/kg IV", "Same as adult (1–1.5 mg/kg)"], correct: 0,
+                rationale: `<div class="mechanism-section"><h4>🔬 Mechanism</h4><p>A simplified weight-based dose of 1 mg/kg allows rapid calculation in pediatric emergencies while achieving therapeutic antiarrhythmic levels.</p></div><div class="clinical-pearl-box"><h4>💡 Pearl</h4><p>Pediatric cardiac arrest: 1 mg/kg IV — a simpler dose than the adult range (1–1.5 mg/kg) for rapid calculation under pressure. No LFN standing order exists for pediatric post-ROSC infusion or tachycardias.</p></div><div class="protocol-box"><h4>📖 Protocol</h4><p>LFN 12.46 – Peds Cardiac Arrest: 1 mg/kg IV.</p></div>`
+            },
+            {
+                type: "recall", scenario: "You need to prepare a lidocaine infusion for a post-ROSC patient.", vitals: { "Status": "Post-ROSC" },
+                question: "What is the recommended lidocaine infusion mixture?",
+                options: ["500 mg / 500 mL", "1 gram / 250 mL", "100 mg / 100 mL", "2 grams / 1000 mL"], correct: 1,
+                rationale: `<div class="mechanism-section"><h4>🔬 Mechanism</h4><p>The standard concentration of 4 mg/mL allows precise titration of the infusion rate. At 1–4 mg/min, this translates to 15–60 mL/hr.</p></div><div class="clinical-pearl-box"><h4>💡 Pearl</h4><p>LFN standard mix: 1 gram / 250 mL = 4 mg/mL. This matches the recommended infusion mixtures table (12.01). Easy math: 1 mg/min = 15 mL/hr; 4 mg/min = 60 mL/hr.</p></div><div class="protocol-box"><h4>📖 Protocol</h4><p>LFN 12.46 – Recommended Mixture: 1 gram / 250 mL (4 mg/mL). Infusion rate: 1–4 mg/min.</p></div>`
+            }
+        ];
+
+        /* ── Quiz Engine ── */
+        let currentQuestionIndex = 0, score = 0, totalAnswered = 0, answers = new Array(quizData.length).fill(null);
+
+        function loadQuestion() {
+            const q = quizData[currentQuestionIndex];
+            document.getElementById('questionCount').textContent = `Question ${currentQuestionIndex + 1} of ${quizData.length}`;
+            document.getElementById('scoreDisplay').textContent = `Score: ${score}/${totalAnswered}`;
+            document.getElementById('progressBar').style.width = `${((currentQuestionIndex + 1) / quizData.length) * 100}%`;
+            document.getElementById('questionNumber').textContent = `Question ${currentQuestionIndex + 1}`;
+            const typeEl = document.getElementById('questionType');
+            typeEl.textContent = q.type.charAt(0).toUpperCase() + q.type.slice(1);
+            typeEl.className = `question-type ${q.type}`;
+
+            const scenarioBox = document.getElementById('scenarioBox');
+            if (q.scenario) {
+                document.getElementById('scenarioText').innerHTML = q.scenario;
+                scenarioBox.style.display = 'block';
+            } else {
+                scenarioBox.style.display = 'none';
+            }
+
+            const vc = document.getElementById('vitalSigns'); vc.innerHTML = '';
+            if (q.vitals && Object.keys(q.vitals).length > 0) {
+                for (const [l, v] of Object.entries(q.vitals)) vc.innerHTML += `<div class="vital-item"><div class="vital-label">${l}</div><div class="vital-value">${v}</div></div>`;
+            }
+
+            document.getElementById('questionText').textContent = q.question;
+            const ol = document.getElementById('optionsList'); ol.innerHTML = '';
+            ['A','B','C','D'].forEach((letter, i) => {
+                const btn = document.createElement('button'); btn.className = 'option-btn';
+                if (answers[currentQuestionIndex] !== null) {
+                    btn.classList.add('disabled');
+                    if (i === q.correct) btn.classList.add('correct');
+                    else if (i === answers[currentQuestionIndex] && i !== q.correct) btn.classList.add('incorrect');
+                }
+                btn.innerHTML = `<span class="option-letter">${letter}</span><span class="option-text">${q.options[i]}</span>`;
+                btn.onclick = () => selectAnswer(i); ol.appendChild(btn);
+            });
+
+            const rb = document.getElementById('rationaleBox');
+            if (answers[currentQuestionIndex] !== null) { rb.innerHTML = q.rationale; rb.classList.add('show'); } else { rb.classList.remove('show'); rb.innerHTML = ''; }
+            document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
+            document.getElementById('nextBtn').textContent = currentQuestionIndex === quizData.length - 1 ? 'Finish Quiz' : 'Next →';
+        }
+
+        function selectAnswer(index) {
+            if (answers[currentQuestionIndex] !== null) return;
+            const q = quizData[currentQuestionIndex]; answers[currentQuestionIndex] = index; totalAnswered++;
+            if (index === q.correct) score++;
+            document.querySelectorAll('.option-btn').forEach((btn, i) => { btn.classList.add('disabled'); if (i === q.correct) btn.classList.add('correct'); else if (i === index && i !== q.correct) btn.classList.add('incorrect'); });
+            document.getElementById('rationaleBox').innerHTML = q.rationale; document.getElementById('rationaleBox').classList.add('show');
+            document.getElementById('scoreDisplay').textContent = `Score: ${score}/${totalAnswered}`;
+        }
+
+        function nextQuestion() { if (currentQuestionIndex < quizData.length - 1) { currentQuestionIndex++; loadQuestion(); window.scrollTo({ top: 0, behavior: 'smooth' }); } else showResults(); }
+        function prevQuestion() { if (currentQuestionIndex > 0) { currentQuestionIndex--; loadQuestion(); window.scrollTo({ top: 0, behavior: 'smooth' }); } }
+
+        function showResults() {
+            document.getElementById('questionCard').style.display = 'none';
+            document.getElementById('progressSection').style.display = 'none';
+            document.getElementById('quickRef').style.display = 'none';
+            document.getElementById('resultsCard').classList.add('show');
+            const pct = Math.round((score / quizData.length) * 100);
+            document.getElementById('resultsScore').textContent = `${pct}%`;
+            document.getElementById('correctCount').textContent = score;
+            document.getElementById('incorrectCount').textContent = quizData.length - score;
+            const icon = document.getElementById('resultsIcon'), scoreEl = document.getElementById('resultsScore'), msg = document.getElementById('resultsMessage');
+            if (pct >= 90) { icon.className = 'results-icon excellent'; icon.textContent = '🏆'; scoreEl.className = 'results-score excellent'; msg.textContent = 'Excellent! You have strong command of lidocaine\'s multiple indications and dosing.'; }
+            else if (pct >= 70) { icon.className = 'results-icon good'; icon.textContent = '✓'; scoreEl.className = 'results-score good'; msg.textContent = 'Good work! Review IO pain dosing, contraindications, and infusion calculations.'; }
+            else { icon.className = 'results-icon needs-work'; icon.textContent = '📚'; scoreEl.className = 'results-score needs-work'; msg.textContent = 'More study needed. Focus on the five indications, contraindications, and weight-based dosing.'; }
+        }
+
+        function restartQuiz() {
+            currentQuestionIndex = 0; score = 0; totalAnswered = 0; answers = new Array(quizData.length).fill(null);
+            document.getElementById('questionCard').style.display = 'block';
+            document.getElementById('progressSection').style.display = 'block';
+            document.getElementById('quickRef').style.display = 'block';
+            document.getElementById('resultsCard').classList.remove('show');
+            loadQuestion(); window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        document.addEventListener('DOMContentLoaded', loadQuestion);
+    </script>
+</body>
+</html>

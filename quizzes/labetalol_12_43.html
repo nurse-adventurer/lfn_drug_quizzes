@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script>(function(){var c="LFN2025",k="lfn_quiz_access";try{if(localStorage.getItem(k)!==c){window.location.href="../index.html"}}catch(e){window.location.href="../index.html"}})();</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LFN Drug Quiz | Labetalol (Section 12.43)</title>
+    <style>
+        :root { --primary: #b91c1c; --primary-light: #dc2626; --accent: #991b1b; --success: #16a34a; --danger: #dc2626; --bg-light: #fef2f2; --bg-card: #ffffff; --text-primary: #1e293b; --text-secondary: #475569; --border: #e2e8f0; --shadow: 0 4px 6px -1px rgba(0,0,0,0.1); --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #fef2f2 0%, #fca5a5 50%, #b91c1c 100%); min-height: 100vh; color: var(--text-primary); line-height: 1.6; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+
+        /* ── Header ── */
+        .header { background: linear-gradient(135deg, #991b1b 0%, #b91c1c 100%); color: white; padding: 30px; border-radius: 16px; margin-bottom: 25px; text-align: center; box-shadow: var(--shadow-lg); }
+        .header h1 { font-size: 1.8rem; margin-bottom: 8px; }
+        .header .subtitle { opacity: 0.9; font-size: 1rem; }
+        .header .drug-class { display: inline-block; background: rgba(255,255,255,0.2); padding: 5px 15px; border-radius: 20px; margin-top: 10px; font-size: 0.85rem; }
+        .badge-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 12px; }
+        .indication-badge { padding: 5px 12px; border-radius: 15px; font-size: 0.75rem; font-weight: 600; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); }
+
+        /* ── Quick Reference ── */
+        .quick-reference { background: var(--bg-card); border-radius: 12px; margin-bottom: 25px; box-shadow: var(--shadow); overflow: hidden; }
+        .qr-header { background: linear-gradient(135deg, #991b1b 0%, #b91c1c 100%); color: white; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; }
+        .qr-header h3 { font-size: 1rem; margin: 0; }
+        .qr-toggle { font-size: 1.2rem; transition: transform 0.3s ease; }
+        .qr-toggle.collapsed { transform: rotate(-90deg); }
+        .qr-body { padding: 0; max-height: 6000px; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s ease; }
+        .qr-body.collapsed { max-height: 0; padding: 0; }
+        .qr-body-inner { padding: 20px; }
+        .qr-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 2px solid var(--border); }
+        .qr-tab { padding: 8px 16px; border-radius: 8px; border: 2px solid var(--border); background: white; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; color: var(--text-secondary); white-space: nowrap; }
+        .qr-tab:hover { border-color: #fca5a5; color: var(--primary); }
+        .qr-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .qr-panel { display: none; }
+        .qr-panel.active { display: block; }
+
+        /* ── Dose Table ── */
+        .dose-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-bottom: 10px; }
+        .dose-table th { background: linear-gradient(135deg, #7f1d1d 0%, #b91c1c 100%); color: white; padding: 10px 12px; text-align: left; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .dose-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+        .dose-table tr:last-child td { border-bottom: none; }
+        .dose-table tr:nth-child(even) td { background: #fef2f2; }
+        .dose-table .indication-cell { font-weight: 600; color: var(--accent); min-width: 110px; }
+        .dose-table .dose-cell { font-family: 'Courier New', monospace; font-size: 0.82rem; line-height: 1.6; }
+        .dose-detail { color: var(--text-secondary); font-size: 0.78rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+
+        /* ── Ref Grid Items ── */
+        .ref-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .ref-item { background: var(--bg-light); padding: 12px; border-radius: 8px; }
+        .ref-label { font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; font-weight: 600; }
+        .ref-value { font-weight: 600; color: var(--text-primary); font-size: 0.88rem; }
+        .ref-item.warning { background: #fef3c7; border: 1px solid #fde047; }
+        .ref-item.warning .ref-label { color: #92400e; }
+        .ref-item.warning .ref-value { color: #78350f; font-size: 0.84rem; }
+        .ref-item.critical { background: #fee2e2; border: 2px solid #fecaca; }
+        .ref-item.critical .ref-label { color: #991b1b; }
+        .ref-item.critical .ref-value { color: #7f1d1d; }
+        .ref-item.info { background: #eff6ff; border: 1px solid #bfdbfe; }
+        .ref-item.info .ref-label { color: #1e40af; }
+        .ref-item.info .ref-value { color: #1e3a8a; }
+        .ref-item.success { background: #f0fdf4; border: 1px solid #bbf7d0; }
+        .ref-item.success .ref-label { color: #166534; }
+        .ref-item.success .ref-value { color: #14532d; }
+        .ref-item.purple { background: #f5f3ff; border: 1px solid #ddd6fe; }
+        .ref-item.purple .ref-label { color: #5b21b6; }
+        .ref-item.purple .ref-value { color: #4c1d95; }
+        .ref-item.red { background: #fef2f2; border: 1px solid #fecaca; }
+        .ref-item.red .ref-label { color: #991b1b; }
+        .ref-item.red .ref-value { color: #7f1d1d; }
+
+        /* ── Consideration List ── */
+        .consideration-list { list-style: none; padding: 0; }
+        .consideration-list li { padding: 10px 12px 10px 36px; position: relative; border-bottom: 1px solid #f1f5f9; font-size: 0.88rem; line-height: 1.6; }
+        .consideration-list li:last-child { border-bottom: none; }
+        .consideration-list li::before { content: attr(data-num); position: absolute; left: 6px; top: 10px; width: 22px; height: 22px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; }
+
+        /* ── Warning / Danger Boxes ── */
+        .warning-box { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border: 2px solid #f59e0b; border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+        .warning-box .warn-title { font-weight: 700; color: #92400e; font-size: 0.85rem; margin-bottom: 8px; }
+        .warning-box p { color: #78350f; font-size: 0.85rem; line-height: 1.7; }
+        .danger-box { background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); border: 2px solid #ef4444; border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+        .danger-box .warn-title { font-weight: 700; color: #991b1b; font-size: 0.85rem; margin-bottom: 8px; }
+        .danger-box p { color: #7f1d1d; font-size: 0.85rem; line-height: 1.7; }
+
+        /* ── Preeclampsia Escalation Visual ── */
+        .escalation-strip { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-top: 14px; }
+        .escalation-step { padding: 10px 14px; border-radius: 10px; text-align: center; flex: 1; min-width: 70px; }
+        .escalation-step.step1 { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border: 2px solid #fbbf24; }
+        .escalation-step.step2 { background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%); border: 2px solid #f97316; }
+        .escalation-step.step3 { background: linear-gradient(135deg, #fecaca 0%, #fca5a5 100%); border: 2px solid #ef4444; }
+        .escalation-label { font-size: 0.65rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 2px; color: var(--text-secondary); }
+        .escalation-dose { font-size: 1rem; font-weight: 800; color: var(--text-primary); }
+        .escalation-arrow { font-size: 1.2rem; color: var(--primary); font-weight: 800; }
+
+        /* ── BP Target Comparison ── */
+        .bp-strip { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+        .bp-card { padding: 12px 14px; border-radius: 10px; }
+        .bp-card.preeclampsia { background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%); border: 2px solid #f472b6; }
+        .bp-card.stroke { background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border: 2px solid #60a5fa; }
+        .bp-label { font-size: 0.7rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .bp-card.preeclampsia .bp-label { color: #be185d; }
+        .bp-card.stroke .bp-label { color: #1e40af; }
+        .bp-target { font-size: 1rem; font-weight: 800; color: var(--text-primary); margin-bottom: 4px; }
+        .bp-detail { font-size: 0.78rem; line-height: 1.5; }
+        .bp-card.preeclampsia .bp-detail { color: #9d174d; }
+        .bp-card.stroke .bp-detail { color: #1e3a8a; }
+
+        /* ── Infusion Math Visual ── */
+        .infusion-math { background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%); border: 2px solid #f87171; border-radius: 12px; padding: 16px; margin-top: 14px; }
+        .infusion-math .ref-label { color: #991b1b; margin-bottom: 10px; }
+        .infusion-eq { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 8px; align-items: center; text-align: center; }
+        .infusion-eq-box { background: white; border-radius: 8px; padding: 10px; }
+        .infusion-eq-val { font-size: 1.1rem; font-weight: 800; color: #991b1b; }
+        .infusion-eq-label { font-size: 0.7rem; color: var(--text-secondary); }
+        .infusion-eq-sign { font-size: 1.3rem; font-weight: 800; color: #991b1b; }
+
+        /* ── Quiz Styles ── */
+        .progress-section { background: var(--bg-card); border-radius: 12px; padding: 20px 25px; margin-bottom: 25px; box-shadow: var(--shadow); }
+        .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px; }
+        .progress-title { font-weight: 600; color: var(--primary); }
+        .progress-stats { display: flex; gap: 20px; font-size: 0.9rem; color: var(--text-secondary); }
+        .progress-bar-container { height: 10px; background: var(--border); border-radius: 5px; overflow: hidden; }
+        .progress-bar { height: 100%; background: linear-gradient(90deg, #f87171 0%, #b91c1c 100%); border-radius: 5px; transition: width 0.4s ease; }
+
+        .question-card { background: var(--bg-card); border-radius: 16px; box-shadow: var(--shadow-lg); overflow: hidden; margin-bottom: 25px; }
+        .question-header { background: linear-gradient(135deg, #991b1b 0%, #b91c1c 100%); color: white; padding: 20px 25px; display: flex; justify-content: space-between; align-items: center; }
+        .question-number { font-size: 1.1rem; font-weight: 600; }
+        .question-type { padding: 5px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; }
+        .question-type.clinical { background: #22c55e; }
+        .question-type.critical { background: #7c3aed; }
+        .question-type.recall { background: #3b82f6; }
+        .question-type.calculation { background: #f59e0b; }
+        .question-body { padding: 30px; }
+
+        .scenario-box { background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%); border-left: 4px solid #b91c1c; padding: 20px; border-radius: 0 10px 10px 0; margin-bottom: 20px; }
+        .scenario-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--primary); font-weight: 700; margin-bottom: 10px; }
+        .scenario-text { font-size: 1rem; color: var(--text-primary); line-height: 1.7; }
+        .vital-signs { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 10px; margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border); }
+        .vital-item { text-align: center; padding: 8px; background: white; border-radius: 8px; }
+        .vital-label { font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; }
+        .vital-value { font-size: 0.95rem; font-weight: 700; color: var(--primary); }
+
+        .question-text { font-size: 1.15rem; font-weight: 500; color: var(--text-primary); margin-bottom: 25px; line-height: 1.7; }
+        .options-list { display: flex; flex-direction: column; gap: 12px; }
+        .option-btn { display: flex; align-items: flex-start; padding: 16px 20px; background: var(--bg-light); border: 2px solid var(--border); border-radius: 10px; cursor: pointer; transition: all 0.2s ease; text-align: left; }
+        .option-btn:hover:not(.disabled) { border-color: var(--accent); background: white; transform: translateX(5px); }
+        .option-btn.correct { border-color: var(--success); background: rgba(22, 163, 74, 0.1); }
+        .option-btn.incorrect { border-color: var(--danger); background: rgba(220, 38, 38, 0.1); }
+        .option-btn.disabled { cursor: default; }
+        .option-letter { width: 32px; height: 32px; min-width: 32px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; margin-right: 15px; font-size: 0.9rem; }
+        .option-btn.correct .option-letter { background: var(--success); }
+        .option-btn.incorrect .option-letter { background: var(--danger); }
+        .option-text { flex: 1; font-size: 1rem; line-height: 1.5; }
+
+        .rationale-box { margin-top: 25px; padding: 25px; border-radius: 12px; background: #f8fafc; display: none; }
+        .rationale-box.show { display: block; }
+        .mechanism-section { background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-radius: 12px; padding: 20px; margin-bottom: 15px; }
+        .mechanism-section h4 { color: #1e40af; margin-bottom: 12px; font-size: 1rem; }
+        .mechanism-section p { color: #1e3a8a; font-size: 0.95rem; line-height: 1.8; }
+        .clinical-pearl-box { background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); border-radius: 12px; padding: 20px; margin-bottom: 15px; }
+        .clinical-pearl-box h4 { color: #166534; margin-bottom: 12px; font-size: 1rem; }
+        .clinical-pearl-box p { color: #14532d; font-size: 0.95rem; line-height: 1.8; }
+        .protocol-box { background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%); border-radius: 12px; padding: 20px; }
+        .protocol-box h4 { color: #991b1b; margin-bottom: 12px; font-size: 1rem; }
+        .protocol-box p { color: #7f1d1d; font-size: 0.95rem; line-height: 1.8; font-family: 'Courier New', monospace; }
+
+        .nav-buttons { display: flex; justify-content: space-between; gap: 15px; padding: 0 30px 30px; }
+        .nav-btn { padding: 14px 28px; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+        .nav-btn.primary { background: var(--primary); color: white; }
+        .nav-btn.primary:hover { background: var(--primary-light); }
+        .nav-btn.secondary { background: var(--border); color: var(--text-secondary); }
+        .nav-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* ── Results ── */
+        .results-card { background: var(--bg-card); border-radius: 16px; box-shadow: var(--shadow-lg); padding: 40px; text-align: center; display: none; }
+        .results-card.show { display: block; }
+        .results-icon { width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 2.5rem; }
+        .results-icon.excellent { background: rgba(22, 163, 74, 0.15); }
+        .results-icon.good { background: rgba(185, 28, 28, 0.1); }
+        .results-icon.needs-work { background: rgba(220, 38, 38, 0.15); }
+        .results-title { font-size: 1.8rem; font-weight: 700; color: var(--primary); }
+        .results-score { font-size: 3rem; font-weight: 800; margin: 20px 0; }
+        .results-score.excellent { color: var(--success); }
+        .results-score.good { color: var(--accent); }
+        .results-score.needs-work { color: var(--danger); }
+        .results-message { color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 30px; }
+        .results-breakdown { display: flex; justify-content: center; gap: 40px; margin-bottom: 30px; }
+        .breakdown-item { text-align: center; }
+        .breakdown-value { font-size: 1.5rem; font-weight: 700; }
+        .breakdown-label { font-size: 0.85rem; color: var(--text-secondary); }
+
+        .disclaimer { text-align: center; font-size: 0.72rem; color: var(--text-secondary); margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.6); border-radius: 8px; line-height: 1.5; }
+
+        @media (max-width: 600px) {
+            body { padding: 10px; }
+            .header { padding: 20px 15px; border-radius: 12px; }
+            .header h1 { font-size: 1.5rem; }
+            .qr-header { padding: 14px 16px; }
+            .qr-body-inner { padding: 15px; }
+            .qr-tabs { gap: 4px; }
+            .qr-tab { padding: 6px 10px; font-size: 0.72rem; }
+            .dose-table { font-size: 0.78rem; }
+            .dose-table th, .dose-table td { padding: 8px 6px; }
+            .ref-grid { grid-template-columns: 1fr; }
+            .bp-strip { grid-template-columns: 1fr; }
+            .escalation-strip { flex-direction: column; align-items: stretch; }
+            .escalation-arrow { transform: rotate(90deg); text-align: center; }
+            .infusion-eq { grid-template-columns: 1fr; gap: 6px; }
+            .infusion-eq-sign { font-size: 1rem; }
+            .question-body { padding: 20px; }
+            .nav-buttons { flex-direction: column; padding: 0 20px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" style="position:fixed;top:0;left:0;right:0;z-index:9999;display:flex;align-items:center;gap:8px;padding:12px 20px;background:rgba(12,25,41,0.95);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#94a3b8;font-size:0.82rem;font-weight:600;text-decoration:none;font-family:-apple-system,sans-serif;border-bottom:1px solid rgba(148,163,184,0.12);"><span style="font-size:1.1rem">←</span> All Quizzes</a>
+    <div style="height:46px"></div>
+    <div class="container">
+        <!-- ══════════════ HEADER ══════════════ -->
+        <div class="header">
+            <h1>❤️ Labetalol</h1>
+            <p class="subtitle">LFN Protocol Section 12.43 | Clinical Application Quiz</p>
+            <span class="drug-class">Mixed Alpha &amp; Beta Blocker</span>
+            <div class="badge-container">
+                <span class="indication-badge">🫀 Aortic Emergencies</span>
+                <span class="indication-badge">🧠 Hemorrhagic Stroke</span>
+                <span class="indication-badge">🤰 Preeclampsia</span>
+                <span class="indication-badge">💊 Post-Thrombolytic</span>
+                <span class="indication-badge">📉 Pre/Non-Thrombolytic</span>
+            </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════ -->
+        <!-- EXPANDED QUICK REFERENCE                   -->
+        <!-- ══════════════════════════════════════════ -->
+        <div class="quick-reference" id="quickRef">
+            <div class="qr-header" onclick="toggleQuickRef()">
+                <h3>📋 Quick Reference — Labetalol (12.43)</h3>
+                <span class="qr-toggle" id="qrToggle">▼</span>
+            </div>
+            <div class="qr-body" id="qrBody">
+                <div class="qr-body-inner">
+                    <div class="qr-tabs" id="qrTabs">
+                        <button class="qr-tab active" data-tab="dosing">Dosing & Indications</button>
+                        <button class="qr-tab" data-tab="pharmacology">Pharmacology</button>
+                        <button class="qr-tab" data-tab="considerations">Considerations</button>
+                        <button class="qr-tab" data-tab="warnings">Warnings & Precautions</button>
+                    </div>
+
+                    <!-- ── TAB 1: DOSING & INDICATIONS ── -->
+                    <div class="qr-panel active" id="panel-dosing">
+                        <div style="overflow-x: auto;">
+                            <table class="dose-table">
+                                <thead><tr><th>Indication</th><th>Adult Dose</th><th>Pediatric Dose</th></tr></thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="indication-cell">Aortic Emergencies</td>
+                                        <td class="dose-cell">20 mg IV<br><span class="dose-detail">Repeat 20–80 mg q 10 min<br>Max 300 mg / 24 hr<br>Consider infusion 0.5–2 mg/min</span></td>
+                                        <td class="dose-cell"><span class="dose-detail">No LFN Standing Order</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="indication-cell">Hemorrhagic Stroke<br><span class="dose-detail">If BP not controlled by nicardipine alone</span></td>
+                                        <td class="dose-cell">10–20 mg IV<br><span class="dose-detail">Repeat 20–40 mg q 10 min<br>Max 300 mg<br>Infusion: 1–2 mg/min</span></td>
+                                        <td class="dose-cell"><span class="dose-detail">No LFN Standing Order</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="indication-cell">Post-Thrombolytic<br><span class="dose-detail">Therapy</span></td>
+                                        <td class="dose-cell">10 mg slow IVP<br><span class="dose-detail">Followed by 2–8 mg/min infusion<br>Target BP 180/105</span></td>
+                                        <td class="dose-cell"><span class="dose-detail">No LFN Standing Order</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="indication-cell">Pre/Non-Thrombolytic<br><span class="dose-detail">SBP &gt;220 or DBP &gt;120</span></td>
+                                        <td class="dose-cell">10–20 mg slow IVP<br><span class="dose-detail">Repeat 20–40 mg q 10 min<br>Max 300 mg<br>Goal: 15% reduction</span></td>
+                                        <td class="dose-cell"><span class="dose-detail">No LFN Standing Order</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="indication-cell">Preeclampsia<br><span class="dose-detail">Eclampsia, PIH</span></td>
+                                        <td class="dose-cell">20 mg slow IVP<br><span class="dose-detail">Double previous dose q 10 min<br>Goal: SBP 140–150 / DBP 90–100<br>Max 300 mg<br>Infusion: 1–2 mg/min</span></td>
+                                        <td class="dose-cell"><span class="dose-detail">No LFN Standing Order</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Key dose strips -->
+                        <div class="ref-grid" style="margin-top: 18px;">
+                            <div class="ref-item red">
+                                <div class="ref-label">Aortic Emergency</div>
+                                <div class="ref-value">20 mg IV initial</div>
+                            </div>
+                            <div class="ref-item red">
+                                <div class="ref-label">Hemorrhagic Stroke</div>
+                                <div class="ref-value">10–20 mg IV initial</div>
+                            </div>
+                            <div class="ref-item critical">
+                                <div class="ref-label">Max Total Dose (All)</div>
+                                <div class="ref-value">300 mg / 24 hours</div>
+                            </div>
+                            <div class="ref-item warning">
+                                <div class="ref-label">Peds</div>
+                                <div class="ref-value">No LFN Standing Order</div>
+                            </div>
+                        </div>
+
+                        <!-- BP Target Comparison -->
+                        <div style="margin-top: 18px;">
+                            <div class="ref-label" style="margin-bottom: 8px; font-size: 0.75rem; font-weight: 700;">🎯 BP TARGETS — By Indication</div>
+                            <div class="bp-strip">
+                                <div class="bp-card preeclampsia">
+                                    <div class="bp-label">Preeclampsia / Eclampsia / PIH</div>
+                                    <div class="bp-target">SBP 140–150 / DBP 90–100</div>
+                                    <div class="bp-detail">Double dose q 10 min (20→40→80)<br>Maintain placental perfusion<br>Max 300 mg total</div>
+                                </div>
+                                <div class="bp-card stroke">
+                                    <div class="bp-label">Post-Thrombolytic Therapy</div>
+                                    <div class="bp-target">Target: 180/105</div>
+                                    <div class="bp-detail">10 mg slow IVP then infusion<br>Avoid excessive reduction<br>Prevent hemorrhagic conversion</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Preeclampsia Escalation -->
+                        <div style="margin-top: 18px;">
+                            <div class="ref-label" style="margin-bottom: 8px; font-size: 0.75rem; font-weight: 700;">🤰 PREECLAMPSIA DOSE ESCALATION — Double Previous Dose q 10 min</div>
+                            <div class="escalation-strip">
+                                <div class="escalation-step step1">
+                                    <div class="escalation-label">Dose 1</div>
+                                    <div class="escalation-dose">20 mg</div>
+                                </div>
+                                <div class="escalation-arrow">→</div>
+                                <div class="escalation-step step2">
+                                    <div class="escalation-label">Dose 2</div>
+                                    <div class="escalation-dose">40 mg</div>
+                                </div>
+                                <div class="escalation-arrow">→</div>
+                                <div class="escalation-step step3">
+                                    <div class="escalation-label">Dose 3</div>
+                                    <div class="escalation-dose">80 mg</div>
+                                </div>
+                            </div>
+                            <p style="font-size: 0.78rem; color: #991b1b; margin-top: 8px; text-align: center;">💡 Total after 3 doses = 140 mg. Continue doubling until goal met or max 300 mg reached.</p>
+                        </div>
+
+                        <!-- Infusion math -->
+                        <div class="infusion-math">
+                            <div class="ref-label">💊 Recommended Infusion Mixture</div>
+                            <div class="infusion-eq">
+                                <div class="infusion-eq-box">
+                                    <div class="infusion-eq-val">200 mg</div>
+                                    <div class="infusion-eq-label">Labetalol</div>
+                                </div>
+                                <div class="infusion-eq-sign">÷</div>
+                                <div class="infusion-eq-box">
+                                    <div class="infusion-eq-val">100 mL¹</div>
+                                    <div class="infusion-eq-label">Diluent</div>
+                                </div>
+                                <div class="infusion-eq-sign">=</div>
+                                <div class="infusion-eq-box">
+                                    <div class="infusion-eq-val">2 mg/mL</div>
+                                    <div class="infusion-eq-label">Concentration</div>
+                                </div>
+                            </div>
+                            <p style="font-size: 0.78rem; color: #7f1d1d; margin-top: 10px; text-align: center;">¹ <strong>Remove 40 mL from a 100 mL bag</strong> prior to adding labetalol to achieve final concentration of 2 mg/mL</p>
+                            <p style="font-size: 0.78rem; color: #7f1d1d; margin-top: 4px; text-align: center;">💡 Infusion rates: 0.5–2 mg/min (aortic/preeclampsia) | 2–8 mg/min (post-thrombolytic)</p>
+                        </div>
+                    </div>
+
+                    <!-- ── TAB 2: PHARMACOLOGY ── -->
+                    <div class="qr-panel" id="panel-pharmacology">
+                        <div class="ref-grid" style="margin-bottom: 18px;">
+                            <div class="ref-item purple">
+                                <div class="ref-label">Pharmacologic Category</div>
+                                <div class="ref-value">Mixed Alpha &amp; Beta Blocker</div>
+                            </div>
+                            <div class="ref-item info">
+                                <div class="ref-label">Trade Name</div>
+                                <div class="ref-value">Trandate</div>
+                            </div>
+                        </div>
+
+                        <div class="ref-grid" style="margin-bottom: 18px;">
+                            <div class="ref-item success">
+                                <div class="ref-label">Onset</div>
+                                <div class="ref-value">2–5 minutes</div>
+                            </div>
+                            <div class="ref-item success">
+                                <div class="ref-label">Peak</div>
+                                <div class="ref-value">5–15 minutes</div>
+                            </div>
+                            <div class="ref-item success">
+                                <div class="ref-label">Duration</div>
+                                <div class="ref-value">2–18 hours</div>
+                            </div>
+                        </div>
+
+                        <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-radius: 10px; padding: 16px; margin-bottom: 14px;">
+                            <div class="ref-label" style="color: #1e40af; margin-bottom: 8px;">Mechanism of Action</div>
+                            <p style="font-size: 0.88rem; color: #1e3a8a; line-height: 1.8;"><strong>Selectively antagonizes alpha-1</strong> adrenergic receptors and <strong>non-selectively antagonizes beta-1 and beta-2</strong> adrenergic receptors. This dual blockade provides vasodilation (alpha-1) and heart rate control (beta-1) without the reflex tachycardia seen with pure vasodilators.</p>
+                        </div>
+
+                        <!-- Receptor Blockade Visual -->
+                        <div style="background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%); border: 2px solid #f87171; border-radius: 10px; padding: 16px; margin-bottom: 14px;">
+                            <div class="ref-label" style="color: #991b1b; margin-bottom: 10px;">🫀 Dual Receptor Blockade — How It Works</div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; align-items: stretch; text-align: center;">
+                                <div style="background: white; border-radius: 8px; padding: 12px;">
+                                    <div style="font-size: 0.72rem; font-weight: 700; color: #7c3aed; text-transform: uppercase;">Alpha-1 Block</div>
+                                    <div style="font-size: 0.88rem; font-weight: 800; color: #7c3aed;">Selective</div>
+                                    <div style="font-size: 0.72rem; color: var(--text-secondary); margin-top: 4px;">Vasodilation<br>↓ SVR</div>
+                                </div>
+                                <div style="background: white; border-radius: 8px; padding: 12px;">
+                                    <div style="font-size: 0.72rem; font-weight: 700; color: #b91c1c; text-transform: uppercase;">Beta-1 Block</div>
+                                    <div style="font-size: 0.88rem; font-weight: 800; color: #b91c1c;">Non-Selective</div>
+                                    <div style="font-size: 0.72rem; color: var(--text-secondary); margin-top: 4px;">↓ HR, ↓ contractility<br>No reflex tachy</div>
+                                </div>
+                                <div style="background: white; border-radius: 8px; padding: 12px;">
+                                    <div style="font-size: 0.72rem; font-weight: 700; color: #ea580c; text-transform: uppercase;">Beta-2 Block</div>
+                                    <div style="font-size: 0.88rem; font-weight: 800; color: #ea580c;">Non-Selective</div>
+                                    <div style="font-size: 0.72rem; color: var(--text-secondary); margin-top: 4px;">Bronchospasm risk<br>⚠️ CI in asthma</div>
+                                </div>
+                            </div>
+                            <p style="font-size: 0.78rem; color: #7f1d1d; margin-top: 10px; text-align: center;">Alpha:Beta ratio is approximately 1:7 — predominantly beta blocking effects</p>
+                        </div>
+
+                        <!-- Labetalol vs Metoprolol -->
+                        <div style="background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); border: 2px solid #c4b5fd; border-radius: 10px; padding: 16px; margin-bottom: 14px;">
+                            <div class="ref-label" style="color: #5b21b6; margin-bottom: 8px;">💊 Labetalol vs Metoprolol — Key Difference</div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                                <div style="background: white; border-radius: 8px; padding: 10px; text-align: center;">
+                                    <div style="font-size: 0.72rem; font-weight: 700; color: #b91c1c; text-transform: uppercase;">Labetalol</div>
+                                    <div style="font-size: 0.88rem; font-weight: 800; color: var(--text-primary);">α1 + β1 + β2</div>
+                                    <div style="font-size: 0.72rem; color: var(--text-secondary);">Mixed blocker • CI in asthma</div>
+                                </div>
+                                <div style="background: white; border-radius: 8px; padding: 10px; text-align: center;">
+                                    <div style="font-size: 0.72rem; font-weight: 700; color: #1e40af; text-transform: uppercase;">Metoprolol</div>
+                                    <div style="font-size: 0.88rem; font-weight: 800; color: var(--text-primary);">β1 only</div>
+                                    <div style="font-size: 0.72rem; color: var(--text-secondary);">Selective beta-1 • Less bronchospasm</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ref-grid" style="margin-bottom: 14px;">
+                            <div class="ref-item info">
+                                <div class="ref-label">Recommended Mixture</div>
+                                <div class="ref-value">200 mg / 100 mL (2 mg/mL)¹</div>
+                            </div>
+                            <div class="ref-item info">
+                                <div class="ref-label">Infusion Range</div>
+                                <div class="ref-value">0.5–8 mg/min (varies by indication)</div>
+                            </div>
+                        </div>
+
+                        <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-radius: 10px; padding: 16px;">
+                            <div class="ref-label" style="color: #92400e; margin-bottom: 8px;">Adverse Reactions</div>
+                            <p style="font-size: 0.85rem; color: #78350f; line-height: 1.7;">Dizziness, fatigue, hypotension, bradycardia, worsening CHF, bronchospasms. Beta-2 blockade can precipitate severe bronchospasm in susceptible patients.</p>
+                        </div>
+                    </div>
+
+                    <!-- ── TAB 3: CONSIDERATIONS ── -->
+                    <div class="qr-panel" id="panel-considerations">
+                        <ol class="consideration-list">
+                            <li data-num="1"><strong>Max total dose is 300 mg / 24 hours</strong> for ALL indications. Track cumulative dosing across boluses and infusions.</li>
+                            <li data-num="2"><strong>Preeclampsia dose escalation:</strong> Double the previous dose every 10 minutes (20→40→80 mg) until goal BP of SBP 140–150 / DBP 90–100 is met.</li>
+                            <li data-num="3"><strong>Post-thrombolytic target:</strong> BP 180/105. Excessive reduction increases risk of hemorrhagic conversion. Start with 10 mg slow IVP followed by 2–8 mg/min infusion.</li>
+                            <li data-num="4"><strong>Pre/non-thrombolytic candidates</strong> with SBP &gt;220 or DBP &gt;120: Goal is 15% BP reduction, not normalization.</li>
+                            <li data-num="5"><strong>Hemorrhagic stroke:</strong> Use when nicardipine alone is insufficient. 10–20 mg IV, repeat 20–40 mg q 10 min. Consider 1–2 mg/min infusion.</li>
+                            <li data-num="6"><strong>Infusion mixture:</strong> Remove 40 mL from 100 mL bag before adding 200 mg labetalol = 2 mg/mL concentration.</li>
+                        </ol>
+
+                        <div style="background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%); border-radius: 10px; padding: 16px; margin-top: 14px; margin-bottom: 14px;">
+                            <div class="ref-label" style="color: #be185d; margin-bottom: 8px;">🤰 Pregnancy Context — Preeclampsia / Eclampsia</div>
+                            <div style="font-size: 0.85rem; color: #9d174d; line-height: 1.8;">
+                                <p style="margin-bottom: 8px;"><strong>IV labetalol is recommended</strong> for management of hypertensive emergencies in pregnant or postpartum patients, including acute-onset severe hypertension in preeclampsia/eclampsia.</p>
+                                <p style="margin-bottom: 8px;"><strong>BP goal:</strong> SBP 140–150, DBP 90–100. This range maintains adequate placental perfusion while preventing hypertensive complications.</p>
+                                <p><strong>Labetalol crosses the placenta.</strong> The doubling dose escalation (20→40→80 mg) provides rapid BP control while allowing assessment of individual response between doses.</p>
+                            </div>
+                        </div>
+
+                        <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-radius: 10px; padding: 16px; margin-bottom: 14px;">
+                            <div class="ref-label" style="color: #1e40af; margin-bottom: 8px;">🧠 Stroke Context — Key Differences</div>
+                            <div style="font-size: 0.85rem; color: #1e3a8a; line-height: 1.8;">
+                                <p style="margin-bottom: 8px;"><strong>Hemorrhagic stroke:</strong> Use as adjunct when nicardipine alone is insufficient. Lower starting dose (10–20 mg) with repeat 20–40 mg q 10 min.</p>
+                                <p style="margin-bottom: 8px;"><strong>Post-thrombolytic:</strong> Target 180/105. Start 10 mg slow IVP, then 2–8 mg/min infusion. Higher infusion rate reflects urgency of maintaining target.</p>
+                                <p><strong>Pre/non-thrombolytic:</strong> Goal is only 15% reduction. Aggressive lowering may worsen ischemic penumbra.</p>
+                            </div>
+                        </div>
+
+                        <div style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); border-radius: 10px; padding: 16px; margin-bottom: 14px;">
+                            <div class="ref-label" style="color: #166534; margin-bottom: 8px;">🫀 Aortic Emergency Context</div>
+                            <div style="font-size: 0.85rem; color: #14532d; line-height: 1.7;">
+                                <p style="margin-bottom: 8px;"><strong>Dual blockade is ideal for aortic emergencies:</strong> Alpha-1 blockade provides vasodilation to reduce BP, while beta blockade prevents reflex tachycardia and reduces aortic wall shear stress (dP/dt).</p>
+                                <p><strong>Starting dose:</strong> 20 mg IV with repeat 20–80 mg q 10 min. Higher repeat dose range reflects the critical need for rapid BP control in aortic dissection.</p>
+                            </div>
+                        </div>
+
+                        <div style="background: #f5f3ff; border: 1px solid #ddd6fe; border-radius: 10px; padding: 16px;">
+                            <div class="ref-label" style="color: #5b21b6; margin-bottom: 8px;">Pregnancy Considerations</div>
+                            <p style="font-size: 0.85rem; color: #4c1d95; line-height: 1.7;">Labetalol crosses the placenta. IV labetalol is recommended for use in management of hypertensive emergencies in pregnant or postpartum patients (including acute-onset severe hypertension in preeclampsia/eclampsia).</p>
+                        </div>
+                    </div>
+
+                    <!-- ── TAB 4: WARNINGS & PRECAUTIONS ── -->
+                    <div class="qr-panel" id="panel-warnings">
+                        <div class="danger-box">
+                            <div class="warn-title">🚨 CONTRAINDICATION — Bronchial Asthma</div>
+                            <p>Contraindicated in patients with <strong>bronchial asthma</strong>. Non-selective beta-2 blockade causes bronchoconstriction, which can precipitate severe, life-threatening bronchospasm. This is an absolute contraindication — do not administer regardless of dose adjustment.</p>
+                        </div>
+
+                        <div class="danger-box">
+                            <div class="warn-title">🚨 CONTRAINDICATION — Uncontrolled Cardiac Failure</div>
+                            <p>Contraindicated in patients with <strong>uncontrolled cardiac failure</strong>. Beta blockade reduces contractility and cardiac output. In decompensated heart failure, this can worsen pulmonary congestion and precipitate cardiogenic shock.</p>
+                        </div>
+
+                        <div class="danger-box">
+                            <div class="warn-title">🚨 CONTRAINDICATION — Heart Block &gt; First Degree</div>
+                            <p>Contraindicated in patients with <strong>heart block greater than first degree</strong>. Beta-1 blockade further depresses AV conduction and can progress to complete heart block or asystole.</p>
+                        </div>
+
+                        <div class="danger-box">
+                            <div class="warn-title">🚨 CONTRAINDICATION — Cardiogenic Shock &amp; Severe Bradycardia</div>
+                            <p>Contraindicated in <strong>cardiogenic shock</strong> and <strong>severe bradycardia</strong>. Beta blockade reduces heart rate and contractility, worsening hemodynamic instability in already compromised patients.</p>
+                        </div>
+
+                        <div class="danger-box">
+                            <div class="warn-title">🚨 DO NOT USE — IV Calcium Channel Blockers</div>
+                            <p><strong>Do NOT use labetalol with IV calcium channel blockers</strong> (e.g., diltiazem, verapamil). Both drug classes depress cardiac function and cause vasodilation. Combined effect can cause profound hypotension, severe bradycardia, and potentially fatal cardiac depression.</p>
+                        </div>
+
+                        <div class="warning-box">
+                            <div class="warn-title">⚠️ Non-Allergic Bronchospastic Disease (COPD)</div>
+                            <p><strong>Use with caution in patients with COPD</strong> or other non-allergic bronchospastic disease. While not an absolute contraindication like asthma, beta-2 blockade may still worsen bronchospasm. Monitor respiratory status closely.</p>
+                        </div>
+
+                        <div class="warning-box">
+                            <div class="warn-title">⚠️ Well-Compensated Heart Failure</div>
+                            <p>Use with caution in <strong>well-compensated patients with history of heart failure</strong>. While uncontrolled CHF is a contraindication, stable patients may tolerate labetalol with careful monitoring. Watch for signs of decompensation.</p>
+                        </div>
+
+                        <div class="warning-box">
+                            <div class="warn-title">⚠️ Pheochromocytoma</div>
+                            <p>Use with caution in patients with <strong>pheochromocytoma</strong>. While labetalol has alpha-blocking properties, unopposed alpha stimulation may still occur if beta blockade is disproportionate. Ensure adequate alpha blockade is established first.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ══════════════ PROGRESS ══════════════ -->
+        <div class="progress-section" id="progressSection">
+            <div class="progress-header"><span class="progress-title">Labetalol Clinical Scenarios</span><div class="progress-stats"><span id="questionCount">Question 1 of 10</span><span id="scoreDisplay">Score: 0/0</span></div></div>
+            <div class="progress-bar-container"><div class="progress-bar" id="progressBar" style="width: 10%"></div></div>
+        </div>
+
+        <!-- ══════════════ QUESTION CARD ══════════════ -->
+        <div class="question-card" id="questionCard">
+            <div class="question-header"><span class="question-number" id="questionNumber">Question 1</span><span class="question-type recall" id="questionType">Recall</span></div>
+            <div class="question-body">
+                <div class="scenario-box" id="scenarioBox"><div class="scenario-label">📍 Scenario</div><div class="scenario-text" id="scenarioText"></div><div class="vital-signs" id="vitalSigns"></div></div>
+                <p class="question-text" id="questionText"></p>
+                <div class="options-list" id="optionsList"></div>
+                <div class="rationale-box" id="rationaleBox"></div>
+            </div>
+            <div class="nav-buttons"><button class="nav-btn secondary" id="prevBtn" onclick="prevQuestion()">← Previous</button><button class="nav-btn primary" id="nextBtn" onclick="nextQuestion()">Next →</button></div>
+        </div>
+
+        <!-- ══════════════ RESULTS ══════════════ -->
+        <div class="results-card" id="resultsCard"><div class="results-icon" id="resultsIcon">🏆</div><h2 class="results-title">Quiz Complete!</h2><div class="results-score" id="resultsScore">0%</div><p class="results-message" id="resultsMessage"></p><div class="results-breakdown"><div class="breakdown-item"><div class="breakdown-value" id="correctCount" style="color: var(--success)">0</div><div class="breakdown-label">Correct</div></div><div class="breakdown-item"><div class="breakdown-value" id="incorrectCount" style="color: var(--danger)">0</div><div class="breakdown-label">Incorrect</div></div><div class="breakdown-item"><div class="breakdown-value" id="totalQuestions" style="color: var(--primary)">10</div><div class="breakdown-label">Total</div></div></div><button class="nav-btn primary" onclick="restartQuiz()">🔄 Try Again</button></div>
+
+        <div class="disclaimer">
+            ⚕️ I created this quiz for my own study benefit.
+            Please refer to the official Life Flight Network Patient Care Guidelines for all clinical decision making.
+        </div>
+    </div>
+
+    <script>
+        /* ── Quick Reference Toggle & Tabs ── */
+        function toggleQuickRef() {
+            document.getElementById('qrBody').classList.toggle('collapsed');
+            document.getElementById('qrToggle').classList.toggle('collapsed');
+        }
+        document.querySelectorAll('.qr-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.qr-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.qr-panel').forEach(p => p.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+            });
+        });
+
+        /* ── Quiz Data ── */
+        const quizData = [
+            {
+                type: "recall", scenario: "", vitals: {},
+                question: "What is the maximum total labetalol dose in 24 hours?",
+                options: ["100 mg", "200 mg", "300 mg", "500 mg"], correct: 2,
+                rationale: `<div class="mechanism-section"><h4>🔬 Mechanism</h4><p>Exceeding the 300 mg ceiling markedly increases risk of profound hypotension and severe bradycardia due to cumulative alpha and beta blockade without additional therapeutic benefit.</p></div><div class="clinical-pearl-box"><h4>💡 Pearl</h4><p>300 mg / 24 hours is the maximum for ALL indications — aortic emergencies, hemorrhagic stroke, preeclampsia, and thrombolytic scenarios. Track cumulative dosing across boluses AND infusions.</p></div><div class="protocol-box"><h4>📖 Protocol</h4><p>LFN 12.43 – Max total dose 300 mg / 24 hours (all indications).</p></div>`
+            },
+            {
+                type: "critical", scenario: "A patient with severe hypertension from aortic dissection has a known history of bronchial asthma.", vitals: { "BP": "210/120", "HR": "108", "Hx": "Asthma" },
+                question: "Is labetalol appropriate for this patient?",
+                options: ["No — asthma is a contraindication", "Yes — use standard dosing", "Yes — pretreat with albuterol", "Yes — use half dose"], correct: 0,
+                rationale: `<div class="mechanism-section"><h4>🔬 Mechanism</h4><p>Labetalol non-selectively blocks beta-2 receptors, which causes bronchoconstriction. In patients with asthma, this can precipitate severe, life-threatening bronchospasm.</p></div><div class="clinical-pearl-box"><h4>💡 Pearl</h4><p>Bronchial asthma is an absolute contraindication. No dose adjustment makes it safe. Consider nicardipine, clevidipine, or esmolol (cardioselective beta-1) as alternatives for BP control.</p></div><div class="protocol-box"><h4>📖 Protocol</h4><p>LFN 12.43 – CI: Bronchial asthma, uncontrolled cardiac failure, heart block &gt;1°, cardiogenic shock, severe bradycardia.</p></div>`
+            },
+            {
+                type: "recall", scenario: "", vitals: {},
+                question: "What is labetalol's mechanism of action?",
+                options: ["Selective alpha-1 AND non-selective beta (1 & 2) blockade", "Selective beta-1 blockade only", "Calcium channel blockade", "ACE inhibition"], correct: 0,
+                rationale: `<div class="mechanism-section"><h4>🔬 Mechanism</h4><p>Labetalol provides dual blockade: selective alpha-1 antagonism causes vasodilation (reducing SVR), while non-selective beta-1/beta-2 antagonism reduces heart rate and contractility. This prevents the reflex tachycardia seen with pure vasodilators.</p></div><div class="clinical-pearl-box"><h4>💡 Pearl</h4><p>The alpha:beta ratio is ~1:7, making it predominantly a beta blocker. This is why it's ideal for aortic emergencies — it reduces both BP and aortic wall shear stress (dP/dt). Compare to metoprolol (beta-1 only).</p></div><div class="protocol-box"><h4>📖 Protocol</h4><p>LFN 12.43 – MOA: Selectively antagonizes alpha-1; non-selectively antagonizes beta-1 and beta-2 receptors.</p></div>`
+            },
+            {
+                type: "clinical", scenario: "A 35-week pregnant patient presents with preeclampsia requiring emergent BP management.", vitals: { "BP": "185/115", "HR": "92", "GA": "35 wks" },
+                question: "What is the BP goal for preeclampsia?",
+                options: ["SBP 120–130, DBP 70–80", "SBP 140–150, DBP 90–100", "SBP <100, DBP <60", "Any BP reduction is acceptable"], correct: 1,
+                rationale: `<div class="mechanism-section"><h4>🔬 Mechanism</h4><p>The BP target of 140–150/90–100 maintains adequate placental perfusion while preventing hypertensive complications such as eclamptic seizures and HELLP syndrome.</p></div><div class="clinical-pearl-box"><h4>💡 Pearl</h4><p>Goal: SBP 140–150 / DBP 90–100. Use the doubling escalation strategy (20→40→80 mg q 10 min). IV labetalol is specifically recommended for hypertensive emergencies in pregnancy/postpartum.</p></div><div class="protocol-box"><h4>📖 Protocol</h4><p>LFN 12.43 – Preeclampsia: 20 mg slow IVP, double q 10 min, goal SBP 140–150 / DBP 90–100, max 300 mg.</p></div>`
+            },
+            {
+                type: "critical", scenario: "A hypertensive patient is currently receiving IV diltiazem for rate control. You are considering adding labetalol for BP management.", vitals: { "BP": "195/110", "HR": "118", "Meds": "IV Diltiazem" },
+                question: "Can you give labetalol with IV diltiazem?",
+                options: ["No — DO NOT use with IV calcium channel blockers", "Yes — they work synergistically", "Yes — separate by 5 minutes", "Yes — no interaction"], correct: 0,
+                rationale: `<div class="mechanism-section"><h4>🔬 Mechanism</h4><p>Both labetalol and IV calcium channel blockers depress cardiac conduction and contractility while causing vasodilation. The combined effect can cause profound hypotension, severe bradycardia, and potentially fatal cardiac depression.</p></div><div class="clinical-pearl-box"><h4>💡 Pearl</h4><p>This applies to IV CCBs specifically (diltiazem, verapamil). The combination depresses both AV nodal conduction and myocardial contractility simultaneously — the risk is additive/synergistic cardiac depression.</p></div><div class="protocol-box"><h4>📖 Protocol</h4><p>LFN 12.43 – Warnings: Do NOT use with IV calcium channel blockers.</p></div>`
+            },
+            {
+                type: "recall", scenario: "You are managing a patient with acute aortic dissection.", vitals: { "BP": "225/130", "HR": "105" },
+                question: "What is the initial dose for aortic emergencies?",
+                options: ["5 mg IV", "10 mg IV", "20 mg IV", "50 mg IV"], correct: 2,
+                rationale: `<div class="mechanism-section"><h4>🔬 Mechanism</h4><p>Labetalol's dual alpha-1 and beta blockade is ideal for aortic emergencies. Alpha blockade vasodilates to lower BP, while beta blockade prevents reflex tachycardia and reduces aortic wall shear stress (dP/dt) — both critical in dissection management.</p></div><div class="clinical-pearl-box"><h4>💡 Pearl</h4><p>Aortic emergency: 20 mg IV initial, may repeat 20–80 mg q 10 min. Note the higher repeat range (up to 80 mg) compared to stroke dosing (20–40 mg). Consider infusion at 0.5–2 mg/min.</p></div><div class="protocol-box"><h4>📖 Protocol</h4><p>LFN 12.43 – Aortic Emergencies: 20 mg IV, repeat 20–80 mg q 10 min, max 300 mg/24 hr, infusion 0.5–2 mg/min.</p></div>`
+            },
+            {
+                type: "recall", scenario: "A patient received tPA for ischemic stroke and now needs BP management.", vitals: { "BP": "198/112", "Status": "Post-tPA" },
+                question: "What is the post-thrombolytic target BP?",
+                options: ["120/80", "180/105", "200/120", "140/90"], correct: 1,
+                rationale: `<div class="mechanism-section"><h4>🔬 Mechanism</h4><p>Post-thrombolytic patients need tight BP control to prevent hemorrhagic conversion of the ischemic infarct. Excessive lowering, however, reduces perfusion to ischemic penumbra tissue.</p></div><div class="clinical-pearl-box"><h4>💡 Pearl</h4><p>Target: 180/105. Start with 10 mg slow IVP, then 2–8 mg/min infusion. The higher infusion range (2–8 mg/min vs 0.5–2 mg/min for aortic) reflects the urgency of maintaining this specific target.</p></div><div class="protocol-box"><h4>📖 Protocol</h4><p>LFN 12.43 – Post-Thrombolytic: 10 mg slow IVP, followed by 2–8 mg/min infusion, target BP 180/105.</p></div>`
+            },
+            {
+                type: "recall", scenario: "You are escalating labetalol doses for a preeclamptic patient whose BP remains elevated.", vitals: { "BP": "172/108", "1st Dose": "20 mg given" },
+                question: "How should preeclampsia doses be escalated?",
+                options: ["Add 10 mg each time", "Double the previous dose q 10 minutes", "Same dose every 5 minutes", "Triple every 20 minutes"], correct: 1,
+                rationale: `<div class="mechanism-section"><h4>🔬 Mechanism</h4><p>The doubling strategy (20→40→80 mg) provides rapid BP control while allowing assessment of individual patient response between doses. Each 10-minute interval allows time to evaluate the peak effect (5–15 min).</p></div><div class="clinical-pearl-box"><h4>💡 Pearl</h4><p>Preeclampsia escalation: 20 mg → 40 mg → 80 mg, each q 10 min until goal met (SBP 140–150, DBP 90–100). After 3 doses = 140 mg cumulative. Continue doubling until goal or max 300 mg.</p></div><div class="protocol-box"><h4>📖 Protocol</h4><p>LFN 12.43 – Preeclampsia: 20 mg slow IVP, repeat by doubling previous dose q 10 min until goals met.</p></div>`
+            },
+            {
+                type: "recall", scenario: "", vitals: {},
+                question: "Which cardiac conditions contraindicate labetalol?",
+                options: ["Hypertension and tachycardia", "Heart block >1°, cardiogenic shock, severe bradycardia, uncontrolled CHF", "Atrial fibrillation only", "Sinus tachycardia"], correct: 1,
+                rationale: `<div class="mechanism-section"><h4>🔬 Mechanism</h4><p>Beta blockade depresses AV conduction (worsening heart block), reduces contractility (worsening CHF), and slows heart rate (worsening bradycardia). In cardiogenic shock, these effects compound hemodynamic collapse.</p></div><div class="clinical-pearl-box"><h4>💡 Pearl</h4><p>Full contraindication list: bronchial asthma, uncontrolled cardiac failure, heart block &gt;1°, cardiogenic shock, severe bradycardia. Note: well-compensated CHF is a caution, not a contraindication.</p></div><div class="protocol-box"><h4>📖 Protocol</h4><p>LFN 12.43 – CI: Bronchial asthma, uncontrolled cardiac failure, heart block &gt;1°, cardiogenic shock, severe bradycardia.</p></div>`
+            },
+            {
+                type: "clinical", scenario: "A patient with intracerebral hemorrhage has BP not controlled by nicardipine infusion alone.", vitals: { "BP": "198/115", "HR": "88", "Meds": "Nicardipine running" },
+                question: "What is the hemorrhagic stroke dosing for labetalol?",
+                options: ["10–20 mg IV, repeat 20–40 mg q 10 min", "100 mg IV loading dose", "5 mg IV q 5 min", "40 mg single dose only"], correct: 0,
+                rationale: `<div class="mechanism-section"><h4>🔬 Mechanism</h4><p>Adding beta blockade (labetalol) to calcium channel blockade (nicardipine) provides synergistic BP control through complementary mechanisms. The lower starting dose (10–20 mg) accounts for the nicardipine already on board.</p></div><div class="clinical-pearl-box"><h4>💡 Pearl</h4><p>Hemorrhagic stroke: 10–20 mg IV initial (lower than aortic 20 mg), repeat 20–40 mg q 10 min (lower range than aortic 20–80 mg). Consider 1–2 mg/min infusion. Max 300 mg. Note: this is specifically for when nicardipine alone is insufficient.</p></div><div class="protocol-box"><h4>📖 Protocol</h4><p>LFN 12.43 – Hemorrhagic Stroke: 10–20 mg IV, repeat 20–40 mg q 10 min, infusion 1–2 mg/min, max 300 mg/24 hr.</p></div>`
+            }
+        ];
+
+        /* ── Quiz Engine ── */
+        let currentQuestionIndex = 0, score = 0, totalAnswered = 0, answers = new Array(quizData.length).fill(null);
+
+        function loadQuestion() {
+            const q = quizData[currentQuestionIndex];
+            document.getElementById('questionCount').textContent = `Question ${currentQuestionIndex + 1} of ${quizData.length}`;
+            document.getElementById('scoreDisplay').textContent = `Score: ${score}/${totalAnswered}`;
+            document.getElementById('progressBar').style.width = `${((currentQuestionIndex + 1) / quizData.length) * 100}%`;
+            document.getElementById('questionNumber').textContent = `Question ${currentQuestionIndex + 1}`;
+            const typeEl = document.getElementById('questionType');
+            typeEl.textContent = q.type.charAt(0).toUpperCase() + q.type.slice(1);
+            typeEl.className = `question-type ${q.type}`;
+
+            const scenarioBox = document.getElementById('scenarioBox');
+            if (q.scenario) {
+                document.getElementById('scenarioText').innerHTML = q.scenario;
+                scenarioBox.style.display = 'block';
+            } else {
+                scenarioBox.style.display = 'none';
+            }
+
+            const vc = document.getElementById('vitalSigns'); vc.innerHTML = '';
+            if (q.vitals && Object.keys(q.vitals).length > 0) {
+                for (const [l, v] of Object.entries(q.vitals)) vc.innerHTML += `<div class="vital-item"><div class="vital-label">${l}</div><div class="vital-value">${v}</div></div>`;
+            }
+
+            document.getElementById('questionText').textContent = q.question;
+            const ol = document.getElementById('optionsList'); ol.innerHTML = '';
+            ['A','B','C','D'].forEach((letter, i) => {
+                const btn = document.createElement('button'); btn.className = 'option-btn';
+                if (answers[currentQuestionIndex] !== null) {
+                    btn.classList.add('disabled');
+                    if (i === q.correct) btn.classList.add('correct');
+                    else if (i === answers[currentQuestionIndex] && i !== q.correct) btn.classList.add('incorrect');
+                }
+                btn.innerHTML = `<span class="option-letter">${letter}</span><span class="option-text">${q.options[i]}</span>`;
+                btn.onclick = () => selectAnswer(i); ol.appendChild(btn);
+            });
+
+            const rb = document.getElementById('rationaleBox');
+            if (answers[currentQuestionIndex] !== null) { rb.innerHTML = q.rationale; rb.classList.add('show'); } else { rb.classList.remove('show'); rb.innerHTML = ''; }
+            document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
+            document.getElementById('nextBtn').textContent = currentQuestionIndex === quizData.length - 1 ? 'Finish Quiz' : 'Next →';
+        }
+
+        function selectAnswer(index) {
+            if (answers[currentQuestionIndex] !== null) return;
+            const q = quizData[currentQuestionIndex]; answers[currentQuestionIndex] = index; totalAnswered++;
+            if (index === q.correct) score++;
+            document.querySelectorAll('.option-btn').forEach((btn, i) => { btn.classList.add('disabled'); if (i === q.correct) btn.classList.add('correct'); else if (i === index && i !== q.correct) btn.classList.add('incorrect'); });
+            document.getElementById('rationaleBox').innerHTML = q.rationale; document.getElementById('rationaleBox').classList.add('show');
+            document.getElementById('scoreDisplay').textContent = `Score: ${score}/${totalAnswered}`;
+        }
+
+        function nextQuestion() { if (currentQuestionIndex < quizData.length - 1) { currentQuestionIndex++; loadQuestion(); window.scrollTo({ top: 0, behavior: 'smooth' }); } else showResults(); }
+        function prevQuestion() { if (currentQuestionIndex > 0) { currentQuestionIndex--; loadQuestion(); window.scrollTo({ top: 0, behavior: 'smooth' }); } }
+
+        function showResults() {
+            document.getElementById('questionCard').style.display = 'none';
+            document.getElementById('progressSection').style.display = 'none';
+            document.getElementById('quickRef').style.display = 'none';
+            document.getElementById('resultsCard').classList.add('show');
+            const pct = Math.round((score / quizData.length) * 100);
+            document.getElementById('resultsScore').textContent = `${pct}%`;
+            document.getElementById('correctCount').textContent = score;
+            document.getElementById('incorrectCount').textContent = quizData.length - score;
+            const icon = document.getElementById('resultsIcon'), scoreEl = document.getElementById('resultsScore'), msg = document.getElementById('resultsMessage');
+            if (pct >= 90) { icon.className = 'results-icon excellent'; icon.textContent = '🏆'; scoreEl.className = 'results-score excellent'; msg.textContent = 'Excellent! You\'ve mastered labetalol\'s indication-specific dosing and contraindications.'; }
+            else if (pct >= 70) { icon.className = 'results-icon good'; icon.textContent = '✓'; scoreEl.className = 'results-score good'; msg.textContent = 'Good work! Review asthma contraindication, BP targets, and dose escalation strategies.'; }
+            else { icon.className = 'results-icon needs-work'; icon.textContent = '📚'; scoreEl.className = 'results-score needs-work'; msg.textContent = 'More study needed. Focus on the five indications, BP targets, contraindications, and 300 mg max.'; }
+        }
+
+        function restartQuiz() {
+            currentQuestionIndex = 0; score = 0; totalAnswered = 0; answers = new Array(quizData.length).fill(null);
+            document.getElementById('questionCard').style.display = 'block';
+            document.getElementById('progressSection').style.display = 'block';
+            document.getElementById('quickRef').style.display = 'block';
+            document.getElementById('resultsCard').classList.remove('show');
+            loadQuestion(); window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        document.addEventListener('DOMContentLoaded', loadQuestion);
+    </script>
+</body>
+</html>
