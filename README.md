@@ -23,8 +23,9 @@ Built to reinforce drug formulary protocols through scenario-based questions, cl
 | Hypertonic Saline 3% | 12.39 | Osmotic Agent | 10 |
 | Labetalol | 12.43 | Mixed Alpha & Beta Blocker | 10 |
 | Lidocaine | 12.46 | Antiarrhythmic Class Ib / Local Anesthetic | 10 |
+| Epinephrine | 12.26 | Alpha & Beta Agonist | 15 |
 
-**Coming soon:** Amiodarone, Ketamine, Midazolam, Epinephrine, Fentanyl, and more.
+**Coming soon:** Amiodarone, Ketamine, Midazolam, Fentanyl, and more.
 
 ---
 

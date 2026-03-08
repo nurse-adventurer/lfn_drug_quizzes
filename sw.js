@@ -1,11 +1,12 @@
-const CACHE_NAME = 'lfn-drug-quizzes-v1';
+const CACHE_NAME = 'lfn-drug-quizzes-v2';
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
   './quizzes/lidocaine_12_46.html',
   './quizzes/hypertonic_saline_12_39.html',
-  './quizzes/labetalol_12_43.html'
+  './quizzes/labetalol_12_43.html',
+  './quizzes/epinephrine_12_26.html'
 ];
 
 // Install — cache all assets
