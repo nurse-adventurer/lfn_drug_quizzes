@@ -9,6 +9,146 @@
     </style>
 </head>
 <body>
+<nav class="lfn-nav">
+  <a class="lfn-nav-home" href="../index.html">🏠 Home</a>
+  <div class="lfn-nav-search-wrap">
+    <input class="lfn-nav-search" type="text" placeholder="🔍 Search drug…" id="lfnNavSearch" autocomplete="off" />
+    <div class="lfn-nav-results" id="lfnNavResults"></div>
+  </div>
+</nav>
+<style>
+.lfn-nav{position:fixed;top:0;left:0;right:0;z-index:9999;display:flex;align-items:center;gap:10px;padding:8px 16px;background:rgba(15,23,42,0.93);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 2px 12px rgba(0,0,0,0.4);}
+.lfn-nav-home{display:flex;align-items:center;gap:6px;padding:7px 14px;background:rgba(255,255,255,0.12);color:#fff;text-decoration:none;border-radius:8px;font-size:.82rem;font-weight:700;white-space:nowrap;transition:background .2s;border:1px solid rgba(255,255,255,0.18);}
+.lfn-nav-home:hover{background:rgba(255,255,255,0.22);}
+.lfn-nav-search-wrap{flex:1;position:relative;max-width:480px;}
+.lfn-nav-search{width:100%;padding:7px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.1);color:#fff;font-size:.85rem;outline:none;transition:border .2s,background .2s;}
+.lfn-nav-search::placeholder{color:rgba(255,255,255,0.5);}
+.lfn-nav-search:focus{border-color:rgba(255,255,255,0.5);background:rgba(255,255,255,0.16);}
+.lfn-nav-results{position:absolute;top:calc(100% + 4px);left:0;right:0;background:#1e293b;border:1px solid rgba(255,255,255,0.15);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,0.4);max-height:320px;overflow-y:auto;display:none;z-index:10000;}
+.lfn-nav-results.open{display:block;}
+.lfn-nav-result{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.07);transition:background .15s;text-decoration:none;color:#f1f5f9;}
+.lfn-nav-result:last-child{border-bottom:none;}
+.lfn-nav-result:hover{background:rgba(255,255,255,0.08);}
+.lfn-nav-result-name{font-size:.88rem;font-weight:600;}
+.lfn-nav-result-sec{font-size:.72rem;color:#94a3b8;margin-left:8px;}
+body{padding-top:52px;}
+@media(max-width:480px){.lfn-nav{padding:6px 10px;gap:8px;}.lfn-nav-home{padding:6px 10px;font-size:.78rem;}}
+</style>
+<script>
+(function(){
+  var drugs=[
+    {name:"Acetaminophen",sec:"12.02",file:"acetaminophen_quiz.html"},
+    {name:"Activated Charcoal",sec:"12.03",file:"activated_charcoal_quiz.html"},
+    {name:"Adenosine",sec:"12.04",file:"adenosine_quiz.html"},
+    {name:"Albumin",sec:"Non-PCG",file:"albumin_quiz.html"},
+    {name:"Albuterol",sec:"12.05",file:"albuterol_quiz.html"},
+    {name:"Alteplase / tPA",sec:"12.06",file:"alteplase_quiz.html"},
+    {name:"Amiodarone",sec:"12.07",file:"amiodarone_quiz.html"},
+    {name:"Aspirin",sec:"12.08",file:"aspirin_quiz.html"},
+    {name:"Atropine",sec:"12.09",file:"atropine_quiz.html"},
+    {name:"Betamethasone",sec:"12.10",file:"betamethasone_quiz.html"},
+    {name:"Calcium Chloride",sec:"12.11",file:"calcium_chloride_quiz.html"},
+    {name:"Calcium Gluconate",sec:"12.12",file:"calcium_gluconate_quiz.html"},
+    {name:"Cefazolin",sec:"12.13",file:"cefazolin_quiz.html"},
+    {name:"Cisatracurium",sec:"12.14",file:"cisatracurium_quiz.html"},
+    {name:"Clevidipine",sec:"12.15",file:"clevidipine_quiz.html"},
+    {name:"CroFab",sec:"12.16",file:"crofab_quiz.html"},
+    {name:"Dexamethasone",sec:"12.17",file:"dexamethasone_quiz.html"},
+    {name:"Dexmedetomidine",sec:"12.18",file:"dexmedetomidine_quiz.html"},
+    {name:"Dextrose",sec:"12.19",file:"dextrose_quiz.html"},
+    {name:"Diazepam",sec:"12.20",file:"diazepam_quiz.html"},
+    {name:"Diltiazem",sec:"12.21",file:"diltiazem_quiz.html"},
+    {name:"Diphenhydramine",sec:"12.22",file:"diphenhydramine_quiz.html"},
+    {name:"Dobutamine",sec:"12.23",file:"dobutamine_quiz__1_.html"},
+    {name:"Dopamine",sec:"12.24",file:"dopamine_quiz__1_.html"},
+    {name:"Droperidol",sec:"12.25",file:"droperidol_quiz.html"},
+    {name:"Epinephrine",sec:"12.26",file:"epinephrine_12_26.html"},
+    {name:"Epoprostenol",sec:"12.27",file:"epoprostenol_quiz__1_.html"},
+    {name:"Esmolol",sec:"12.28",file:"esmolol_quiz__1_.html"},
+    {name:"Etomidate",sec:"12.29",file:"etomidate_quiz.html"},
+    {name:"Fentanyl",sec:"12.30",file:"fentanyl_quiz.html"},
+    {name:"Flumazenil",sec:"12.31",file:"flumazenil_quiz.html"},
+    {name:"Fosphenytoin",sec:"12.32",file:"fosphenytoin_quiz.html"},
+    {name:"Furosemide",sec:"12.33",file:"furosemide_quiz.html"},
+    {name:"Glucagon",sec:"12.34",file:"lfn_glucagon_12-34.html"},
+    {name:"Heparin",sec:"12.35",file:"heparin_quiz.html"},
+    {name:"Hydralazine",sec:"12.36",file:"hydralazine_quiz.html"},
+    {name:"Hydromorphone",sec:"12.37",file:"hydromorphone_quiz.html"},
+    {name:"Hydroxocobalamin",sec:"12.38",file:"hydroxocobalamin_quiz.html"},
+    {name:"Hypertonic Saline 3%",sec:"12.39",file:"hypertonic_saline_12_39.html"},
+    {name:"Insulin",sec:"12.40",file:"insulin_quiz.html"},
+    {name:"Ipratropium",sec:"12.41",file:"ipratropium_quiz.html"},
+    {name:"Ketamine",sec:"12.42",file:"ketamine_quiz.html"},
+    {name:"Labetalol",sec:"12.43",file:"labetalol_12_43.html"},
+    {name:"Lactated Ringers",sec:"12.44",file:"lactated_ringers_quiz.html"},
+    {name:"Levetiracetam",sec:"12.45",file:"levetiracetam_quiz.html"},
+    {name:"Lidocaine",sec:"12.46",file:"lidocaine_12_46.html"},
+    {name:"Lipid Emulsion",sec:"12.47",file:"lipid_emulsion_quiz.html"},
+    {name:"Lorazepam",sec:"12.48",file:"lorazepam_quiz.html"},
+    {name:"Magnesium Sulfate",sec:"12.49",file:"magnesium_sulfate_quiz.html"},
+    {name:"Mannitol",sec:"12.50",file:"lfn_mannitol_12-50.html"},
+    {name:"Methylergonovine",sec:"12.51",file:"lfn_methylergonovine_12-51.html"},
+    {name:"Methylprednisolone",sec:"12.52",file:"lfn_methylprednisolone_12-52.html"},
+    {name:"Metoprolol",sec:"12.53",file:"lfn_metoprolol_12-53.html"},
+    {name:"Midazolam",sec:"12.54",file:"lfn_midazolam_12-54.html"},
+    {name:"Milrinone",sec:"12.55",file:"lfn_milrinone_12-55.html"},
+    {name:"Morphine Sulfate",sec:"12.56",file:"lfn_morphine_12-56.html"},
+    {name:"N-Acetylcysteine",sec:"12.57",file:"lfn_nac_12-57.html"},
+    {name:"Naloxone",sec:"12.58",file:"lfn_naloxone_12-58.html"},
+    {name:"Nicardipine",sec:"12.59",file:"lfn_nicardipine_12-59.html"},
+    {name:"Nifedipine",sec:"12.60",file:"lfn_nifedipine_12-60.html"},
+    {name:"Nitroglycerin",sec:"12.61",file:"nitroglycerin_quiz.html"},
+    {name:"Nitroprusside",sec:"12.62",file:"lfn_nitroprusside_12-62.html"},
+    {name:"Norepinephrine",sec:"12.63",file:"lfn_norepinephrine_12-63.html"},
+    {name:"Octreotide",sec:"12.64",file:"lfn_octreotide_12-64.html"},
+    {name:"Ondansetron",sec:"12.65",file:"lfn_ondansetron_12-65.html"},
+    {name:"Oxytocin",sec:"12.66",file:"lfn_oxytocin_12-66.html"},
+    {name:"Phenobarbital",sec:"12.67",file:"lfn_phenobarbital_12-67.html"},
+    {name:"Phenylephrine",sec:"12.68",file:"lfn_phenylephrine_12-68.html"},
+    {name:"Potassium Chloride",sec:"12.69",file:"lfn_potassium_chloride_12-69.html"},
+    {name:"Pralidoxime",sec:"12.70",file:"lfn_pralidoxime_12-70.html"},
+    {name:"Promethazine",sec:"12.71",file:"lfn_promethazine_12-71.html"},
+    {name:"Propofol",sec:"12.72",file:"lfn_propofol_12-72.html"},
+    {name:"Racemic Epinephrine",sec:"12.73",file:"lfn_racemic_epi_12-73.html"},
+    {name:"Rocuronium",sec:"12.74",file:"lfn_rocuronium_12-74.html"},
+    {name:"Sodium Bicarbonate",sec:"12.75",file:"lfn_sodium_bicarb_12-75.html"},
+    {name:"Sodium Chloride",sec:"12.76",file:"lfn_sodium_chloride_12-76.html"},
+    {name:"Sodium Polystyrene",sec:"12.77",file:"lfn_sodium_polystyrene_12-77.html"},
+    {name:"Succinylcholine",sec:"12.78",file:"lfn_succinylcholine_12-78.html"},
+    {name:"Tenecteplase",sec:"12.79",file:"lfn_tenecteplase_12-79.html"},
+    {name:"Terbutaline",sec:"12.80",file:"lfn_terbutaline_12-80.html"},
+    {name:"Ticagrelor",sec:"12.81",file:"ticagrelor_quiz.html"},
+    {name:"Tranexamic Acid (TXA)",sec:"12.82",file:"txa_quiz__1_.html"},
+    {name:"Vasopressin",sec:"12.83",file:"vasopressin_quiz__1_.html"},
+    {name:"Vecuronium",sec:"12.84",file:"vecuronium_quiz__1_.html"}
+  ];
+  var inp=document.getElementById('lfnNavSearch');
+  var box=document.getElementById('lfnNavResults');
+  inp.addEventListener('input',function(){
+    var q=this.value.trim().toLowerCase();
+    box.innerHTML='';
+    if(!q){box.classList.remove('open');return;}
+    var hits=drugs.filter(function(d){
+      return d.name.toLowerCase().includes(q)||d.sec.includes(q);
+    }).slice(0,8);
+    if(!hits.length){box.classList.remove('open');return;}
+    hits.forEach(function(d){
+      var a=document.createElement('a');
+      a.className='lfn-nav-result';
+      a.href=d.file;
+      a.innerHTML='<span class="lfn-nav-result-name">'+d.name+'</span><span class="lfn-nav-result-sec">'+d.sec+'</span>';
+      box.appendChild(a);
+    });
+    box.classList.add('open');
+  });
+  document.addEventListener('click',function(e){
+    if(!e.target.closest('.lfn-nav-search-wrap'))box.classList.remove('open');
+  });
+  inp.addEventListener('keydown',function(e){
+    if(e.key==='Escape'){box.classList.remove('open');inp.value='';}
+  });
+})();
+</script>
 <div class="container">
     <div class="header"><h1>🤰 Hydralazine</h1><p class="subtitle">LFN Protocol Section 12.36 | Clinical Application Quiz</p><span class="drug-class">Peripheral Vasodilator (Apresoline)</span><div class="badge-container"><span class="indication-badge">🩺 Hypertension in Pregnancy ONLY</span><span class="indication-badge">💊 5 mg over 1 min → 5-10 mg q 20 min</span><span class="indication-badge">🔝 Max 20 mg total</span><span class="indication-badge">💉 Infusion: 0.5-10 mg/hr</span><span class="indication-badge">🎯 SBP ≥160 or DBP ≥110</span><span class="indication-badge">🚫 CI: CAD</span><span class="indication-badge">👶 No Peds Standing Order</span></div></div>
     <div class="mode-tabs"><button class="mode-tab active" data-mode="reference" onclick="switchMode('reference')">📋 Quick Reference</button><button class="mode-tab" data-mode="quiz" onclick="switchMode('quiz')">📝 Quiz</button></div>
