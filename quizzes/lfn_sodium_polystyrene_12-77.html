@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LFN Drug Quiz | Sodium Polystyrene Sulfonate (12.77)</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --primary:#92400e;
+  --primary-light:#d97706;
+  --primary-dark:#78350f;
+  --accent:#dc2626;
+  --success:#166534;
+  --success-bg:#dcfce7;
+  --error:#991b1b;
+  --error-bg:#fee2e2;
+  --warning-bg:#fef3c7;
+  --warning-border:#f59e0b;
+  --card:#ffffff;
+  --text:#1f2937;
+  --text-secondary:#4b5563;
+  --border:#e5e7eb;
+  --shadow:0 2px 8px rgba(0,0,0,0.10);
+  --shadow-lg:0 8px 24px rgba(146,64,14,0.15);
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#fffbeb 0%,#fef3c7 50%,#fde68a 100%);min-height:100vh;padding:16px}
+.container{max-width:820px;margin:0 auto}
+.header{background:var(--card);border-radius:16px;padding:28px 24px 20px;margin-bottom:20px;box-shadow:var(--shadow-lg);text-align:center}
+.header h1{font-size:2rem;color:var(--primary);margin-bottom:6px;letter-spacing:-0.5px}
+.header .subtitle{color:var(--primary-light);font-size:1rem;margin-bottom:12px}
+.drug-class-badge{display:inline-block;background:linear-gradient(135deg,var(--primary-light),var(--primary));color:#fff;padding:7px 20px;border-radius:20px;font-size:0.85rem;font-weight:700;margin-bottom:12px}
+.badge-row{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;margin-top:4px}
+.badge{display:inline-block;padding:5px 11px;border-radius:14px;font-size:0.7rem;font-weight:700;border:2px solid}
+.badge-hk{background:#fee2e2;color:#991b1b;border-color:#ef4444}
+.badge-po{background:#dcfce7;color:#166534;border-color:#22c55e}
+.badge-pr{background:#dbeafe;color:#1e40af;border-color:#3b82f6}
+.badge-slow{background:#fef3c7;color:#92400e;border-color:#f59e0b}
+.mode-tabs{display:flex;background:var(--card);border-radius:12px;padding:6px;margin-bottom:18px;box-shadow:var(--shadow);gap:6px}
+.mode-tab{flex:1;padding:11px;text-align:center;border-radius:8px;cursor:pointer;font-weight:700;font-size:0.92rem;transition:all 0.2s;border:none;background:transparent;color:var(--text-secondary)}
+.mode-tab.active{background:linear-gradient(135deg,var(--primary-light),var(--primary));color:#fff;box-shadow:0 2px 8px rgba(146,64,14,0.3)}
+.ref-panel{display:none}
+.ref-panel.active{display:block}
+.ref-tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.ref-tab{padding:7px 14px;border-radius:8px;border:2px solid var(--border);background:var(--card);color:var(--text-secondary);font-size:0.8rem;font-weight:600;cursor:pointer;transition:all 0.2s}
+.ref-tab.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.ref-content{background:var(--card);border-radius:12px;padding:22px;box-shadow:var(--shadow)}
+.ref-section{display:none}
+.ref-section.active{display:block}
+.ref-section h3{color:var(--primary);font-size:1rem;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #fde68a}
+.dose-table{width:100%;border-collapse:collapse;font-size:0.83rem;margin-bottom:12px}
+.dose-table th{background:var(--primary);color:#fff;padding:9px 10px;text-align:left;font-size:0.78rem}
+.dose-table td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5}
+.dose-table tr:nth-child(even) td{background:#fffbeb}
+.dose-table td strong{color:var(--primary-dark)}
+.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:12px}
+.info-card{background:#fffbeb;border-radius:8px;padding:12px;border-left:3px solid var(--primary-light)}
+.info-card .lbl{font-size:0.7rem;color:var(--text-secondary);text-transform:uppercase;font-weight:700;margin-bottom:4px}
+.info-card .val{font-size:0.88rem;color:var(--text);font-weight:600;line-height:1.4}
+.warn-card{background:var(--error-bg);border:2px solid var(--accent);border-radius:8px;padding:14px;margin-bottom:10px}
+.warn-card h4{color:#7f1d1d;font-size:0.85rem;margin-bottom:7px}
+.warn-card p,.warn-card li{font-size:0.83rem;color:#991b1b;line-height:1.5}
+.warn-card ul{margin-left:16px}
+.note-card{background:var(--warning-bg);border:2px solid var(--warning-border);border-radius:8px;padding:14px;margin-bottom:10px}
+.note-card h4{color:#92400e;font-size:0.85rem;margin-bottom:6px}
+.note-card p,.note-card li{font-size:0.83rem;color:#78350f;line-height:1.5}
+.note-card ul{margin-left:16px}
+.ok-card{background:var(--success-bg);border:2px solid #22c55e;border-radius:8px;padding:14px;margin-bottom:10px}
+.ok-card h4{color:#166534;font-size:0.85rem;margin-bottom:6px}
+.ok-card p{font-size:0.83rem;color:#166534;line-height:1.5}
+.ci-card{background:#fff1f2;border:2px solid #fb7185;border-radius:8px;padding:14px;margin-bottom:10px}
+.ci-card h4{color:#9f1239;font-size:0.85rem;margin-bottom:6px}
+.ci-card p,.ci-card li{font-size:0.83rem;color:#9f1239;line-height:1.5}
+.ci-card ul{margin-left:16px}
+.quiz-panel{display:none}
+.quiz-panel.active{display:block}
+.progress-wrap{background:var(--card);border-radius:12px;padding:16px 20px;margin-bottom:16px;box-shadow:var(--shadow)}
+.progress-bar{height:10px;background:var(--border);border-radius:8px;overflow:hidden;margin-bottom:7px}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--primary-light),var(--primary));border-radius:8px;transition:width 0.4s ease}
+.progress-text{text-align:center;color:var(--primary);font-weight:700;font-size:0.88rem}
+.q-card{background:var(--card);border-radius:16px;padding:26px;margin-bottom:18px;box-shadow:var(--shadow-lg);display:none}
+.q-card.active{display:block;animation:fadeUp 0.4s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.q-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.q-num{background:linear-gradient(135deg,var(--primary-light),var(--primary));color:#fff;padding:6px 14px;border-radius:14px;font-size:0.85rem;font-weight:700}
+.q-type{padding:5px 11px;border-radius:12px;font-size:0.72rem;font-weight:700;text-transform:uppercase}
+.type-recall{background:#dbeafe;color:#1e40af}
+.type-clinical{background:#dcfce7;color:#166534}
+.type-critical{background:#fce7f3;color:#be185d}
+.type-calculation{background:#f3e8ff;color:#7c3aed}
+.scenario{background:linear-gradient(135deg,#fef3c7,#fde68a);border-left:4px solid var(--primary-light);padding:16px;border-radius:0 10px 10px 0;margin-bottom:16px}
+.scenario h3{color:var(--primary-dark);font-size:0.9rem;margin-bottom:6px}
+.scenario p{color:var(--primary-dark);font-size:0.93rem;line-height:1.6}
+.s-box{padding:10px 13px;border-radius:8px;margin-top:10px;font-size:0.87rem;font-weight:600;line-height:1.4}
+.s-hk{background:#fee2e2;border:2px solid #ef4444;color:#991b1b}
+.s-dialysis{background:#fef3c7;border:2px solid #f59e0b;color:#92400e}
+.s-pedi{background:#dbeafe;border:2px solid #3b82f6;color:#1e3a8a}
+.s-bowel{background:#fee2e2;border:2px solid #dc2626;color:#7f1d1d}
+.s-chf{background:#fef3c7;border:2px solid #f59e0b;color:#92400e}
+.s-hypoK{background:#fee2e2;border:2px solid #dc2626;color:#7f1d1d}
+.s-neo{background:#dbeafe;border:2px solid #3b82f6;color:#1e3a8a}
+.s-preg{background:#fce7f3;border:2px solid #ec4899;color:#9d174d}
+.q-text{font-size:1.1rem;color:var(--text);margin-bottom:20px;line-height:1.6;font-weight:500}
+.options{display:flex;flex-direction:column;gap:10px}
+.option{padding:15px 18px;background:#f9fafb;border:2px solid var(--border);border-radius:10px;cursor:pointer;transition:all 0.2s;font-size:0.95rem;color:var(--text);display:flex;align-items:flex-start;gap:10px}
+.option:hover:not(.disabled){border-color:var(--primary-light);background:#fef3c7;transform:translateX(4px)}
+.opt-letter{min-width:28px;height:28px;line-height:28px;text-align:center;background:var(--primary);color:#fff;border-radius:50%;font-weight:700;font-size:0.82rem;flex-shrink:0}
+.option.correct{border-color:#22c55e;background:var(--success-bg);color:#166534}
+.option.incorrect{border-color:#ef4444;background:var(--error-bg);color:#991b1b}
+.option.disabled{cursor:not-allowed;opacity:0.75}
+.feedback{margin-top:20px;padding:20px;border-radius:12px;display:none}
+.feedback.show{display:block;animation:fadeUp 0.3s ease}
+.feedback.correct-fb{background:linear-gradient(135deg,#dcfce7,#bbf7d0);border:2px solid #22c55e}
+.feedback.incorrect-fb{background:linear-gradient(135deg,#fee2e2,#fecaca);border:2px solid #ef4444}
+.feedback h4{font-size:1.05rem;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.feedback.correct-fb h4{color:#166534}
+.feedback.incorrect-fb h4{color:#991b1b}
+.feedback p{color:var(--text);font-size:0.93rem;line-height:1.6;margin-bottom:10px}
+.insight-box{background:rgba(255,255,255,0.75);border-left:4px solid var(--primary-light);padding:13px;border-radius:0 8px 8px 0;margin-top:12px}
+.insight-box h5{color:var(--primary);font-size:0.88rem;margin-bottom:6px}
+.insight-box p{font-size:0.88rem;color:var(--text);margin-bottom:0}
+.proto-ref{background:rgba(255,255,255,0.8);padding:10px 13px;border-radius:7px;margin-top:12px;font-size:0.85rem;color:var(--primary)}
+.proto-link{color:var(--primary-dark);text-decoration:underline;cursor:pointer;font-weight:700}
+.proto-link:hover{color:var(--primary-light)}
+.nav-row{display:flex;justify-content:space-between;margin-top:20px;gap:10px}
+.btn{padding:12px 26px;border:none;border-radius:9px;font-size:0.95rem;font-weight:700;cursor:pointer;transition:all 0.2s}
+.btn-primary{background:linear-gradient(135deg,var(--primary-light),var(--primary));color:#fff}
+.btn-primary:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 4px 14px rgba(146,64,14,0.35)}
+.btn-secondary{background:var(--border);color:var(--text)}
+.btn:disabled{opacity:0.45;cursor:not-allowed;transform:none}
+.results{background:var(--card);border-radius:16px;padding:36px;text-align:center;box-shadow:var(--shadow-lg);display:none}
+.results.active{display:block;animation:fadeUp 0.4s ease}
+.results-score{font-size:4.5rem;font-weight:800;color:var(--primary);line-height:1}
+.results-label{font-size:1.3rem;color:var(--text-secondary);margin:8px 0 24px}
+.results-counts{display:flex;justify-content:center;gap:40px;margin-bottom:24px}
+.rc-item .num{font-size:2.2rem;font-weight:800}
+.rc-item .lbl{color:var(--text-secondary);font-size:0.85rem}
+.rc-correct .num{color:#22c55e}
+.rc-incorrect .num{color:#ef4444}
+.perf-msg{padding:18px;border-radius:12px;margin-bottom:22px;font-size:0.93rem;line-height:1.6}
+.perf-excellent{background:#dcfce7;color:#166534}
+.perf-good{background:#dbeafe;color:#1e40af}
+.perf-review{background:var(--warning-bg);color:#92400e}
+.sum-table{width:100%;border-collapse:collapse;font-size:0.8rem;margin:14px 0;text-align:left}
+.sum-table th{background:var(--primary);color:#fff;padding:8px 10px}
+.sum-table td{padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top}
+.sum-table tr:nth-child(even) td{background:#fffbeb}
+.kp-list{background:#fffbeb;border-radius:10px;padding:16px;margin-top:14px;text-align:left}
+.kp-list h4{color:var(--primary);margin-bottom:10px;font-size:0.92rem}
+.kp-list li{font-size:0.85rem;color:var(--text);line-height:1.6;margin-left:18px;margin-bottom:4px}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:998}
+.overlay.show{display:block}
+.popup{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border:3px solid var(--primary-light);border-radius:14px;padding:22px;width:90%;max-width:540px;max-height:80vh;overflow-y:auto;z-index:999;box-shadow:0 20px 60px rgba(0,0,0,0.25)}
+.popup.show{display:block;animation:popIn 0.25s ease}
+@keyframes popIn{from{opacity:0;transform:translate(-50%,-55%)}to{opacity:1;transform:translate(-50%,-50%)}}
+.popup-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:10px;border-bottom:2px solid #fde68a}
+.popup-head h3{color:var(--primary-dark);font-size:1rem}
+.popup-close{background:var(--primary-light);color:#fff;border:none;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:1.1rem;line-height:1}
+.popup-body{background:#fef3c7;padding:14px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.8rem;color:var(--primary-dark);line-height:1.65;white-space:pre-wrap}
+@media(max-width:600px){
+  .header h1{font-size:1.6rem}
+  .q-card{padding:18px}
+  .nav-row{flex-direction:column}
+  .btn{width:100%}
+  .results-counts{gap:24px}
+  .ref-tabs{gap:4px}
+  .ref-tab{padding:6px 10px;font-size:0.75rem}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <h1>💊 Sodium Polystyrene Sulfonate</h1>
+  <p class="subtitle">LFN Drug Formulary Section 12.77 · Clinical Application Quiz</p>
+  <div class="drug-class-badge">Antidote · Potassium Binder</div>
+  <div class="badge-row">
+    <span class="badge badge-hk">⚡ Hyperkalemia</span>
+    <span class="badge badge-po">💊 PO</span>
+    <span class="badge badge-pr">PR (Rectal)</span>
+    <span class="badge badge-slow">⏱️ Slow Onset (Hours)</span>
+  </div>
+</div>
+
+<div class="mode-tabs">
+  <button class="mode-tab active" onclick="switchMode('ref')">📋 Quick Reference</button>
+  <button class="mode-tab" onclick="switchMode('quiz')">🎯 Quiz (10 Questions)</button>
+</div>
+
+<!-- REFERENCE PANEL -->
+<div class="ref-panel active" id="refPanel">
+  <div class="ref-tabs">
+    <button class="ref-tab active" onclick="switchRef(event,'dosing')">💊 Dosing / Indications</button>
+    <button class="ref-tab" onclick="switchRef(event,'pharma')">🔬 Pharmacology</button>
+    <button class="ref-tab" onclick="switchRef(event,'considerations')">📝 Considerations</button>
+    <button class="ref-tab" onclick="switchRef(event,'warnings')">⚠️ Warnings</button>
+  </div>
+  <div class="ref-content">
+
+    <div class="ref-section active" id="ref-dosing">
+      <h3>💊 Dosing &amp; Indications</h3>
+      <table class="dose-table">
+        <tr><th>Indication</th><th>Adult Dose</th><th>Pediatric Dose</th></tr>
+        <tr>
+          <td><strong>Hyperkalemia</strong></td>
+          <td><strong>30 grams PO/PR</strong></td>
+          <td><strong>1–2 grams/kg PO/PR</strong></td>
+        </tr>
+      </table>
+      <div class="note-card">
+        <h4>⏱️ Onset — NOT for Acute Emergency</h4>
+        <p>Onset is measured in <strong>hours</strong>. Peak effect: <strong>4–6 hours</strong>. Kayexalate is not appropriate for acute hyperkalemia management — use calcium, insulin/glucose, or sodium bicarbonate for acute stabilization first.</p>
+      </div>
+    </div>
+
+    <div class="ref-section" id="ref-pharma">
+      <h3>🔬 Pharmacology</h3>
+      <div class="info-grid">
+        <div class="info-card"><div class="lbl">Mechanism of Action</div><div class="val">Removes potassium by exchanging sodium ions for potassium ions in the intestine</div></div>
+        <div class="info-card"><div class="lbl">Pharmacologic Category</div><div class="val">Antidote; Potassium Binder</div></div>
+        <div class="info-card"><div class="lbl">Onset / Peak / Duration</div><div class="val">Hours / 4–6 hours</div></div>
+        <div class="info-card"><div class="lbl">Trade Name</div><div class="val">Kalexate</div></div>
+        <div class="info-card"><div class="lbl">Pregnancy</div><div class="val">Not absorbed systemically — not expected to result in significant fetal exposure</div></div>
+        <div class="info-card"><div class="lbl">Indication</div><div class="val">Hyperkalemia (single indication)</div></div>
+      </div>
+    </div>
+
+    <div class="ref-section" id="ref-considerations">
+      <h3>📝 Special Considerations</h3>
+      <div class="note-card">
+        <h4>No LFN Special Considerations Listed</h4>
+        <p>LFN 12.77 does not list numbered Special Considerations for this medication. All clinical guidance is contained in Warnings/Precautions, Contraindications, and the Pregnancy section.</p>
+      </div>
+      <div class="note-card">
+        <h4>⏱️ Slow Onset — Clinical Context</h4>
+        <p>Onset is hours; peak 4–6 hours. This drug removes potassium from the body via the GI tract. It is not absorbed systemically. For acute hyperkalemia (peaked T waves, wide QRS, cardiac arrest), use faster-acting agents first: calcium (membrane stabilization), insulin/glucose or sodium bicarbonate (K⁺ shift into cells). Kayexalate provides ongoing K⁺ removal after stabilization.</p>
+      </div>
+      <div class="ok-card">
+        <h4>🤰 Pregnancy Safety</h4>
+        <p>Not absorbed systemically following oral or rectal administration. Use during pregnancy is not expected to result in significant exposure to the fetus.</p>
+      </div>
+    </div>
+
+    <div class="ref-section" id="ref-warnings">
+      <h3>⚠️ Warnings, Contraindications &amp; Adverse Reactions</h3>
+      <div class="ci-card">
+        <h4>🚫 Contraindications (4)</h4>
+        <ul>
+          <li>Hypersensitivity to sodium polystyrene sulfonate, polystyrene sulfonate resins, or any component of the formulation</li>
+          <li>Obstructive bowel disease</li>
+          <li>Neonates with reduced gut motility</li>
+          <li>Oral administration in neonates</li>
+        </ul>
+      </div>
+      <div class="warn-card">
+        <h4>⚠️ Warnings / Precautions (3)</h4>
+        <ul>
+          <li><strong>Severe hypokalemia may occur</strong></li>
+          <li><strong>Large oral doses may cause fecal impaction</strong></li>
+          <li><strong>Use with caution in patients with severe heart failure and/or hypertension</strong> — sodium load may exacerbate condition</li>
+        </ul>
+      </div>
+      <div class="warn-card">
+        <h4>⚠️ Adverse Reactions</h4>
+        <p>Hypernatremia, hypocalcemia, hypokalemia, hypomagnesemia, sodium retention, constipation, diarrhea, fecal impaction, nausea, vomiting</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- QUIZ PANEL -->
+<div class="quiz-panel" id="quizPanel">
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="pFill" style="width:10%"></div></div>
+    <div class="progress-text" id="pText">Question 1 of 10</div>
+  </div>
+  <div id="qContainer"></div>
+  <div class="results" id="resultsCard">
+    <h2 style="color:var(--primary);margin-bottom:8px">Quiz Complete!</h2>
+    <div class="results-score" id="rPct">—</div>
+    <div class="results-label">Final Score</div>
+    <div class="results-counts">
+      <div class="rc-item rc-correct"><div class="num" id="rCorrect">0</div><div class="lbl">Correct</div></div>
+      <div class="rc-item rc-incorrect"><div class="num" id="rIncorrect">0</div><div class="lbl">Incorrect</div></div>
+    </div>
+    <div class="perf-msg" id="rMsg"></div>
+    <table class="sum-table">
+      <tr><th>Parameter</th><th>LFN 12.77 Value</th></tr>
+      <tr><td>Indication</td><td>Hyperkalemia (only indication)</td></tr>
+      <tr><td>Adult Dose</td><td>30 grams PO/PR</td></tr>
+      <tr><td>Pediatric Dose</td><td>1–2 grams/kg PO/PR</td></tr>
+      <tr><td>Mechanism</td><td>Removes potassium by exchanging sodium ions for potassium ions in the intestine</td></tr>
+      <tr><td>Category</td><td>Antidote; Potassium Binder</td></tr>
+      <tr><td>Trade Name</td><td>Kalexate</td></tr>
+      <tr><td>Onset / Peak</td><td>Hours / 4–6 hours (no duration listed)</td></tr>
+      <tr><td>Contraindications (4)</td><td>Hypersensitivity; obstructive bowel disease; neonates with reduced gut motility; oral administration in neonates</td></tr>
+      <tr><td>Warnings (3)</td><td>Severe hypokalemia may occur; large oral doses may cause fecal impaction; caution in severe HF/HTN (sodium load)</td></tr>
+      <tr><td>Adverse Reactions</td><td>Hypernatremia, hypocalcemia, hypokalemia, hypomagnesemia, sodium retention, constipation, diarrhea, fecal impaction, nausea, vomiting</td></tr>
+      <tr><td>Pregnancy</td><td>Not absorbed systemically — not expected to result in significant fetal exposure</td></tr>
+    </table>
+    <div class="kp-list">
+      <h4>🔑 Key Points — LFN 12.77</h4>
+      <ul>
+        <li>Single indication: <strong>Hyperkalemia</strong></li>
+        <li>Adult dose: <strong>30 grams PO/PR</strong></li>
+        <li>Pediatric dose: <strong>1–2 grams/kg PO/PR</strong></li>
+        <li>Mechanism: exchanges <strong>Na⁺ for K⁺ in the intestine</strong> — not absorbed systemically</li>
+        <li>Onset: <strong>hours</strong> / Peak: <strong>4–6 hours</strong> — NOT for acute emergency hyperkalemia</li>
+        <li>Trade name: <strong>Kalexate</strong></li>
+        <li>4 contraindications — includes <strong>obstructive bowel disease</strong> and <strong>neonates (oral and reduced gut motility)</strong></li>
+        <li>Critical warning: <strong>severe hypokalemia may occur</strong></li>
+        <li>CHF/HTN warning: sodium load from Na⁺/K⁺ exchange <strong>may exacerbate condition</strong></li>
+        <li>Pregnancy: <strong>not absorbed systemically</strong> — safe to use</li>
+      </ul>
+    </div>
+    <button class="btn btn-primary" onclick="restartQuiz()" style="margin-top:22px">🔄 Restart Quiz</button>
+  </div>
+</div>
+
+<!-- POPUP -->
+<div class="overlay" id="overlay" onclick="closePopup()"></div>
+<div class="popup" id="popup">
+  <div class="popup-head">
+    <h3>📖 LFN Protocol — Exact Wording</h3>
+    <button class="popup-close" onclick="closePopup()">×</button>
+  </div>
+  <div class="popup-body" id="popupBody"></div>
+</div>
+
+<script>
+function switchMode(m){
+  document.getElementById('refPanel').classList.toggle('active',m==='ref');
+  document.getElementById('quizPanel').classList.toggle('active',m==='quiz');
+  document.querySelectorAll('.mode-tab').forEach((t,i)=>t.classList.toggle('active',(m==='ref'&&i===0)||(m==='quiz'&&i===1)));
+}
+function switchRef(e,id){
+  document.querySelectorAll('.ref-section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('ref-'+id).classList.add('active');
+  document.querySelectorAll('.ref-tab').forEach(t=>t.classList.remove('active'));
+  e.target.classList.add('active');
+}
+const PROTO={
+  indication:`INDICATION (LFN 12.77):
+
+"• Hyperkalemia"
+
+Pharmacologic Category:
+"Antidote; Potassium Binder"
+
+Trade Name: "Kalexate"
+
+Hyperkalemia is the only listed
+indication in Section 12.77.`,
+
+  dosing:`DOSING (LFN 12.77):
+
+ADULT — Hyperkalemia:
+"30 grams PO/PR"
+
+PEDIATRIC — Hyperkalemia:
+"1 – 2 grams/kg PO/PR"
+
+Routes:
+• PO = oral
+• PR = rectal (retention enema)`,
+
+  moa:`MECHANISM OF ACTION (LFN 12.77):
+
+"Removes potassium by exchanging
+sodium ions for potassium ions in
+the intestine"
+
+Pharmacologic Category:
+"Antidote; Potassium Binder"
+
+Key point: NOT absorbed systemically —
+works only within the GI tract.`,
+
+  ci:`CONTRAINDICATIONS (LFN 12.77):
+
+"Hypersensitivity to sodium polystyrene
+sulfonate, polystyrene sulfonate resins
+or any component of the formulation;
+obstructive bowel disease; neonates
+with reduced gut motility; oral
+administration in neonates"
+
+4 contraindications:
+1. Hypersensitivity (drug or components)
+2. Obstructive bowel disease
+3. Neonates with reduced gut motility
+4. Oral administration in neonates`,
+
+  warnings:`WARNINGS / PRECAUTIONS (LFN 12.77):
+
+"Severe hypokalemia may occur; Large
+oral doses may cause fecal impaction;
+Use with caution in patients with severe
+heart failure and/or hypertension;
+sodium load may exacerbate condition."
+
+3 warnings:
+1. Severe hypokalemia may occur
+2. Large oral doses may cause fecal
+   impaction
+3. Caution in severe HF and/or HTN —
+   sodium load may exacerbate condition`,
+
+  adverse:`ADVERSE REACTIONS (LFN 12.77):
+
+"Hypernatremia, hypocalcemia,
+hypokalemia, hypomagnesemia, sodium
+retention, constipation, diarrhea,
+fecal impaction, nausea, vomiting"`,
+
+  pregnancy:`PREGNANCY CONSIDERATIONS (LFN 12.77):
+
+"Sodium polystyrene sulfonate is not
+absorbed systemically following oral
+or rectal administration. Use during
+pregnancy is not expected to result
+in significant exposure to the fetus."`,
+
+  onset:`ONSET / PEAK / DURATION (LFN 12.77):
+
+"Hours / 4 – 6 hours"
+
+Onset: Hours
+Peak: 4–6 hours
+Duration: Not listed in LFN 12.77
+
+Clinical implication: NOT for acute
+emergency hyperkalemia management.`
+};
+function showPopup(k){
+  document.getElementById('popupBody').textContent=PROTO[k]||'See LFN 12.77.';
+  document.getElementById('popup').classList.add('show');
+  document.getElementById('overlay').classList.add('show');
+}
+function closePopup(){
+  document.getElementById('popup').classList.remove('show');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+const Qs=[
+  {n:1,type:'recall',
+   scenario:'You are reviewing LFN formulary Section 12.77 during a slow shift.',
+   boxes:[],
+   q:'What is the indication for sodium polystyrene sulfonate per LFN 12.77?',
+   opts:[
+     {t:'Hypokalemia',c:false},
+     {t:'Hyperkalemia',c:true},
+     {t:'Hypernatremia',c:false},
+     {t:'Hypocalcemia',c:false}
+   ],
+   fb:'Per LFN 12.77, sodium polystyrene sulfonate (Kalexate) is indicated for: <strong>Hyperkalemia.</strong> This is the single listed indication.',
+   ins:'<strong>Single indication — Hyperkalemia.</strong> Kayexalate lowers serum potassium by physically removing it from the body via the GI tract. It is not a membrane stabilizer and does not shift potassium — it removes it. Because onset is measured in hours, it is not used for acute hyperkalemia emergencies.',
+   proto:'indication'},
+
+  {n:2,type:'clinical',
+   scenario:'An adult dialysis patient has a potassium of 6.2 mEq/L. He is stable, awake, and can take oral medications. You are preparing sodium polystyrene sulfonate.',
+   boxes:[{cls:'s-dialysis',t:'🩸 CHRONIC HYPERKALEMIA | Adult dialysis patient | K+ 6.2 mEq/L | Stable | Kayexalate dose?'}],
+   q:'What is the adult dose of sodium polystyrene sulfonate per LFN 12.77?',
+   opts:[
+     {t:'15 grams PO/PR',c:false},
+     {t:'30 grams PO/PR',c:true},
+     {t:'60 grams PO/PR',c:false},
+     {t:'1–2 grams/kg PO/PR',c:false}
+   ],
+   fb:'Per LFN 12.77 adult dosing: <strong>30 grams PO/PR.</strong>',
+   ins:'<strong>Adult dose: 30 grams PO or PR.</strong> PO = oral; PR = rectal retention enema. The 1–2 grams/kg dose is the pediatric weight-based dose. There is no sorbitol detail, no frequency, and no dose range in LFN 12.77 — just 30 grams PO/PR for adults.',
+   proto:'dosing'},
+
+  {n:3,type:'calculation',
+   scenario:'A 20 kg child has persistent hyperkalemia and can cooperate with oral medication.',
+   boxes:[{cls:'s-pedi',t:'👶 PEDIATRIC | 20 kg | Hyperkalemia | Calculate sodium polystyrene sulfonate dose'}],
+   q:'What is the pediatric dose per LFN 12.77, and what range does that give for this patient?',
+   opts:[
+     {t:'0.5 grams/kg PO/PR → 10 grams total',c:false},
+     {t:'1–2 grams/kg PO/PR → 20–40 grams for this 20 kg patient',c:true},
+     {t:'30 grams fixed — same as adult',c:false},
+     {t:'1 gram/kg PO/PR → 20 grams only (no range)',c:false}
+   ],
+   fb:'Per LFN 12.77 pediatric dosing: <strong>1–2 grams/kg PO/PR.</strong> For this 20 kg child: 20 kg × 1 g/kg = 20 grams (low end) · 20 kg × 2 g/kg = 40 grams (high end) → <strong>20–40 grams PO/PR.</strong>',
+   ins:'<strong>Pediatric dose is weight-based: 1–2 grams/kg.</strong> This is distinct from the adult flat dose of 30 grams. Same routes apply: PO or PR. Note that oral administration is contraindicated in neonates — this weight-based dose applies to pediatric patients who are not neonates.',
+   proto:'dosing'},
+
+  {n:4,type:'recall',
+   scenario:'A student asks you to explain why Kayexalate lowers potassium, and why it takes so long to work.',
+   boxes:[],
+   q:'What is the mechanism of action of sodium polystyrene sulfonate per LFN 12.77?',
+   opts:[
+     {t:'Blocks potassium channels in renal tubules, increasing urinary K⁺ excretion',c:false},
+     {t:'Shifts potassium intracellularly via beta-2 receptor activation',c:false},
+     {t:'Removes potassium by exchanging sodium ions for potassium ions in the intestine',c:true},
+     {t:'Chelates potassium ions in the bloodstream for renal clearance',c:false}
+   ],
+   fb:'Per LFN 12.77: <strong>"Removes potassium by exchanging sodium ions for potassium ions in the intestine."</strong>',
+   ins:'<strong>Ion exchange in the GI tract — not the bloodstream.</strong> Kayexalate is a cation exchange resin. It releases Na⁺ into the intestine and binds K⁺ in exchange. The K⁺-bound resin is then excreted in stool. Because it works entirely within the GI tract and depends on transit time, onset is hours and peak effect is 4–6 hours. It is NOT absorbed systemically — which also makes it safe in pregnancy.',
+   proto:'moa'},
+
+  {n:5,type:'recall',
+   scenario:'You need to document the pharmacokinetics of sodium polystyrene sulfonate in your transport note.',
+   boxes:[],
+   q:'What are the onset and peak listed for sodium polystyrene sulfonate per LFN 12.77?',
+   opts:[
+     {t:'Onset 5 min / Peak 30 min',c:false},
+     {t:'Onset 30 min / Peak 2 hours',c:false},
+     {t:'Onset hours / Peak 4–6 hours',c:true},
+     {t:'Onset immediate / Peak 1 hour',c:false}
+   ],
+   fb:'Per LFN 12.77 Onset/Peak/Duration: <strong>Hours / 4–6 hours.</strong> No duration is listed. The "4–6 hours" in the protocol field is the peak, not the duration.',
+   ins:'<strong>Slow pharmacokinetics — onset hours, peak 4–6 hours.</strong> No duration is listed in LFN 12.77. This slow time course means Kayexalate is not appropriate for acute hyperkalemia emergencies. Use it for ongoing potassium management after acute stabilization. For acute emergency hyperkalemia (peaked T waves, wide QRS, arrest), use calcium, insulin/glucose, or sodium bicarbonate — all of which act in minutes.',
+   proto:'onset'},
+
+  {n:6,type:'critical',
+   scenario:'A patient with a known bowel obstruction has a potassium of 6.5 mEq/L. A team member suggests Kayexalate for potassium management.',
+   boxes:[{cls:'s-bowel',t:'⚠️ HYPERKALEMIA | Known bowel obstruction | Kayexalate proposed | Is it contraindicated?'}],
+   q:'What does LFN 12.77 list as contraindications to sodium polystyrene sulfonate?',
+   opts:[
+     {t:'Hypersensitivity only',c:false},
+     {t:'Hypersensitivity; obstructive bowel disease; neonates with reduced gut motility; oral administration in neonates',c:true},
+     {t:'Renal failure and pregnancy',c:false},
+     {t:'CHF and hypertension',c:false}
+   ],
+   fb:'Per LFN 12.77 Contraindications: <strong>"Hypersensitivity to sodium polystyrene sulfonate, polystyrene sulfonate resins or any component of the formulation; obstructive bowel disease; neonates with reduced gut motility; oral administration in neonates."</strong>',
+   ins:'<strong>4 contraindications — know all four.</strong> Obstructive bowel disease is a hard contraindication because Kayexalate can accumulate proximal to an obstruction, causing bowel necrosis or perforation. Neonates are contraindicated for oral administration due to immature GI tract and risk of fatal bowel complications. Reduced gut motility in neonates independently contraindications use. CHF/HTN is a precaution (caution), not a contraindication.',
+   proto:'ci'},
+
+  {n:7,type:'critical',
+   scenario:'After receiving Kayexalate, a patient with severe CHF develops worsening dyspnea and peripheral edema. K+ has normalized.',
+   boxes:[{cls:'s-chf',t:'⚠️ SEVERE CHF | Kayexalate administered | K+ normalized | Worsening dyspnea and edema | Why?'}],
+   q:'What warning does LFN 12.77 include for patients with severe heart failure or hypertension?',
+   opts:[
+     {t:'No special precautions in CHF patients',c:false},
+     {t:'Use with caution in patients with severe heart failure and/or hypertension; sodium load may exacerbate condition',c:true},
+     {t:'Kayexalate is contraindicated in CHF',c:false},
+     {t:'Requires half dose in CHF patients',c:false}
+   ],
+   fb:'Per LFN 12.77 Warnings: <strong>"Use with caution in patients with severe heart failure and/or hypertension; sodium load may exacerbate condition."</strong>',
+   ins:'<strong>Sodium load mechanism:</strong> Kayexalate works by releasing Na⁺ in exchange for K⁺ — every potassium ion removed adds a sodium ion to the body. This sodium load causes fluid retention, which in CHF means worsening pulmonary edema, peripheral edema, and dyspnea. In hypertension, it can raise blood pressure. This is a precaution, not a contraindication — use with caution, not avoid entirely.',
+   proto:'warnings'},
+
+  {n:8,type:'clinical',
+   scenario:'Following repeated doses of Kayexalate, a patient\'s potassium has dropped from 6.8 to 2.6 mEq/L. New ECG shows flattened T waves and U waves.',
+   boxes:[{cls:'s-hypoK',t:'⚠️ POST-KAYEXALATE | K+ 6.8 → 2.6 mEq/L | Flattened T waves, U waves | What adverse effect?'}],
+   q:'What critical adverse reaction does LFN 12.77 warn can occur with sodium polystyrene sulfonate?',
+   opts:[
+     {t:'Hyperkalemia rebound',c:false},
+     {t:'Severe hypokalemia may occur; also hypernatremia, hypocalcemia, hypomagnesemia, constipation, diarrhea, fecal impaction, nausea, vomiting',c:true},
+     {t:'Acute renal failure',c:false},
+     {t:'Bronchospasm',c:false}
+   ],
+   fb:'Per LFN 12.77 Warnings: <strong>"Severe hypokalemia may occur."</strong> Adverse Reactions: <strong>"Hypernatremia, hypocalcemia, hypokalemia, hypomagnesemia, sodium retention, constipation, diarrhea, fecal impaction, nausea, vomiting."</strong>',
+   ins:'<strong>Severe hypokalemia is the critical over-correction risk.</strong> Kayexalate removes K⁺ indiscriminately — it can reduce potassium below normal, causing weakness, arrhythmias, and cardiac instability. Monitor K⁺ levels, especially with repeated doses. Additional electrolyte effects: the Na⁺/K⁺ exchange also creates sodium retention (hypernatremia); calcium and magnesium may bind to the resin as bystanders, causing hypocalcemia and hypomagnesemia.',
+   proto:'adverse'},
+
+  {n:9,type:'critical',
+   scenario:'A neonate in the NICU has developed hyperkalemia. A physician asks if oral Kayexalate is appropriate.',
+   boxes:[{cls:'s-neo',t:'👶 NEONATE | Hyperkalemia | Oral Kayexalate considered | Is it safe?'}],
+   q:'What does LFN 12.77 specifically state about sodium polystyrene sulfonate use in neonates?',
+   opts:[
+     {t:'Safe in neonates at reduced doses',c:false},
+     {t:'Oral administration in neonates is contraindicated; neonates with reduced gut motility are also contraindicated',c:true},
+     {t:'Only contraindicated if gestational age < 28 weeks',c:false},
+     {t:'Rectal route is also contraindicated in all neonates',c:false}
+   ],
+   fb:'Per LFN 12.77 Contraindications: <strong>"neonates with reduced gut motility; oral administration in neonates."</strong> Oral administration is contraindicated in all neonates. Rectal use in neonates with reduced gut motility is also contraindicated.',
+   ins:'<strong>Two separate neonate contraindications:</strong> (1) oral administration is contraindicated in all neonates regardless of gut motility; (2) neonates with reduced gut motility — contraindicated for any route. Note that the rectal route is NOT globally contraindicated in all neonates — only in those with reduced gut motility. The key distinction: oral = always contraindicated in neonates; rectal = contraindicated if reduced gut motility.',
+   proto:'ci'},
+
+  {n:10,type:'clinical',
+   scenario:'A 32-week pregnant patient has hyperkalemia at K+ 6.0 mEq/L. Her care team asks whether Kayexalate is safe to administer.',
+   boxes:[{cls:'s-preg',t:'🤰 PREGNANCY | 32 weeks | Hyperkalemia K+ 6.0 | Kayexalate safe?'}],
+   q:'What does LFN 12.77 state about sodium polystyrene sulfonate use in pregnancy?',
+   opts:[
+     {t:'Contraindicated in pregnancy — systemic sodium load risks the fetus',c:false},
+     {t:'Not absorbed systemically following oral or rectal administration; use during pregnancy is not expected to result in significant exposure to the fetus',c:true},
+     {t:'Permitted only in the third trimester',c:false},
+     {t:'Safe but requires dose reduction by 50%',c:false}
+   ],
+   fb:'Per LFN 12.77 Pregnancy Considerations: <strong>"Sodium polystyrene sulfonate is not absorbed systemically following oral or rectal administration. Use during pregnancy is not expected to result in significant exposure to the fetus."</strong>',
+   ins:'<strong>Safety rationale is the mechanism:</strong> Kayexalate is not absorbed into maternal circulation — it works entirely within the GI lumen and exits in stool. Because it never enters the bloodstream, it cannot cross the placenta, and fetal exposure is not expected. This is the same reason it is safe in pregnancy at standard dosing without adjustment.',
+   proto:'pregnancy'}
+];
+
+let cur=1,score=0,answered=[];
+const total=Qs.length;
+
+function buildQuiz(){
+  const c=document.getElementById('qContainer');
+  Qs.forEach((q,i)=>{
+    const num=i+1;
+    const bHTML=q.boxes.map(b=>`<div class="s-box ${b.cls}">${b.t}</div>`).join('');
+    const oHTML=q.opts.map((o,j)=>`
+      <div class="option" data-correct="${o.c}">
+        <span class="opt-letter">${String.fromCharCode(65+j)}</span>${o.t}
+      </div>`).join('');
+    c.innerHTML+=`
+    <div class="q-card ${num===1?'active':''}" data-q="${num}">
+      <div class="q-header">
+        <span class="q-num">Question ${num}</span>
+        <span class="q-type type-${q.type}">${q.type}</span>
+      </div>
+      <div class="scenario">
+        <h3>📋 Clinical Scenario</h3>
+        <p>${q.scenario}</p>
+        ${bHTML}
+      </div>
+      <p class="q-text">${q.q}</p>
+      <div class="options">${oHTML}</div>
+      <div class="feedback">
+        <h4><span class="fb-icon"></span> <span class="fb-title"></span></h4>
+        <p>${q.fb}</p>
+        <div class="insight-box"><h5>🔬 Clinical Insight</h5><p>${q.ins}</p></div>
+        <div class="proto-ref">📖 Protocol Reference: <span class="proto-link" onclick="showPopup('${q.proto}')">View exact LFN wording</span></div>
+      </div>
+      <div class="nav-row">
+        <button class="btn btn-secondary" ${num===1?'disabled':''} onclick="goQ(${num-1})">← Previous</button>
+        <button class="btn btn-primary" id="next${num}" disabled onclick="${num===total?'showResults()':'goQ('+(num+1)+')'}">
+          ${num===total?'View Results →':'Next Question →'}
+        </button>
+      </div>
+    </div>`;
+  });
+  document.querySelectorAll('.option').forEach(opt=>{
+    opt.addEventListener('click',function(){
+      if(this.classList.contains('disabled'))return;
+      const card=this.closest('.q-card');
+      const num=parseInt(card.dataset.q);
+      card.querySelectorAll('.option').forEach(o=>{
+        o.classList.add('disabled');
+        if(o.dataset.correct==='true')o.classList.add('correct');
+      });
+      const ok=this.dataset.correct==='true';
+      if(!ok)this.classList.add('incorrect');
+      if(ok)score++;
+      answered[num]=ok;
+      const fb=card.querySelector('.feedback');
+      fb.classList.add('show',ok?'correct-fb':'incorrect-fb');
+      fb.querySelector('.fb-icon').textContent=ok?'✓':'✗';
+      fb.querySelector('.fb-title').textContent=ok?'Correct!':'Incorrect';
+      document.getElementById('next'+num).disabled=false;
+    });
+  });
+}
+
+function goQ(n){
+  document.querySelectorAll('.q-card').forEach(c=>c.classList.remove('active'));
+  document.querySelector('[data-q="'+n+'"]').classList.add('active');
+  cur=n;
+  document.getElementById('pFill').style.width=((n/total)*100)+'%';
+  document.getElementById('pText').textContent='Question '+n+' of '+total;
+}
+
+function showResults(){
+  document.getElementById('qContainer').style.display='none';
+  document.querySelector('.progress-wrap').style.display='none';
+  const r=document.getElementById('resultsCard');
+  r.classList.add('active');
+  const pct=Math.round((score/total)*100);
+  document.getElementById('rPct').textContent=pct+'%';
+  document.getElementById('rCorrect').textContent=score;
+  document.getElementById('rIncorrect').textContent=total-score;
+  const m=document.getElementById('rMsg');
+  if(pct>=90){
+    m.className='perf-msg perf-excellent';
+    m.innerHTML='<strong>🌟 Excellent!</strong> Outstanding command of LFN 12.77. You correctly identified hyperkalemia as the sole indication, adult (30 g) and pediatric (1–2 g/kg) dosing, Na⁺/K⁺ intestinal exchange mechanism, slow onset (hours/peak 4–6h), all 4 contraindications, severe hypokalemia and CHF sodium load warnings, and pregnancy safety via systemic non-absorption.';
+  } else if(pct>=70){
+    m.className='perf-msg perf-good';
+    m.innerHTML='<strong>👍 Good Performance!</strong> Review: hyperkalemia sole indication; 30 grams adult / 1–2 g/kg pedi PO/PR; Na⁺ for K⁺ exchange in intestine — NOT absorbed; onset hours / peak 4–6h (not for acute emergency); 4 contraindications (hypersensitivity, obstructive bowel disease, neonates with reduced gut motility, oral in neonates); severe hypokalemia warning; CHF/HTN caution (Na⁺ load); pregnancy safe (not absorbed).';
+  } else {
+    m.className='perf-msg perf-review';
+    m.innerHTML='<strong>📚 Keep Studying!</strong> Focus areas: hyperkalemia only indication; adult 30 grams / pedi 1–2 g/kg PO/PR; Na⁺/K⁺ exchange in intestine (not absorbed); onset HOURS / peak 4–6 hours — never use for acute emergency; 4 contraindications including bowel obstruction and neonates; severe hypokalemia is the critical adverse warning; CHF/HTN sodium load precaution; safe in pregnancy because not absorbed systemically.';
+  }
+}
+
+function restartQuiz(){
+  score=0; cur=1; answered=[];
+  document.querySelectorAll('.option').forEach(o=>o.classList.remove('disabled','correct','incorrect'));
+  document.querySelectorAll('.feedback').forEach(f=>f.classList.remove('show','correct-fb','incorrect-fb'));
+  Qs.forEach((_,i)=>{const b=document.getElementById('next'+(i+1));if(b)b.disabled=true;});
+  document.getElementById('qContainer').style.display='block';
+  document.querySelector('.progress-wrap').style.display='block';
+  document.getElementById('resultsCard').classList.remove('active');
+  goQ(1);
+}
+
+buildQuiz();
+</script>
+</body>
+</html>

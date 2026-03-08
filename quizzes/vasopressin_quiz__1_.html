@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LFN Drug Quiz | Vasopressin (Section 12.83)</title>
+    <style>
+        :root {
+            --primary: #4c1d95;
+            --primary-light: #6d28d9;
+            --accent: #8b5cf6;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --bg-light: #f5f3ff;
+            --bg-card: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #ede9fe 0%, #8b5cf6 50%, #4c1d95 100%); min-height: 100vh; color: var(--text-primary); line-height: 1.6; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+
+        .header { background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 100%); color: white; padding: 30px; border-radius: 16px; margin-bottom: 25px; text-align: center; box-shadow: var(--shadow-lg); }
+        .header h1 { font-size: 1.8rem; margin-bottom: 8px; }
+        .header .subtitle { opacity: 0.9; font-size: 1rem; }
+        .header .drug-class { display: inline-block; background: rgba(255,255,255,0.2); padding: 5px 15px; border-radius: 20px; margin-top: 10px; font-size: 0.85rem; }
+        .badge-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 12px; }
+        .indication-badge { padding: 5px 12px; border-radius: 15px; font-size: 0.75rem; font-weight: 600; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); }
+
+        /* ── Top-Level Mode Tabs ── */
+        .mode-tabs { display: flex; gap: 0; margin-bottom: 25px; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+        .mode-tab { flex: 1; padding: 16px 20px; background: white; border: none; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; color: var(--text-secondary); text-align: center; }
+        .mode-tab:first-child { border-radius: 12px 0 0 12px; }
+        .mode-tab:last-child { border-radius: 0 12px 12px 0; }
+        .mode-tab:hover { background: #f5f3ff; color: var(--primary); }
+        .mode-tab.active { background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 100%); color: white; }
+        .mode-panel { display: none; }
+        .mode-panel.active { display: block; }
+
+        /* ── Quick Reference (Four-Tab) ── */
+        .quick-reference { background: var(--bg-card); border-radius: 12px; margin-bottom: 25px; box-shadow: var(--shadow); overflow: hidden; }
+        .qr-header { background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 100%); color: white; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; }
+        .qr-header h3 { font-size: 1rem; margin: 0; }
+        .qr-toggle { font-size: 1.2rem; transition: transform 0.3s ease; }
+        .qr-toggle.collapsed { transform: rotate(-90deg); }
+        .qr-body { padding: 0; max-height: 5000px; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s ease; }
+        .qr-body.collapsed { max-height: 0; padding: 0; }
+        .qr-body-inner { padding: 20px; }
+        .qr-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 2px solid var(--border); }
+        .qr-tab { padding: 8px 16px; border-radius: 8px; border: 2px solid var(--border); background: white; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; color: var(--text-secondary); white-space: nowrap; }
+        .qr-tab:hover { border-color: var(--accent); color: var(--primary); }
+        .qr-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .qr-panel { display: none; }
+        .qr-panel.active { display: block; }
+
+        .dose-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-bottom: 10px; }
+        .dose-table th { background: linear-gradient(135deg, #4c1d95 0%, #5b21b6 100%); color: white; padding: 10px 12px; text-align: left; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .dose-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+        .dose-table tr:last-child td { border-bottom: none; }
+        .dose-table tr:nth-child(even) td { background: #f5f3ff; }
+        .dose-table .indication-cell { font-weight: 600; color: var(--primary); min-width: 110px; }
+        .dose-table .dose-cell { font-family: 'Courier New', monospace; font-size: 0.82rem; line-height: 1.6; }
+        .dose-detail { color: var(--text-secondary); font-size: 0.78rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+
+        .ref-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .ref-item { background: var(--bg-light); padding: 12px; border-radius: 8px; }
+        .ref-label { font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; font-weight: 600; }
+        .ref-value { font-weight: 600; color: var(--text-primary); font-size: 0.88rem; }
+        .ref-item.warning { background: #fef3c7; border: 1px solid #fde047; }
+        .ref-item.warning .ref-label { color: #92400e; }
+        .ref-item.warning .ref-value { color: #78350f; font-size: 0.84rem; }
+        .ref-item.critical { background: #fee2e2; border: 2px solid #fecaca; }
+        .ref-item.critical .ref-label { color: #991b1b; }
+        .ref-item.critical .ref-value { color: #7f1d1d; }
+        .ref-item.info { background: #eff6ff; border: 1px solid #bfdbfe; }
+        .ref-item.info .ref-label { color: #1e40af; }
+        .ref-item.info .ref-value { color: #1e3a8a; }
+        .ref-item.success { background: #f0fdf4; border: 1px solid #bbf7d0; }
+        .ref-item.success .ref-label { color: #166534; }
+        .ref-item.success .ref-value { color: #14532d; }
+        .ref-item.purple { background: #f5f3ff; border: 1px solid #c4b5fd; }
+        .ref-item.purple .ref-label { color: #5b21b6; }
+        .ref-item.purple .ref-value { color: #4c1d95; }
+
+        .consideration-list { list-style: none; padding: 0; }
+        .consideration-list li { padding: 10px 12px 10px 36px; position: relative; border-bottom: 1px solid #f1f5f9; font-size: 0.88rem; line-height: 1.6; }
+        .consideration-list li:last-child { border-bottom: none; }
+        .consideration-list li::before { content: attr(data-num); position: absolute; left: 6px; top: 10px; width: 22px; height: 22px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; }
+
+        .warning-box { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border: 2px solid #f59e0b; border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+        .warning-box .warn-title { font-weight: 700; color: #92400e; font-size: 0.85rem; margin-bottom: 8px; }
+        .warning-box p { color: #78350f; font-size: 0.85rem; line-height: 1.7; }
+        .danger-box { background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); border: 2px solid #ef4444; border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+        .danger-box .warn-title { font-weight: 700; color: #991b1b; font-size: 0.85rem; margin-bottom: 8px; }
+        .danger-box p { color: #7f1d1d; font-size: 0.85rem; line-height: 1.7; }
+        .info-box { background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 2px solid #3b82f6; border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+        .info-box .warn-title { font-weight: 700; color: #1e40af; font-size: 0.85rem; margin-bottom: 8px; }
+        .info-box p { color: #1e3a8a; font-size: 0.85rem; line-height: 1.7; }
+        .success-box { background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); border: 2px solid #22c55e; border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+        .success-box .warn-title { font-weight: 700; color: #166534; font-size: 0.85rem; margin-bottom: 8px; }
+        .success-box p { color: #14532d; font-size: 0.85rem; line-height: 1.7; }
+
+        .compare-strip { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+        .compare-card { padding: 12px 14px; border-radius: 10px; }
+        .compare-card.left { background: linear-gradient(135deg, #f5f3ff 0%, #ddd6fe 100%); border: 2px solid #a78bfa; }
+        .compare-card.right { background: linear-gradient(135deg, #eff6ff 0%, #bfdbfe 100%); border: 2px solid #60a5fa; }
+        .compare-label { font-size: 0.7rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .compare-card.left .compare-label { color: #5b21b6; }
+        .compare-card.right .compare-label { color: #1e40af; }
+        .compare-dose { font-size: 1rem; font-weight: 800; color: var(--text-primary); margin-bottom: 4px; }
+        .compare-detail { font-size: 0.78rem; line-height: 1.5; }
+        .compare-card.left .compare-detail { color: #4c1d95; }
+        .compare-card.right .compare-detail { color: #1e3a8a; }
+
+        /* ── Quiz Styles ── */
+        .progress-section { background: var(--bg-card); border-radius: 12px; padding: 20px 25px; margin-bottom: 25px; box-shadow: var(--shadow); }
+        .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px; }
+        .progress-title { font-weight: 600; color: var(--primary); }
+        .progress-stats { display: flex; gap: 20px; font-size: 0.9rem; color: var(--text-secondary); }
+        .progress-bar-container { height: 10px; background: var(--border); border-radius: 5px; overflow: hidden; }
+        .progress-bar { height: 100%; background: linear-gradient(90deg, #a78bfa 0%, #7c3aed 100%); border-radius: 5px; transition: width 0.4s ease; }
+
+        .question-card { background: var(--bg-card); border-radius: 16px; box-shadow: var(--shadow-lg); overflow: hidden; margin-bottom: 25px; }
+        .question-header { background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 100%); color: white; padding: 20px 25px; display: flex; justify-content: space-between; align-items: center; }
+        .question-number { font-size: 1.1rem; font-weight: 600; }
+        .question-type { padding: 5px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; }
+        .question-type.clinical { background: #22c55e; }
+        .question-type.critical { background: #dc2626; }
+        .question-type.recall { background: #3b82f6; }
+        .question-type.calculation { background: #f59e0b; }
+        .question-body { padding: 30px; }
+
+        .scenario-box { background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); border-left: 4px solid #7c3aed; padding: 20px; border-radius: 0 10px 10px 0; margin-bottom: 20px; }
+        .scenario-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--primary); font-weight: 700; margin-bottom: 10px; }
+        .scenario-text { font-size: 1rem; color: var(--text-primary); line-height: 1.7; }
+        .vital-signs { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 10px; margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border); }
+        .vital-item { text-align: center; padding: 8px; background: white; border-radius: 8px; }
+        .vital-label { font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; }
+        .vital-value { font-size: 0.95rem; font-weight: 700; color: var(--primary); }
+
+        .question-text { font-size: 1.15rem; font-weight: 500; color: var(--text-primary); margin-bottom: 25px; line-height: 1.7; }
+        .options-list { display: flex; flex-direction: column; gap: 12px; }
+        .option-btn { display: flex; align-items: flex-start; padding: 16px 20px; background: var(--bg-light); border: 2px solid var(--border); border-radius: 10px; cursor: pointer; transition: all 0.2s ease; text-align: left; }
+        .option-btn:hover:not(.disabled) { border-color: var(--accent); background: white; transform: translateX(5px); }
+        .option-btn.correct { border-color: var(--success); background: rgba(22, 163, 74, 0.1); }
+        .option-btn.incorrect { border-color: var(--danger); background: rgba(220, 38, 38, 0.1); }
+        .option-btn.disabled { cursor: default; }
+        .option-letter { width: 32px; height: 32px; min-width: 32px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; margin-right: 15px; font-size: 0.9rem; }
+        .option-btn.correct .option-letter { background: var(--success); }
+        .option-btn.incorrect .option-letter { background: var(--danger); }
+        .option-text { flex: 1; font-size: 1rem; line-height: 1.5; }
+
+        .rationale-box { margin-top: 25px; padding: 25px; border-radius: 12px; background: #f8fafc; display: none; }
+        .rationale-box.show { display: block; }
+        .mechanism-section { background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-radius: 12px; padding: 20px; margin-bottom: 15px; }
+        .mechanism-section h4 { color: #1e40af; margin-bottom: 12px; font-size: 1rem; }
+        .mechanism-section p { color: #1e3a8a; font-size: 0.95rem; line-height: 1.8; }
+        .clinical-pearl-box { background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); border-radius: 12px; padding: 20px; margin-bottom: 15px; }
+        .clinical-pearl-box h4 { color: #166534; margin-bottom: 12px; font-size: 1rem; }
+        .clinical-pearl-box p { color: #14532d; font-size: 0.95rem; line-height: 1.8; }
+        .protocol-box { background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); border-radius: 12px; padding: 20px; }
+        .protocol-box h4 { color: #4c1d95; margin-bottom: 12px; font-size: 1rem; }
+        .protocol-box p { color: #5b21b6; font-size: 0.95rem; line-height: 1.8; font-family: 'Courier New', monospace; }
+
+        .nav-buttons { display: flex; justify-content: space-between; gap: 15px; padding: 0 30px 30px; }
+        .nav-btn { padding: 14px 28px; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+        .nav-btn.primary { background: var(--primary); color: white; }
+        .nav-btn.primary:hover { background: var(--primary-light); }
+        .nav-btn.secondary { background: var(--border); color: var(--text-secondary); }
+        .nav-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .results-card { background: var(--bg-card); border-radius: 16px; box-shadow: var(--shadow-lg); padding: 40px; text-align: center; display: none; }
+        .results-card.show { display: block; }
+        .results-icon { width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 2.5rem; }
+        .results-icon.excellent { background: rgba(22, 163, 74, 0.15); }
+        .results-icon.good { background: rgba(124, 58, 237, 0.15); }
+        .results-icon.needs-work { background: rgba(220, 38, 38, 0.15); }
+        .results-title { font-size: 1.8rem; font-weight: 700; color: var(--primary); }
+        .results-score { font-size: 3rem; font-weight: 800; margin: 20px 0; }
+        .results-score.excellent { color: var(--success); }
+        .results-score.good { color: var(--primary); }
+        .results-score.needs-work { color: var(--danger); }
+        .results-message { color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 30px; }
+        .results-breakdown { display: flex; justify-content: center; gap: 40px; margin-bottom: 30px; }
+        .breakdown-item { text-align: center; }
+        .breakdown-value { font-size: 1.5rem; font-weight: 700; }
+        .breakdown-label { font-size: 0.85rem; color: var(--text-secondary); }
+
+        .results-qr { background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); border-radius: 12px; padding: 25px; margin-top: 25px; text-align: left; }
+        .results-qr h3 { color: #4c1d95; margin-bottom: 15px; text-align: center; font-size: 1.1rem; }
+        .results-dose-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.8rem; }
+        .results-dose-table th { background: #4c1d95; color: white; padding: 8px 10px; text-align: left; }
+        .results-dose-table td { padding: 8px 10px; border-bottom: 1px solid #c4b5fd; }
+        .results-warning-list { background: #ede9fe; border: 2px solid #7c3aed; border-radius: 10px; padding: 15px; margin-top: 15px; }
+        .results-warning-list h4 { color: #4c1d95; margin-bottom: 10px; font-size: 0.9rem; }
+        .results-warning-list ul { color: #5b21b6; margin-left: 20px; font-size: 0.82rem; }
+        .results-warning-list li { margin-bottom: 5px; }
+
+        .disclaimer { text-align: center; font-size: 0.72rem; color: var(--text-secondary); margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.6); border-radius: 8px; line-height: 1.5; }
+
+        @media (max-width: 600px) {
+            body { padding: 10px; }
+            .header { padding: 20px 15px; border-radius: 12px; }
+            .header h1 { font-size: 1.5rem; }
+            .mode-tab { padding: 12px 10px; font-size: 0.85rem; }
+            .qr-header { padding: 14px 16px; }
+            .qr-body-inner { padding: 15px; }
+            .qr-tabs { gap: 4px; }
+            .qr-tab { padding: 6px 10px; font-size: 0.72rem; }
+            .dose-table { font-size: 0.78rem; }
+            .dose-table th, .dose-table td { padding: 8px 6px; }
+            .ref-grid { grid-template-columns: 1fr; }
+            .compare-strip { grid-template-columns: 1fr; }
+            .question-body { padding: 20px; }
+            .nav-buttons { flex-direction: column; padding: 0 20px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💉 Vasopressin</h1>
+            <p class="subtitle">LFN Protocol Section 12.83 | Clinical Application Quiz</p>
+            <span class="drug-class">Antidiuretic Hormone Analog | Inotrope/Vasopressor (Pitressin)</span>
+            <div class="badge-container">
+                <span class="indication-badge">🫀 Refractory Shock</span>
+                <span class="indication-badge">💊 Norepi-Refractory</span>
+                <span class="indication-badge">📊 0.03 units/min</span>
+            </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════ -->
+        <!-- TOP-LEVEL MODE TABS                        -->
+        <!-- ══════════════════════════════════════════ -->
+        <div class="mode-tabs">
+            <button class="mode-tab active" data-mode="reference" onclick="switchMode('reference')">📋 Quick Reference</button>
+            <button class="mode-tab" data-mode="quiz" onclick="switchMode('quiz')">📝 Quiz</button>
+        </div>
+
+        <!-- ══════════════════════════════════════════ -->
+        <!-- QUICK REFERENCE PANEL                      -->
+        <!-- ══════════════════════════════════════════ -->
+        <div class="mode-panel active" id="panel-reference">
+            <div class="quick-reference" id="quickRef">
+                <div class="qr-header" onclick="toggleQuickRef()">
+                    <h3>📋 Quick Reference — Key Doses for Vasopressin 12.83</h3>
+                    <span class="qr-toggle" id="qrToggle">▼</span>
+                </div>
+                <div class="qr-body" id="qrBody">
+                    <div class="qr-body-inner">
+                        <div class="qr-tabs" id="qrTabs">
+                            <button class="qr-tab active" data-tab="dosing">Dosing & Indications</button>
+                            <button class="qr-tab" data-tab="pharmacology">Pharmacology</button>
+                            <button class="qr-tab" data-tab="considerations">Considerations</button>
+                            <button class="qr-tab" data-tab="warnings">Warnings & Precautions</button>
+                        </div>
+
+                        <!-- ── TAB 1: DOSING & INDICATIONS ── -->
+                        <div class="qr-panel active" id="panel-dosing">
+                            <div style="overflow-x: auto;">
+                                <table class="dose-table">
+                                    <thead><tr><th>Indication</th><th>Adult Dose</th><th>Pediatric Dose</th></tr></thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="indication-cell">Shock / Hypotension<br><span class="dose-detail">Refractory to norepinephrine</span></td>
+                                            <td class="dose-cell">0.03 units/min<br><span class="dose-detail">Continuous infusion<br>Recommended Mixture:<br>20 units / 100 mL</span></td>
+                                            <td class="dose-cell">No LFN Standing Order</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Key dose strip -->
+                            <div class="ref-grid" style="margin-top: 18px;">
+                                <div class="ref-item purple">
+                                    <div class="ref-label">Adult Dose</div>
+                                    <div class="ref-value">0.03 units/min</div>
+                                </div>
+                                <div class="ref-item info">
+                                    <div class="ref-label">Pediatric Dose</div>
+                                    <div class="ref-value">No LFN Standing Order</div>
+                                </div>
+                                <div class="ref-item warning">
+                                    <div class="ref-label">Recommended Mixture</div>
+                                    <div class="ref-value">20 units / 100 mL</div>
+                                </div>
+                                <div class="ref-item purple">
+                                    <div class="ref-label">Trade Name</div>
+                                    <div class="ref-value">Pitressin</div>
+                                </div>
+                            </div>
+
+                            <!-- Vasopressin vs Norepinephrine Comparison -->
+                            <div style="margin-top: 18px;">
+                                <div class="ref-label" style="margin-bottom: 8px; font-size: 0.75rem; font-weight: 700;">⚖️ VASOPRESSOR COMPARISON — Vasopressin vs Norepinephrine</div>
+                                <div class="compare-strip">
+                                    <div class="compare-card left">
+                                        <div class="compare-label">Vasopressin 12.83</div>
+                                        <div class="compare-dose">0.03 units/min</div>
+                                        <div class="compare-detail">ADH analog / vasopressor<br>Fixed rate — no titration per LFN<br>Added when refractory to norepi<br>Onset 1–2 min / Duration 10–20 min<br>Mix: 20 units / 100 mL</div>
+                                    </div>
+                                    <div class="compare-card right">
+                                        <div class="compare-label">Norepinephrine 12.63</div>
+                                        <div class="compare-dose">2–10 mcg/min start</div>
+                                        <div class="compare-detail">Alpha/beta agonist<br>Titrate q 3–5 min to response<br>First-line vasopressor for shock<br>Onset 1–3 min / Duration 5–10 min<br>Mix: 4 mg / 250 mL<br>Max 45 mcg/min (2 mcg/kg/min)</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Refractory context -->
+                            <div style="background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); border-radius: 10px; padding: 16px; margin-top: 14px;">
+                                <div class="ref-label" style="color: #4c1d95; margin-bottom: 8px;">💡 When to Add Vasopressin</div>
+                                <p style="font-size: 0.85rem; color: #5b21b6; line-height: 1.8;">
+                                    <strong>Vasopressin is a second-line agent</strong> — indicated only when shock/hypotension is <strong>refractory to norepinephrine</strong>.<br>
+                                    Per Norepinephrine 12.63 Special Consideration #2: consider adding a second agent when norepinephrine rate &gt; 30 mcg/min. After vasopressin is added, norepi may exceed the listed max of 45 mcg/min.
+                                </p>
+                            </div>
+
+                            <div class="ref-grid" style="margin-top: 14px;">
+                                <div class="ref-item critical">
+                                    <div class="ref-label">⚠️ Key Rule</div>
+                                    <div class="ref-value">Second-line only — must be refractory to norepinephrine first</div>
+                                </div>
+                                <div class="ref-item info">
+                                    <div class="ref-label">📊 Fixed Rate</div>
+                                    <div class="ref-value">0.03 units/min — no titration specified per LFN</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ── TAB 2: PHARMACOLOGY ── -->
+                        <div class="qr-panel" id="panel-pharmacology">
+                            <div class="ref-grid" style="margin-bottom: 18px;">
+                                <div class="ref-item purple">
+                                    <div class="ref-label">Pharmacologic Category</div>
+                                    <div class="ref-value">Antidiuretic Hormone Analog, Inotrope/Vasopressor</div>
+                                </div>
+                                <div class="ref-item info">
+                                    <div class="ref-label">Trade Name</div>
+                                    <div class="ref-value">Pitressin</div>
+                                </div>
+                                <div class="ref-item purple">
+                                    <div class="ref-label">Onset</div>
+                                    <div class="ref-value">1–2 minutes</div>
+                                </div>
+                                <div class="ref-item warning">
+                                    <div class="ref-label">Duration</div>
+                                    <div class="ref-value">10–20 minutes</div>
+                                </div>
+                                <div class="ref-item info">
+                                    <div class="ref-label">Peak</div>
+                                    <div class="ref-value">Not specified in LFN formulary</div>
+                                </div>
+                                <div class="ref-item purple">
+                                    <div class="ref-label">Recommended Mixture</div>
+                                    <div class="ref-value">20 units / 100 mL</div>
+                                </div>
+                            </div>
+
+                            <!-- Onset / Duration -->
+                            <div class="info-box">
+                                <div class="warn-title">📊 Onset / Peak / Duration</div>
+                                <p><strong>Onset:</strong> 1–2 min &nbsp;|&nbsp; <strong>Peak:</strong> Not specified &nbsp;|&nbsp; <strong>Duration:</strong> 10–20 min<br>Rapid onset (1–2 min) allows quick assessment of hemodynamic response. Short duration (10–20 min) means continuous infusion is required — effects dissipate rapidly if infusion stops.</p>
+                            </div>
+
+                            <!-- Mechanism box -->
+                            <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-radius: 12px; padding: 20px; margin-bottom: 18px;">
+                                <h4 style="color: #1e40af; margin-bottom: 10px; font-size: 0.95rem;">🔬 Mechanism of Action</h4>
+                                <p style="color: #1e3a8a; font-size: 0.9rem; line-height: 1.8;">Vasopressin produces concentrated urine by <strong>increasing tubular reabsorption of water (ADH activity)</strong>, thus preserving up to 90% water. It may increase sodium and decrease potassium reabsorption but <strong>plays no causative role in edema formation</strong>.</p>
+                            </div>
+
+                            <!-- Vasopressor mechanism comparison -->
+                            <div style="margin-bottom: 18px;">
+                                <div class="ref-label" style="margin-bottom: 8px; font-size: 0.75rem; font-weight: 700;">🧬 VASOPRESSOR MECHANISMS — Different Receptor Targets</div>
+                                <div class="compare-strip">
+                                    <div class="compare-card left">
+                                        <div class="compare-label">Vasopressin (V1 Receptors)</div>
+                                        <div class="compare-dose">ADH Analog</div>
+                                        <div class="compare-detail">Acts on V1 receptors on vascular smooth muscle<br>Non-catecholamine vasopressor<br>ADH activity: water reabsorption<br>Does not rely on adrenergic receptors<br>Effective even in catecholamine-resistant shock</div>
+                                    </div>
+                                    <div class="compare-card right">
+                                        <div class="compare-label">Norepinephrine (α/β Receptors)</div>
+                                        <div class="compare-dose">Catecholamine</div>
+                                        <div class="compare-detail">Acts primarily on α1-adrenergic receptors<br>Some β1 cardiac stimulation<br>Direct-acting sympathomimetic<br>Vasoconstriction + slight cardiac stimulation<br>First-line for shock per LFN</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Adverse reactions -->
+                            <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-radius: 12px; padding: 20px; margin-bottom: 18px;">
+                                <h4 style="color: #92400e; margin-bottom: 10px; font-size: 0.95rem;">⚠️ Adverse Reactions</h4>
+                                <p style="color: #78350f; font-size: 0.9rem; line-height: 1.8;">Angina; hypertension</p>
+                            </div>
+
+                            <!-- Pregnancy -->
+                            <div style="background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%); border-radius: 12px; padding: 20px;">
+                                <h4 style="color: #9d174d; margin-bottom: 10px; font-size: 0.95rem;">🤰 Pregnancy Considerations</h4>
+                                <p style="color: #831843; font-size: 0.9rem; line-height: 1.8;">Vasopressin may produce <strong>tonic uterine contractions</strong>. Due to pregnancy-induced physiologic changes, vasopressin clearance may be <strong>increased in the second and third trimesters</strong>.</p>
+                            </div>
+                        </div>
+
+                        <!-- ── TAB 3: CONSIDERATIONS ── -->
+                        <div class="qr-panel" id="panel-considerations">
+                            <ul class="consideration-list">
+                                <li data-num="1"><strong>Second-line vasopressor only:</strong> Vasopressin is indicated for shock/hypotension <strong>refractory to norepinephrine</strong>. It is not a first-line agent — norepinephrine must be initiated and proven insufficient before adding vasopressin.</li>
+                                <li data-num="2"><strong>Fixed-rate infusion:</strong> Per LFN 12.83, the dose is <strong>0.03 units/min</strong> — a single fixed rate. Unlike norepinephrine (which is titrated q 3–5 min), there is no titration guidance for vasopressin in the LFN formulary.</li>
+                                <li data-num="3"><strong>Recommended mixture:</strong> 20 units in 100 mL. At 0.03 units/min, the infusion rate can be calculated from this concentration. Ensure accurate infusion pump programming.</li>
+                                <li data-num="4"><strong>Non-catecholamine mechanism:</strong> Vasopressin acts on V1 receptors — a different receptor pathway than catecholamines (norepinephrine, epinephrine). This makes it effective as an adjunct when adrenergic receptor responsiveness is diminished in refractory shock.</li>
+                                <li data-num="5"><strong>Drug interactions:</strong> Alcohol, demeclocycline, epinephrine, heparin, lithium, and phenytoin may <strong>decrease the antidiuretic effects</strong> of vasopressin.</li>
+                                <li data-num="6"><strong>No LFN pediatric standing order:</strong> No pediatric dosing established per LFN protocol.</li>
+                            </ul>
+
+                            <!-- Vasopressor escalation workflow -->
+                            <div style="margin-top: 18px;">
+                                <div class="ref-label" style="margin-bottom: 8px; font-size: 0.75rem; font-weight: 700;">🔄 VASOPRESSOR ESCALATION WORKFLOW — Refractory Shock</div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+                                    <div style="background: linear-gradient(135deg, #eff6ff 0%, #bfdbfe 100%); border: 2px solid #3b82f6; border-radius: 10px; padding: 12px; text-align: center;">
+                                        <div style="font-size: 0.7rem; font-weight: 700; color: #1e40af; text-transform: uppercase; margin-bottom: 4px;">Step 1</div>
+                                        <div style="font-size: 0.85rem; font-weight: 700; color: #1e3a8a;">Norepinephrine</div>
+                                        <div style="font-size: 0.75rem; color: #1e40af; margin-top: 4px;">First-line vasopressor<br>2–10 mcg/min, titrate</div>
+                                    </div>
+                                    <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border: 2px solid #f59e0b; border-radius: 10px; padding: 12px; text-align: center;">
+                                        <div style="font-size: 0.7rem; font-weight: 700; color: #92400e; text-transform: uppercase; margin-bottom: 4px;">Assess</div>
+                                        <div style="font-size: 0.85rem; font-weight: 700; color: #78350f;">Refractory?</div>
+                                        <div style="font-size: 0.75rem; color: #92400e; margin-top: 4px;">Consider 2nd agent<br>when norepi &gt; 30 mcg/min</div>
+                                    </div>
+                                    <div style="background: linear-gradient(135deg, #f5f3ff 0%, #ddd6fe 100%); border: 2px solid #8b5cf6; border-radius: 10px; padding: 12px; text-align: center;">
+                                        <div style="font-size: 0.7rem; font-weight: 700; color: #5b21b6; text-transform: uppercase; margin-bottom: 4px;">Step 2</div>
+                                        <div style="font-size: 0.85rem; font-weight: 700; color: #4c1d95;">Add Vasopressin</div>
+                                        <div style="font-size: 0.75rem; color: #5b21b6; margin-top: 4px;">0.03 units/min<br>20 units / 100 mL</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Clinical context -->
+                            <div style="background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); border-radius: 10px; padding: 16px; margin-top: 14px;">
+                                <div class="ref-label" style="color: #4c1d95; margin-bottom: 8px;">💡 Clinical Context — Why Add Vasopressin?</div>
+                                <p style="font-size: 0.85rem; color: #5b21b6; line-height: 1.8;">In prolonged or severe shock, adrenergic receptor downregulation can reduce the effectiveness of catecholamine vasopressors like norepinephrine. Vasopressin acts through a completely different receptor pathway (V1 receptors on vascular smooth muscle), providing vasoconstriction independent of adrenergic signaling. This complementary mechanism makes vasopressin effective when catecholamines alone are insufficient. Per Norepi 12.63 SC #2a: after vasopressin is added, norepinephrine may exceed its listed max rate of 45 mcg/min.</p>
+                            </div>
+                        </div>
+
+                        <!-- ── TAB 4: WARNINGS & PRECAUTIONS ── -->
+                        <div class="qr-panel" id="panel-warnings">
+                            <div class="danger-box">
+                                <div class="warn-title">🚫 CONTRAINDICATIONS</div>
+                                <p><strong>Hypersensitivity</strong> to vasopressin or any component; <strong>chronic nephritis</strong>.</p>
+                            </div>
+
+                            <div class="warning-box">
+                                <div class="warn-title">⚠️ Caution — High-Risk Populations</div>
+                                <p>Use with caution in patients with: <strong>epilepsy; asthma; heart failure; renal disease; elderly patients; children.</strong></p>
+                            </div>
+
+                            <div class="warning-box">
+                                <div class="warn-title">⚠️ Adverse Reactions</div>
+                                <p><strong>Angina; hypertension.</strong> Vasopressin causes vasoconstriction which can increase myocardial oxygen demand (precipitating angina) and elevate blood pressure. Monitor cardiac rhythm and blood pressure closely during infusion.</p>
+                            </div>
+
+                            <div class="warning-box">
+                                <div class="warn-title">⚠️ Drug Interactions</div>
+                                <p>The following agents may <strong>decrease the antidiuretic effects</strong> of vasopressin: <strong>alcohol, demeclocycline, epinephrine, heparin, lithium, and phenytoin.</strong></p>
+                            </div>
+
+                            <!-- Pregnancy -->
+                            <div style="background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%); border: 2px solid #ec4899; border-radius: 10px; padding: 16px; margin-bottom: 12px;">
+                                <div style="font-weight: 700; color: #9d174d; font-size: 0.85rem; margin-bottom: 8px;">🤰 Pregnancy Considerations</div>
+                                <p style="color: #831843; font-size: 0.85rem; line-height: 1.7;">Vasopressin may produce <strong>tonic uterine contractions</strong>. Vasopressin clearance may be <strong>increased in the second and third trimesters</strong> due to pregnancy-induced physiologic changes.</p>
+                            </div>
+
+                            <!-- Pediatric -->
+                            <div class="info-box">
+                                <div class="warn-title">👶 Pediatric</div>
+                                <p><strong>No LFN Standing Order</strong> for pediatric vasopressin. Additionally, children are listed under Warnings/Precautions as a population requiring caution.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════ -->
+        <!-- QUIZ PANEL                                 -->
+        <!-- ══════════════════════════════════════════ -->
+        <div class="mode-panel" id="panel-quiz">
+            <div class="progress-section" id="progressSection">
+                <div class="progress-header">
+                    <span class="progress-title" id="progressTitle">Question 1 of 10</span>
+                    <div class="progress-stats">
+                        <span>✅ <span id="correctCount">0</span></span>
+                        <span>❌ <span id="incorrectCount">0</span></span>
+                    </div>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div id="quizContainer"></div>
+
+            <div class="results-card" id="resultsCard">
+                <div class="results-icon" id="resultsIcon">🏆</div>
+                <div class="results-title">Quiz Complete!</div>
+                <div class="results-score" id="resultsScore">0%</div>
+                <div class="results-message" id="resultsMessage"></div>
+                <div class="results-breakdown">
+                    <div class="breakdown-item"><div class="breakdown-value" id="finalCorrect" style="color: #16a34a;">0</div><div class="breakdown-label">Correct</div></div>
+                    <div class="breakdown-item"><div class="breakdown-value" id="finalIncorrect" style="color: #dc2626;">0</div><div class="breakdown-label">Incorrect</div></div>
+                </div>
+
+                <div class="results-qr">
+                    <h3>💉 Vasopressin 12.83 — Quick Reference</h3>
+                    <div class="ref-grid" style="margin-bottom: 15px;">
+                        <div class="ref-item purple"><div class="ref-label">Class</div><div class="ref-value">ADH Analog, Inotrope/Vasopressor</div></div>
+                        <div class="ref-item info"><div class="ref-label">Trade Name</div><div class="ref-value">Pitressin</div></div>
+                        <div class="ref-item purple"><div class="ref-label">Onset / Duration</div><div class="ref-value">1–2 min / 10–20 min</div></div>
+                        <div class="ref-item warning"><div class="ref-label">Mixture</div><div class="ref-value">20 units / 100 mL</div></div>
+                    </div>
+                    <table class="results-dose-table">
+                        <tr><th>Indication</th><th>Adult Dose</th><th>Pediatric Dose</th></tr>
+                        <tr><td><strong>Shock/Hypotension</strong><br>Refractory to norepinephrine</td><td>0.03 units/min<br>20 units / 100 mL</td><td>No LFN Standing Order</td></tr>
+                    </table>
+                    <div class="results-warning-list">
+                        <h4>⚠️ Warnings, Contraindications &amp; Key Points</h4>
+                        <ul>
+                            <li><strong>CI:</strong> Hypersensitivity; chronic nephritis</li>
+                            <li><strong>Caution:</strong> Epilepsy; asthma; heart failure; renal disease; elderly; children</li>
+                            <li><strong>Adverse:</strong> Angina; hypertension</li>
+                            <li><strong>Interactions:</strong> Alcohol, demeclocycline, epinephrine, heparin, lithium, phenytoin may decrease antidiuretic effects</li>
+                            <li><strong>Pregnancy:</strong> May produce tonic uterine contractions; increased clearance in 2nd/3rd trimesters</li>
+                            <li><strong>Key:</strong> Second-line only — refractory to norepinephrine</li>
+                            <li><strong>Mechanism:</strong> ADH activity — increases tubular reabsorption of water</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <button class="nav-btn primary" onclick="restartQuiz()" style="margin-top: 25px;">Restart Quiz</button>
+            </div>
+        </div>
+
+        <div class="disclaimer">⚕️ This quiz is designed for educational purposes for LFN flight nurses and is based on LFN's Drug Formulary Section 12.83. Always refer to current PCGs and medical direction for clinical decisions.</div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                type: 'recall',
+                scenario: 'You are reviewing the LFN drug formulary and a new flight nurse asks when vasopressin is indicated.',
+                vitals: null,
+                question: 'What is the indication for vasopressin per LFN protocol 12.83?',
+                options: [
+                    { letter: 'A', text: 'First-line treatment for any hypotension', correct: false },
+                    { letter: 'B', text: 'Shock/hypotension refractory to norepinephrine', correct: true },
+                    { letter: 'C', text: 'Diabetes insipidus and electrolyte imbalances', correct: false },
+                    { letter: 'D', text: 'Cardiac arrest as an alternative to epinephrine', correct: false }
+                ],
+                rationale: 'Per LFN formulary 12.83, vasopressin is indicated for <strong>shock/hypotension refractory to norepinephrine</strong>.',
+                mechanism: '<strong>Vasopressin indication — key qualifier:</strong><br>• <strong>Shock/hypotension</strong> — hemodynamic instability<br>• <strong>Refractory to norepinephrine</strong> — must fail first-line vasopressor<br>• Vasopressin is a SECOND-LINE agent per LFN<br>• Norepinephrine (12.63) is the first-line vasopressor<br>• Per Norepi 12.63 SC #2: consider adding a second agent when norepi rate &gt; 30 mcg/min',
+                pearl: 'The key word is "refractory" — vasopressin should only be initiated after norepinephrine has been started and proven insufficient. This is not a first-line vasopressor and should not be used in isolation for shock management.',
+                protocol: 'LFN 12.83 Vasopressin\nIndication: Shock/hypotension refractory\nto norepinephrine\nAdult: 0.03 units/min\nPediatric: No LFN Standing Order'
+            },
+            {
+                type: 'clinical',
+                scenario: 'A 62-year-old septic patient remains profoundly hypotensive despite norepinephrine running at 35 mcg/min. The physician orders vasopressin to be added.',
+                vitals: { HR: '112', BP: '68/38', SpO2: '94%', RR: '24', Temp: '39.2°C' },
+                question: 'What is the adult vasopressin dose per LFN protocol?',
+                options: [
+                    { letter: 'A', text: '0.03 units/min continuous infusion', correct: true },
+                    { letter: 'B', text: '0.04 units/min titrated to blood pressure response', correct: false },
+                    { letter: 'C', text: '20 units IV bolus followed by 0.01 units/min infusion', correct: false },
+                    { letter: 'D', text: '40 units IV push once', correct: false }
+                ],
+                rationale: 'Per LFN formulary 12.83: Adult dose is <strong>0.03 units/min</strong> continuous infusion. Recommended mixture: <strong>20 units / 100 mL</strong>.',
+                mechanism: '<strong>LFN Vasopressin dosing — Adult:</strong><br>• <strong>Dose:</strong> 0.03 units/min (fixed rate)<br>• <strong>Mixture:</strong> 20 units / 100 mL<br>• <strong>Route:</strong> Continuous IV infusion<br>• <strong>No titration guidance</strong> in LFN formulary<br>• <strong>No bolus dosing</strong> per LFN protocol<br><br>This is a fixed-rate infusion — unlike norepinephrine, there is no titration specified. The 0.03 units/min is a standard physiologic replacement dose used in septic shock.',
+                pearl: 'This patient meets the criteria: septic shock with norepinephrine &gt; 30 mcg/min (refractory). Per Norepi 12.63 SC #2: consider a second agent when rate &gt; 30 mcg/min. After vasopressin is added, norepinephrine may exceed its listed max of 45 mcg/min per SC #2a.',
+                protocol: 'LFN 12.83 Vasopressin\nAdult Dose: 0.03 units/min\nRecommended Mixture: 20 units / 100 mL\nContinuous IV infusion'
+            },
+            {
+                type: 'recall',
+                scenario: 'A pharmacist asks you to describe the recommended mixture for a vasopressin infusion during an interfacility transport.',
+                vitals: null,
+                question: 'What is the recommended mixture for vasopressin per LFN protocol?',
+                options: [
+                    { letter: 'A', text: '40 units / 250 mL NS', correct: false },
+                    { letter: 'B', text: '20 units / 100 mL', correct: true },
+                    { letter: 'C', text: '10 units / 50 mL D5W', correct: false },
+                    { letter: 'D', text: '4 mg / 250 mL NS', correct: false }
+                ],
+                rationale: 'Per LFN formulary 12.83: Recommended Mixture is <strong>20 units / 100 mL</strong>.',
+                mechanism: '<strong>Vasopressin mixture:</strong><br>• <strong>Concentration:</strong> 20 units / 100 mL = 0.2 units/mL<br>• <strong>At 0.03 units/min:</strong> infusion rate = 0.15 mL/min = 9 mL/hr<br>• <strong>Duration at 9 mL/hr:</strong> 100 mL bag lasts ~11 hours<br><br><strong>Compare other LFN vasopressor mixtures:</strong><br>• Norepinephrine 12.63: 4 mg / 250 mL<br>• Epinephrine 12.26: varies by indication<br>• Dobutamine 12.23: 250 mg / 250 mL<br><br>Note: Option D (4 mg / 250 mL) is the norepinephrine mixture, not vasopressin.',
+                pearl: 'Know your vasopressor mixtures — they are commonly tested and critical for safe infusion pump programming. Vasopressin (20 units/100 mL) is a unique concentration that differs from all other LFN vasopressor mixtures.',
+                protocol: 'LFN 12.83 Vasopressin\nRecommended Mixture: 20 units / 100 mL\nConcentration: 0.2 units/mL\nAt 0.03 units/min = 9 mL/hr'
+            },
+            {
+                type: 'recall',
+                scenario: 'During a continuing education session, you\'re asked to explain how vasopressin works differently from catecholamine vasopressors.',
+                vitals: null,
+                question: 'What is the mechanism of action of vasopressin per LFN protocol?',
+                options: [
+                    { letter: 'A', text: 'Direct-acting sympathomimetic that acts on alpha-adrenergic receptors', correct: false },
+                    { letter: 'B', text: 'Selective inhibitor of beta1-adrenergic receptors', correct: false },
+                    { letter: 'C', text: 'Produces concentrated urine by increasing tubular reabsorption of water (ADH activity), preserving up to 90% water', correct: true },
+                    { letter: 'D', text: 'Increases cardiac output by stimulating beta2 receptors in the myocardium', correct: false }
+                ],
+                rationale: 'Per LFN formulary 12.83: Vasopressin <strong>produces concentrated urine by increasing tubular reabsorption of water (ADH activity), thus preserving up to 90% water. It may increase sodium and decrease potassium reabsorption but plays no causative role in edema formation.</strong>',
+                mechanism: '<strong>Vasopressin mechanism — LFN formulary description:</strong><br>• ADH (antidiuretic hormone) analog<br>• Increases tubular reabsorption of water → concentrated urine<br>• Preserves up to 90% water<br>• May increase sodium reabsorption<br>• May decrease potassium reabsorption<br>• No causative role in edema formation<br><br><strong>Why it works as a vasopressor:</strong><br>• Acts on V1 receptors on vascular smooth muscle → vasoconstriction<br>• This is a NON-catecholamine pathway (not adrenergic)<br>• Effective when adrenergic receptors are downregulated in severe shock',
+                pearl: 'The LFN formulary describes vasopressin\'s ADH mechanism, but clinically it\'s used as a vasopressor because of its V1 receptor activity on vascular smooth muscle. The key advantage is that it works through a completely different pathway than catecholamines, making it effective when norepinephrine alone is insufficient.',
+                protocol: 'LFN 12.83 Vasopressin\nMechanism: Increases tubular reabsorption\nof water (ADH activity), preserving up\nto 90% water. No causative role in\nedema formation.\nCategory: ADH analog, inotrope/vasopressor'
+            },
+            {
+                type: 'critical',
+                scenario: 'A 71-year-old patient with a history of chronic kidney disease on hemodialysis is in refractory septic shock. Norepinephrine is running at 40 mcg/min. The team considers adding vasopressin.',
+                vitals: { HR: '108', BP: '72/42', SpO2: '95%', RR: '22', Temp: '38.8°C' },
+                question: 'What are the contraindications for vasopressin per LFN protocol?',
+                options: [
+                    { letter: 'A', text: 'Hypotension and tachycardia', correct: false },
+                    { letter: 'B', text: 'Hypersensitivity; chronic nephritis', correct: true },
+                    { letter: 'C', text: 'Heart failure and renal disease', correct: false },
+                    { letter: 'D', text: 'No contraindications — can be given to any patient in shock', correct: false }
+                ],
+                rationale: 'Per LFN formulary 12.83 Contraindications: <strong>Hypersensitivity; chronic nephritis.</strong> Note: heart failure and renal disease are listed under Warnings/Precautions (use with caution), not contraindications.',
+                mechanism: '<strong>Contraindications vs Warnings — critical distinction:</strong><br><br><strong>CONTRAINDICATIONS (absolute):</strong><br>• Hypersensitivity to vasopressin or any component<br>• Chronic nephritis<br><br><strong>WARNINGS/PRECAUTIONS (use with caution):</strong><br>• Epilepsy<br>• Asthma<br>• Heart failure<br>• Renal disease<br>• Elderly patients<br>• Children<br><br><strong>Key:</strong> "Chronic nephritis" is a specific inflammatory kidney condition — distinct from general renal disease or CKD on dialysis.',
+                pearl: 'This is a nuanced clinical question. The patient has CKD on dialysis, not "chronic nephritis" specifically. However, in practice, the distinction between CKD and chronic nephritis may overlap. Renal disease IS listed as a Warning/Precaution requiring caution. Communicate with medical control when the clinical picture is complex.',
+                protocol: 'LFN 12.83 Vasopressin\nContraindications: Hypersensitivity;\nchronic nephritis\nWarnings: Caution in epilepsy, asthma,\nheart failure, renal disease,\nelderly, children'
+            },
+            {
+                type: 'recall',
+                scenario: 'You\'ve initiated a vasopressin infusion and the receiving team asks about expected pharmacokinetics.',
+                vitals: null,
+                question: 'What is the onset and duration of vasopressin per LFN protocol?',
+                options: [
+                    { letter: 'A', text: 'Onset: 5–15 minutes / Duration: 3 hours', correct: false },
+                    { letter: 'B', text: 'Onset: 1–2 minutes / Duration: 10–20 minutes', correct: true },
+                    { letter: 'C', text: 'Onset: Immediate / Duration: 4–6 hours', correct: false },
+                    { letter: 'D', text: 'Onset: 30 minutes / Duration: 8 hours', correct: false }
+                ],
+                rationale: 'Per LFN formulary 12.83: <strong>Onset: 1–2 min / Duration: 10–20 min.</strong> Peak is not specified in the LFN formulary.',
+                mechanism: '<strong>Vasopressin pharmacokinetics:</strong><br>• <strong>Onset:</strong> 1–2 minutes (rapid)<br>• <strong>Peak:</strong> Not specified in LFN formulary<br>• <strong>Duration:</strong> 10–20 minutes (short)<br><br><strong>Clinical implications:</strong><br>• Rapid onset: hemodynamic response within 1–2 minutes of starting infusion<br>• Short duration: effects dissipate quickly if infusion is stopped or interrupted<br>• <strong>Continuous infusion is essential</strong> — cannot be given as a single bolus and expected to provide sustained effect<br>• During transport, ensure infusion pump is functioning reliably and battery-powered',
+                pearl: 'The short 10–20 minute duration is why vasopressin must run as a continuous infusion. If the infusion is interrupted for any reason (line disconnection, pump malfunction, empty bag), expect hemodynamic deterioration within minutes. Have backup plans for pump failure during transport.',
+                protocol: 'LFN 12.83 Vasopressin\nOnset / Duration: 1–2 min / 10–20 min\nPeak: Not specified in LFN formulary\nContinuous infusion required'
+            },
+            {
+                type: 'critical',
+                scenario: 'A septic patient on vasopressin and norepinephrine is also receiving heparin for a DVT and phenytoin for a seizure history. The nurse asks about potential drug interactions.',
+                vitals: { HR: '98', BP: '86/52', SpO2: '96%', RR: '18', Temp: '38.4°C' },
+                question: 'Which medications may decrease the antidiuretic effects of vasopressin per LFN protocol?',
+                options: [
+                    { letter: 'A', text: 'Amiodarone and calcium gluconate', correct: false },
+                    { letter: 'B', text: 'Alcohol, demeclocycline, epinephrine, heparin, lithium, and phenytoin', correct: true },
+                    { letter: 'C', text: 'Norepinephrine and dobutamine', correct: false },
+                    { letter: 'D', text: 'No significant drug interactions listed in LFN formulary', correct: false }
+                ],
+                rationale: 'Per LFN 12.83 Special Consideration #1: <strong>Alcohol, demeclocycline, epinephrine, heparin, lithium, and phenytoin may decrease antidiuretic effects of vasopressin.</strong>',
+                mechanism: '<strong>Vasopressin drug interactions:</strong><br><br>The following decrease antidiuretic effects:<br>• <strong>Alcohol</strong><br>• <strong>Demeclocycline</strong> (tetracycline antibiotic)<br>• <strong>Epinephrine</strong><br>• <strong>Heparin</strong><br>• <strong>Lithium</strong><br>• <strong>Phenytoin</strong> (Dilantin)<br><br><strong>This patient:</strong> receiving both heparin AND phenytoin — two agents that may reduce vasopressin\'s antidiuretic effects. Monitor closely for response.',
+                pearl: 'Note that EPINEPHRINE is on this list — in multi-vasopressor scenarios where both epinephrine and vasopressin are running, be aware that the epinephrine may reduce vasopressin\'s antidiuretic effect. The vasopressor (V1 receptor) effect may be preserved, but the ADH/water reabsorption component may be diminished.',
+                protocol: 'LFN 12.83 Special Consideration #1:\nAlcohol, demeclocycline, epinephrine,\nheparin, lithium, and phenytoin may\ndecrease antidiuretic effects of\nvasopressin.'
+            },
+            {
+                type: 'clinical',
+                scenario: 'A 58-year-old patient with known heart failure and asthma is in refractory septic shock. Norepinephrine is at 38 mcg/min. You are preparing vasopressin.',
+                vitals: { HR: '116', BP: '64/36', SpO2: '92%', RR: '28', Temp: '39.0°C' },
+                question: 'What populations require caution per LFN Warnings/Precautions for vasopressin?',
+                options: [
+                    { letter: 'A', text: 'Only patients with hepatic disease and coagulopathies', correct: false },
+                    { letter: 'B', text: 'Patients with epilepsy, asthma, heart failure, renal disease, elderly, and children', correct: true },
+                    { letter: 'C', text: 'Only patients with hypertension and diabetes', correct: false },
+                    { letter: 'D', text: 'No special populations require caution', correct: false }
+                ],
+                rationale: 'Per LFN formulary 12.83 Warnings/Precautions: <strong>Caution in patients with epilepsy; asthma; heart failure; renal disease; elderly/children.</strong>',
+                mechanism: '<strong>Vasopressin — high-risk populations:</strong><br>• <strong>Epilepsy:</strong> Vasopressin may lower seizure threshold<br>• <strong>Asthma:</strong> Potential for bronchospasm<br>• <strong>Heart failure:</strong> Vasoconstriction increases afterload → increased myocardial workload<br>• <strong>Renal disease:</strong> ADH effects on kidney — altered water/electrolyte handling<br>• <strong>Elderly:</strong> Increased sensitivity, higher cardiovascular risk<br>• <strong>Children:</strong> No LFN standing order, listed as precaution<br><br><strong>This patient:</strong> has BOTH heart failure AND asthma — two precaution populations. Does not preclude vasopressin use but requires heightened monitoring.',
+                pearl: 'Warnings/Precautions are NOT contraindications — they mean "use with caution." This patient in refractory shock with BP 64/36 may still benefit from vasopressin despite having heart failure and asthma. The risk of untreated refractory shock (death) likely outweighs the precaution risks. Document your clinical reasoning.',
+                protocol: 'LFN 12.83 Vasopressin\nWarnings/Precautions: Caution in:\n- Epilepsy\n- Asthma\n- Heart failure\n- Renal disease\n- Elderly\n- Children'
+            },
+            {
+                type: 'clinical',
+                scenario: 'A 32-year-old woman at 28 weeks gestation is in septic shock from pyelonephritis. Norepinephrine is at 32 mcg/min and blood pressure remains critically low.',
+                vitals: { HR: '130', BP: '70/40', SpO2: '93%', RR: '26', Temp: '39.8°C', FHR: '170' },
+                question: 'What does LFN protocol say about vasopressin in pregnancy?',
+                options: [
+                    { letter: 'A', text: 'Absolutely contraindicated in pregnancy', correct: false },
+                    { letter: 'B', text: 'Safe in pregnancy with no fetal or uterine effects', correct: false },
+                    { letter: 'C', text: 'May produce tonic uterine contractions; clearance may be increased in the second and third trimesters', correct: true },
+                    { letter: 'D', text: 'No pregnancy considerations listed in LFN formulary', correct: false }
+                ],
+                rationale: 'Per LFN formulary 12.83 Pregnancy Considerations: <strong>Vasopressin may produce tonic uterine contractions. Due to pregnancy-induced physiologic changes, vasopressin clearance may be increased in the second and third trimesters.</strong>',
+                mechanism: '<strong>Vasopressin in pregnancy — LFN formulary data:</strong><br>• <strong>Tonic uterine contractions:</strong> Vasopressin can stimulate uterine smooth muscle<br>• <strong>Increased clearance:</strong> 2nd and 3rd trimester pregnancy-induced changes lead to faster metabolism<br>• <strong>Not contraindicated:</strong> Pregnancy is not listed as a contraindication<br>• <strong>Clinical implication:</strong> Higher clearance may mean reduced effectiveness in later pregnancy<br><br><strong>This patient:</strong><br>• 28 weeks = 3rd trimester → expect increased clearance<br>• Risk of tonic uterine contractions could trigger preterm labor<br>• Refractory septic shock is immediately life-threatening to both mother and fetus',
+                pearl: 'Pregnancy is NOT a contraindication. In refractory septic shock with BP 70/40 at 28 weeks, maternal death = fetal death. The risk of tonic uterine contractions and the potential for reduced effectiveness (increased clearance) must be weighed against the immediate life threat. Communicate obstetric concerns to medical control.',
+                protocol: 'LFN 12.83 Vasopressin Pregnancy:\nMay produce tonic uterine contractions.\nClearance may be increased in 2nd\nand 3rd trimesters due to pregnancy-\ninduced physiologic changes.'
+            },
+            {
+                type: 'recall',
+                scenario: 'You are monitoring a patient on vasopressin and norepinephrine during transport. The patient develops new-onset chest pain.',
+                vitals: { HR: '88', BP: '108/72', SpO2: '97%', RR: '16' },
+                question: 'What are the adverse reactions of vasopressin per LFN protocol?',
+                options: [
+                    { letter: 'A', text: 'Bradycardia; bronchospasm; hypotension', correct: false },
+                    { letter: 'B', text: 'Nausea/vomiting; headache; visual disturbances', correct: false },
+                    { letter: 'C', text: 'Angina; hypertension', correct: true },
+                    { letter: 'D', text: 'Tachycardia; tissue necrosis with extravasation', correct: false }
+                ],
+                rationale: 'Per LFN formulary 12.83 Adverse Reactions: <strong>Angina; hypertension.</strong> This patient\'s new-onset chest pain could represent vasopressin-induced angina.',
+                mechanism: '<strong>Vasopressin adverse reactions:</strong><br>• <strong>Angina:</strong> Vasopressin causes vasoconstriction (including coronary arteries) → increased myocardial oxygen demand → angina, especially in patients with underlying coronary disease<br>• <strong>Hypertension:</strong> The vasoconstrictive effect can elevate blood pressure excessively, particularly when combined with norepinephrine<br><br><strong>This patient:</strong><br>• BP has improved to 108/72 (goal met)<br>• New chest pain with these vitals suggests possible vasopressin-induced coronary vasoconstriction<br>• Consider 12-lead ECG and communicate with medical control<br><br>Note: Option B (nausea, headache, visual disturbances) describes TXA adverse reactions. Option D (tissue necrosis) describes norepinephrine.',
+                pearl: 'Vasopressin-induced angina occurs because of vasoconstriction of coronary vasculature — increasing myocardial oxygen demand while potentially reducing coronary blood flow. When a patient on vasopressin develops chest pain, consider this as a drug effect. A 12-lead ECG is warranted.',
+                protocol: 'LFN 12.83 Vasopressin\nAdverse Reactions: Angina; hypertension\nMonitor: Cardiac rhythm, blood pressure,\nchest pain during infusion'
+            }
+        ];
+
+        let currentQuestion = 0, correctAnswers = 0, incorrectAnswers = 0, answered = [];
+
+        // ── Mode Tab Switching ──
+        function switchMode(mode) {
+            document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.mode-panel').forEach(p => p.classList.remove('active'));
+            document.querySelector(`.mode-tab[data-mode="${mode}"]`).classList.add('active');
+            document.getElementById('panel-' + mode).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ── Quick Reference Toggle & Tabs ──
+        function toggleQuickRef() {
+            const body = document.getElementById('qrBody');
+            const toggle = document.getElementById('qrToggle');
+            body.classList.toggle('collapsed');
+            toggle.classList.toggle('collapsed');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.qr-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.qr-tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('#panel-reference .qr-panel').forEach(p => p.classList.remove('active'));
+                    tab.classList.add('active');
+                    document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+                });
+            });
+            renderQuiz();
+        });
+
+        // ── Quiz Rendering ──
+        function renderQuiz() {
+            const container = document.getElementById('quizContainer');
+            questions.forEach((q, i) => {
+                const vitalsHTML = q.vitals ? `<div class="vital-signs">${Object.entries(q.vitals).map(([k,v]) => `<div class="vital-item"><div class="vital-label">${k}</div><div class="vital-value">${v}</div></div>`).join('')}</div>` : '';
+                const optionsHTML = q.options.map(o => `<div class="option-btn" data-correct="${o.correct}"><span class="option-letter">${o.letter}</span><span class="option-text">${o.text}</span></div>`).join('');
+                container.innerHTML += `
+                    <div class="question-card" id="q${i}" style="display: ${i === 0 ? 'block' : 'none'};">
+                        <div class="question-header">
+                            <span class="question-number">Question ${i + 1} of ${questions.length}</span>
+                            <span class="question-type ${q.type}">${q.type}</span>
+                        </div>
+                        <div class="question-body">
+                            <div class="scenario-box">
+                                <div class="scenario-label">📋 Clinical Scenario</div>
+                                <div class="scenario-text">${q.scenario}</div>
+                                ${vitalsHTML}
+                            </div>
+                            <div class="question-text">${q.question}</div>
+                            <div class="options-list">${optionsHTML}</div>
+                            <div class="rationale-box" id="rat${i}">
+                                <div class="mechanism-section"><h4>🔬 Mechanism & Key Concepts</h4><p>${q.mechanism}</p></div>
+                                <div class="clinical-pearl-box"><h4>💡 Clinical Pearl</h4><p>${q.pearl}</p></div>
+                                <div class="protocol-box"><h4>📖 Protocol Reference</h4><p>${q.protocol}</p></div>
+                            </div>
+                        </div>
+                        <div class="nav-buttons">
+                            <button class="nav-btn secondary" onclick="navigate(${i}, -1)" ${i === 0 ? 'disabled' : ''}>Previous</button>
+                            <button class="nav-btn primary" id="next${i}" onclick="navigate(${i}, 1)" disabled>${i === questions.length - 1 ? 'View Results' : 'Next Question'}</button>
+                        </div>
+                    </div>`;
+            });
+
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (this.classList.contains('disabled')) return;
+                    const card = this.closest('.question-card');
+                    const idx = parseInt(card.id.replace('q', ''));
+                    if (answered[idx]) return;
+                    answered[idx] = true;
+                    const options = card.querySelectorAll('.option-btn');
+                    options.forEach(o => {
+                        o.classList.add('disabled');
+                        if (o.dataset.correct === 'true') o.classList.add('correct');
+                    });
+                    const isCorrect = this.dataset.correct === 'true';
+                    if (!isCorrect) this.classList.add('incorrect');
+                    if (isCorrect) correctAnswers++; else incorrectAnswers++;
+                    document.getElementById('correctCount').textContent = correctAnswers;
+                    document.getElementById('incorrectCount').textContent = incorrectAnswers;
+                    document.getElementById(`rat${idx}`).classList.add('show');
+                    document.getElementById(`next${idx}`).disabled = false;
+                });
+            });
+        }
+
+        function navigate(current, dir) {
+            const next = current + dir;
+            if (next >= questions.length) { showResults(); return; }
+            if (next < 0) return;
+            document.getElementById(`q${current}`).style.display = 'none';
+            document.getElementById(`q${next}`).style.display = 'block';
+            currentQuestion = next;
+            updateProgress();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateProgress() {
+            const pct = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressBar').style.width = pct + '%';
+            document.getElementById('progressTitle').textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+        }
+
+        function showResults() {
+            document.getElementById('quizContainer').style.display = 'none';
+            document.getElementById('progressSection').style.display = 'none';
+            const card = document.getElementById('resultsCard');
+            card.classList.add('show');
+            const pct = Math.round((correctAnswers / questions.length) * 100);
+            const scoreEl = document.getElementById('resultsScore');
+            const iconEl = document.getElementById('resultsIcon');
+            const msgEl = document.getElementById('resultsMessage');
+            scoreEl.textContent = pct + '%';
+            document.getElementById('finalCorrect').textContent = correctAnswers;
+            document.getElementById('finalIncorrect').textContent = incorrectAnswers;
+            if (pct >= 90) {
+                scoreEl.className = 'results-score excellent'; iconEl.className = 'results-icon excellent'; iconEl.textContent = '🌟';
+                msgEl.textContent = 'Excellent! Outstanding vasopressin knowledge — indication (shock refractory to norepi), dose (0.03 units/min, 20 units/100 mL), mechanism (ADH activity, V1 receptor vasoconstriction), CI (hypersensitivity, chronic nephritis), warnings (epilepsy, asthma, HF, renal, elderly, children), adverse (angina, hypertension), drug interactions, and pregnancy (tonic uterine contractions, increased clearance 2nd/3rd trimester).';
+            } else if (pct >= 70) {
+                scoreEl.className = 'results-score good'; iconEl.className = 'results-icon good'; iconEl.textContent = '👍';
+                msgEl.textContent = 'Good work! Review: refractory to norepi only, 0.03 units/min fixed rate, 20 units/100 mL, onset 1–2 min / duration 10–20 min, CI: hypersensitivity & chronic nephritis, caution: epilepsy/asthma/HF/renal/elderly/children, adverse: angina & hypertension, interactions: alcohol/demeclocycline/epinephrine/heparin/lithium/phenytoin, pregnancy: tonic uterine contractions.';
+            } else {
+                scoreEl.className = 'results-score needs-work'; iconEl.className = 'results-icon needs-work'; iconEl.textContent = '📚';
+                msgEl.textContent = 'Keep studying! Focus on: second-line only (refractory to norepi), 0.03 units/min (fixed, no titration), mix 20 units/100 mL, onset 1–2 min / duration 10–20 min, ADH analog mechanism, CI: hypersensitivity & chronic nephritis, caution in epilepsy/asthma/HF/renal/elderly/children, adverse: angina & hypertension, 6 drugs decrease ADH effects, pregnancy: tonic contractions & increased clearance.';
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0; correctAnswers = 0; incorrectAnswers = 0; answered = [];
+            document.getElementById('correctCount').textContent = '0';
+            document.getElementById('incorrectCount').textContent = '0';
+            document.querySelectorAll('.option-btn').forEach(o => o.classList.remove('disabled', 'correct', 'incorrect'));
+            document.querySelectorAll('.rationale-box').forEach(r => r.classList.remove('show'));
+            questions.forEach((_, i) => { document.getElementById(`next${i}`).disabled = true; document.getElementById(`q${i}`).style.display = i === 0 ? 'block' : 'none'; });
+            document.getElementById('resultsCard').classList.remove('show');
+            document.getElementById('quizContainer').style.display = 'block';
+            document.getElementById('progressSection').style.display = 'block';
+            updateProgress();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

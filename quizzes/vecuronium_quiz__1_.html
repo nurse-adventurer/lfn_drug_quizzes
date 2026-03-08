@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LFN Drug Quiz | Vecuronium (Section 12.84)</title>
+    <style>
+        :root {
+            --primary: #1e3a5f;
+            --primary-light: #2563eb;
+            --accent: #3b82f6;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --bg-light: #eff6ff;
+            --bg-card: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #bfdbfe 0%, #3b82f6 50%, #1e3a5f 100%); min-height: 100vh; color: var(--text-primary); line-height: 1.6; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+
+        .header { background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%); color: white; padding: 30px; border-radius: 16px; margin-bottom: 25px; text-align: center; box-shadow: var(--shadow-lg); }
+        .header h1 { font-size: 1.8rem; margin-bottom: 8px; }
+        .header .subtitle { opacity: 0.9; font-size: 1rem; }
+        .header .drug-class { display: inline-block; background: rgba(255,255,255,0.2); padding: 5px 15px; border-radius: 20px; margin-top: 10px; font-size: 0.85rem; }
+        .badge-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 12px; }
+        .indication-badge { padding: 5px 12px; border-radius: 15px; font-size: 0.75rem; font-weight: 600; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); }
+
+        .mode-tabs { display: flex; gap: 0; margin-bottom: 25px; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+        .mode-tab { flex: 1; padding: 16px 20px; background: white; border: none; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; color: var(--text-secondary); text-align: center; }
+        .mode-tab:first-child { border-radius: 12px 0 0 12px; }
+        .mode-tab:last-child { border-radius: 0 12px 12px 0; }
+        .mode-tab:hover { background: #eff6ff; color: var(--primary); }
+        .mode-tab.active { background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%); color: white; }
+        .mode-panel { display: none; }
+        .mode-panel.active { display: block; }
+
+        .quick-reference { background: var(--bg-card); border-radius: 12px; margin-bottom: 25px; box-shadow: var(--shadow); overflow: hidden; }
+        .qr-header { background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%); color: white; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; }
+        .qr-header h3 { font-size: 1rem; margin: 0; }
+        .qr-toggle { font-size: 1.2rem; transition: transform 0.3s ease; }
+        .qr-toggle.collapsed { transform: rotate(-90deg); }
+        .qr-body { padding: 0; max-height: 5000px; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s ease; }
+        .qr-body.collapsed { max-height: 0; padding: 0; }
+        .qr-body-inner { padding: 20px; }
+        .qr-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 2px solid var(--border); }
+        .qr-tab { padding: 8px 16px; border-radius: 8px; border: 2px solid var(--border); background: white; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; color: var(--text-secondary); white-space: nowrap; }
+        .qr-tab:hover { border-color: var(--accent); color: var(--primary); }
+        .qr-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .qr-panel { display: none; }
+        .qr-panel.active { display: block; }
+
+        .dose-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-bottom: 10px; }
+        .dose-table th { background: linear-gradient(135deg, #1e3a5f 0%, #1e40af 100%); color: white; padding: 10px 12px; text-align: left; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .dose-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+        .dose-table tr:last-child td { border-bottom: none; }
+        .dose-table tr:nth-child(even) td { background: #eff6ff; }
+        .dose-table .indication-cell { font-weight: 600; color: var(--primary); min-width: 110px; }
+        .dose-table .dose-cell { font-family: 'Courier New', monospace; font-size: 0.82rem; line-height: 1.6; }
+        .dose-detail { color: var(--text-secondary); font-size: 0.78rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+
+        .ref-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .ref-item { background: var(--bg-light); padding: 12px; border-radius: 8px; }
+        .ref-label { font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; font-weight: 600; }
+        .ref-value { font-weight: 600; color: var(--text-primary); font-size: 0.88rem; }
+        .ref-item.warning { background: #fef3c7; border: 1px solid #fde047; }
+        .ref-item.warning .ref-label { color: #92400e; }
+        .ref-item.warning .ref-value { color: #78350f; font-size: 0.84rem; }
+        .ref-item.critical { background: #fee2e2; border: 2px solid #fecaca; }
+        .ref-item.critical .ref-label { color: #991b1b; }
+        .ref-item.critical .ref-value { color: #7f1d1d; }
+        .ref-item.info { background: #eff6ff; border: 1px solid #bfdbfe; }
+        .ref-item.info .ref-label { color: #1e40af; }
+        .ref-item.info .ref-value { color: #1e3a8a; }
+        .ref-item.success { background: #f0fdf4; border: 1px solid #bbf7d0; }
+        .ref-item.success .ref-label { color: #166534; }
+        .ref-item.success .ref-value { color: #14532d; }
+        .ref-item.steel { background: #eff6ff; border: 1px solid #93c5fd; }
+        .ref-item.steel .ref-label { color: #1e3a5f; }
+        .ref-item.steel .ref-value { color: #1e3a5f; }
+
+        .consideration-list { list-style: none; padding: 0; }
+        .consideration-list li { padding: 10px 12px 10px 36px; position: relative; border-bottom: 1px solid #f1f5f9; font-size: 0.88rem; line-height: 1.6; }
+        .consideration-list li:last-child { border-bottom: none; }
+        .consideration-list li::before { content: attr(data-num); position: absolute; left: 6px; top: 10px; width: 22px; height: 22px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; }
+
+        .warning-box { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border: 2px solid #f59e0b; border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+        .warning-box .warn-title { font-weight: 700; color: #92400e; font-size: 0.85rem; margin-bottom: 8px; }
+        .warning-box p { color: #78350f; font-size: 0.85rem; line-height: 1.7; }
+        .danger-box { background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); border: 2px solid #ef4444; border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+        .danger-box .warn-title { font-weight: 700; color: #991b1b; font-size: 0.85rem; margin-bottom: 8px; }
+        .danger-box p { color: #7f1d1d; font-size: 0.85rem; line-height: 1.7; }
+        .info-box { background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 2px solid #3b82f6; border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+        .info-box .warn-title { font-weight: 700; color: #1e40af; font-size: 0.85rem; margin-bottom: 8px; }
+        .info-box p { color: #1e3a8a; font-size: 0.85rem; line-height: 1.7; }
+        .success-box { background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); border: 2px solid #22c55e; border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+        .success-box .warn-title { font-weight: 700; color: #166534; font-size: 0.85rem; margin-bottom: 8px; }
+        .success-box p { color: #14532d; font-size: 0.85rem; line-height: 1.7; }
+
+        .compare-strip { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+        .compare-strip.triple { grid-template-columns: 1fr 1fr 1fr; }
+        .compare-card { padding: 12px 14px; border-radius: 10px; }
+        .compare-card.left { background: linear-gradient(135deg, #eff6ff 0%, #bfdbfe 100%); border: 2px solid #60a5fa; }
+        .compare-card.right { background: linear-gradient(135deg, #f0fdf4 0%, #bbf7d0 100%); border: 2px solid #4ade80; }
+        .compare-card.center { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border: 2px solid #fbbf24; }
+        .compare-label { font-size: 0.7rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .compare-card.left .compare-label { color: #1e40af; }
+        .compare-card.right .compare-label { color: #166534; }
+        .compare-card.center .compare-label { color: #92400e; }
+        .compare-dose { font-size: 1rem; font-weight: 800; color: var(--text-primary); margin-bottom: 4px; }
+        .compare-detail { font-size: 0.78rem; line-height: 1.5; }
+        .compare-card.left .compare-detail { color: #1e3a8a; }
+        .compare-card.right .compare-detail { color: #14532d; }
+        .compare-card.center .compare-detail { color: #78350f; }
+
+        .progress-section { background: var(--bg-card); border-radius: 12px; padding: 20px 25px; margin-bottom: 25px; box-shadow: var(--shadow); }
+        .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px; }
+        .progress-title { font-weight: 600; color: var(--primary); }
+        .progress-stats { display: flex; gap: 20px; font-size: 0.9rem; color: var(--text-secondary); }
+        .progress-bar-container { height: 10px; background: var(--border); border-radius: 5px; overflow: hidden; }
+        .progress-bar { height: 100%; background: linear-gradient(90deg, #60a5fa 0%, #2563eb 100%); border-radius: 5px; transition: width 0.4s ease; }
+
+        .question-card { background: var(--bg-card); border-radius: 16px; box-shadow: var(--shadow-lg); overflow: hidden; margin-bottom: 25px; }
+        .question-header { background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%); color: white; padding: 20px 25px; display: flex; justify-content: space-between; align-items: center; }
+        .question-number { font-size: 1.1rem; font-weight: 600; }
+        .question-type { padding: 5px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; }
+        .question-type.clinical { background: #22c55e; }
+        .question-type.critical { background: #dc2626; }
+        .question-type.recall { background: #8b5cf6; }
+        .question-type.calculation { background: #f59e0b; }
+        .question-body { padding: 30px; }
+
+        .scenario-box { background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #2563eb; padding: 20px; border-radius: 0 10px 10px 0; margin-bottom: 20px; }
+        .scenario-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--primary); font-weight: 700; margin-bottom: 10px; }
+        .scenario-text { font-size: 1rem; color: var(--text-primary); line-height: 1.7; }
+        .vital-signs { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 10px; margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border); }
+        .vital-item { text-align: center; padding: 8px; background: white; border-radius: 8px; }
+        .vital-label { font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; }
+        .vital-value { font-size: 0.95rem; font-weight: 700; color: var(--primary); }
+
+        .question-text { font-size: 1.15rem; font-weight: 500; color: var(--text-primary); margin-bottom: 25px; line-height: 1.7; }
+        .options-list { display: flex; flex-direction: column; gap: 12px; }
+        .option-btn { display: flex; align-items: flex-start; padding: 16px 20px; background: var(--bg-light); border: 2px solid var(--border); border-radius: 10px; cursor: pointer; transition: all 0.2s ease; text-align: left; }
+        .option-btn:hover:not(.disabled) { border-color: var(--accent); background: white; transform: translateX(5px); }
+        .option-btn.correct { border-color: var(--success); background: rgba(22, 163, 74, 0.1); }
+        .option-btn.incorrect { border-color: var(--danger); background: rgba(220, 38, 38, 0.1); }
+        .option-btn.disabled { cursor: default; }
+        .option-letter { width: 32px; height: 32px; min-width: 32px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; margin-right: 15px; font-size: 0.9rem; }
+        .option-btn.correct .option-letter { background: var(--success); }
+        .option-btn.incorrect .option-letter { background: var(--danger); }
+        .option-text { flex: 1; font-size: 1rem; line-height: 1.5; }
+
+        .rationale-box { margin-top: 25px; padding: 25px; border-radius: 12px; background: #f8fafc; display: none; }
+        .rationale-box.show { display: block; }
+        .mechanism-section { background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-radius: 12px; padding: 20px; margin-bottom: 15px; }
+        .mechanism-section h4 { color: #1e40af; margin-bottom: 12px; font-size: 1rem; }
+        .mechanism-section p { color: #1e3a8a; font-size: 0.95rem; line-height: 1.8; }
+        .clinical-pearl-box { background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); border-radius: 12px; padding: 20px; margin-bottom: 15px; }
+        .clinical-pearl-box h4 { color: #166534; margin-bottom: 12px; font-size: 1rem; }
+        .clinical-pearl-box p { color: #14532d; font-size: 0.95rem; line-height: 1.8; }
+        .protocol-box { background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-radius: 12px; padding: 20px; }
+        .protocol-box h4 { color: #1e3a5f; margin-bottom: 12px; font-size: 1rem; }
+        .protocol-box p { color: #1e40af; font-size: 0.95rem; line-height: 1.8; font-family: 'Courier New', monospace; }
+
+        .nav-buttons { display: flex; justify-content: space-between; gap: 15px; padding: 0 30px 30px; }
+        .nav-btn { padding: 14px 28px; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+        .nav-btn.primary { background: var(--primary); color: white; }
+        .nav-btn.primary:hover { background: var(--primary-light); }
+        .nav-btn.secondary { background: var(--border); color: var(--text-secondary); }
+        .nav-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .results-card { background: var(--bg-card); border-radius: 16px; box-shadow: var(--shadow-lg); padding: 40px; text-align: center; display: none; }
+        .results-card.show { display: block; }
+        .results-icon { width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 2.5rem; }
+        .results-icon.excellent { background: rgba(22, 163, 74, 0.15); }
+        .results-icon.good { background: rgba(37, 99, 235, 0.15); }
+        .results-icon.needs-work { background: rgba(220, 38, 38, 0.15); }
+        .results-title { font-size: 1.8rem; font-weight: 700; color: var(--primary); }
+        .results-score { font-size: 3rem; font-weight: 800; margin: 20px 0; }
+        .results-score.excellent { color: var(--success); }
+        .results-score.good { color: var(--primary); }
+        .results-score.needs-work { color: var(--danger); }
+        .results-message { color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 30px; }
+        .results-breakdown { display: flex; justify-content: center; gap: 40px; margin-bottom: 30px; }
+        .breakdown-item { text-align: center; }
+        .breakdown-value { font-size: 1.5rem; font-weight: 700; }
+        .breakdown-label { font-size: 0.85rem; color: var(--text-secondary); }
+
+        .results-qr { background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-radius: 12px; padding: 25px; margin-top: 25px; text-align: left; }
+        .results-qr h3 { color: #1e3a5f; margin-bottom: 15px; text-align: center; font-size: 1.1rem; }
+        .results-dose-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.8rem; }
+        .results-dose-table th { background: #1e3a5f; color: white; padding: 8px 10px; text-align: left; }
+        .results-dose-table td { padding: 8px 10px; border-bottom: 1px solid #93c5fd; }
+        .results-warning-list { background: #dbeafe; border: 2px solid #2563eb; border-radius: 10px; padding: 15px; margin-top: 15px; }
+        .results-warning-list h4 { color: #1e3a5f; margin-bottom: 10px; font-size: 0.9rem; }
+        .results-warning-list ul { color: #1e40af; margin-left: 20px; font-size: 0.82rem; }
+        .results-warning-list li { margin-bottom: 5px; }
+
+        .disclaimer { text-align: center; font-size: 0.72rem; color: var(--text-secondary); margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.6); border-radius: 8px; line-height: 1.5; }
+
+        @media (max-width: 600px) {
+            body { padding: 10px; }
+            .header { padding: 20px 15px; border-radius: 12px; }
+            .header h1 { font-size: 1.5rem; }
+            .mode-tab { padding: 12px 10px; font-size: 0.85rem; }
+            .qr-header { padding: 14px 16px; }
+            .qr-body-inner { padding: 15px; }
+            .qr-tabs { gap: 4px; }
+            .qr-tab { padding: 6px 10px; font-size: 0.72rem; }
+            .dose-table { font-size: 0.78rem; }
+            .dose-table th, .dose-table td { padding: 8px 6px; }
+            .ref-grid { grid-template-columns: 1fr; }
+            .compare-strip { grid-template-columns: 1fr; }
+            .compare-strip.triple { grid-template-columns: 1fr; }
+            .question-body { padding: 20px; }
+            .nav-buttons { flex-direction: column; padding: 0 20px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💉 Vecuronium</h1>
+            <p class="subtitle">LFN Protocol Section 12.84 | Clinical Application Quiz</p>
+            <span class="drug-class">Non-Depolarizing Neuromuscular Blocker (Norcuron)</span>
+            <div class="badge-container">
+                <span class="indication-badge">🫁 Paralysis — Intubated Patient</span>
+                <span class="indication-badge">💊 0.1 mg/kg</span>
+                <span class="indication-badge">⏱️ Onset 2–3 min</span>
+            </div>
+        </div>
+
+        <!-- TOP-LEVEL MODE TABS -->
+        <div class="mode-tabs">
+            <button class="mode-tab active" data-mode="reference" onclick="switchMode('reference')">📋 Quick Reference</button>
+            <button class="mode-tab" data-mode="quiz" onclick="switchMode('quiz')">📝 Quiz</button>
+        </div>
+
+        <!-- QUICK REFERENCE PANEL -->
+        <div class="mode-panel active" id="panel-reference">
+            <div class="quick-reference" id="quickRef">
+                <div class="qr-header" onclick="toggleQuickRef()">
+                    <h3>📋 Quick Reference — Key Doses for Vecuronium 12.84</h3>
+                    <span class="qr-toggle" id="qrToggle">▼</span>
+                </div>
+                <div class="qr-body" id="qrBody">
+                    <div class="qr-body-inner">
+                        <div class="qr-tabs" id="qrTabs">
+                            <button class="qr-tab active" data-tab="dosing">Dosing & Indications</button>
+                            <button class="qr-tab" data-tab="pharmacology">Pharmacology</button>
+                            <button class="qr-tab" data-tab="considerations">Considerations</button>
+                            <button class="qr-tab" data-tab="warnings">Warnings & Precautions</button>
+                        </div>
+
+                        <!-- TAB 1: DOSING & INDICATIONS -->
+                        <div class="qr-panel active" id="panel-dosing">
+                            <div style="overflow-x: auto;">
+                                <table class="dose-table">
+                                    <thead><tr><th>Indication</th><th>Adult Dose</th><th>Pediatric Dose</th></tr></thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="indication-cell">Paralysis of the Intubated Patient</td>
+                                            <td class="dose-cell">0.1 mg/kg<br><span class="dose-detail">May repeat PRN</span></td>
+                                            <td class="dose-cell">Same as Adult<br><span class="dose-detail">0.1 mg/kg, may repeat PRN</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="ref-grid" style="margin-top: 18px;">
+                                <div class="ref-item steel">
+                                    <div class="ref-label">Adult Dose</div>
+                                    <div class="ref-value">0.1 mg/kg IV</div>
+                                </div>
+                                <div class="ref-item info">
+                                    <div class="ref-label">Pediatric Dose</div>
+                                    <div class="ref-value">Same as Adult</div>
+                                </div>
+                                <div class="ref-item steel">
+                                    <div class="ref-label">Trade Name</div>
+                                    <div class="ref-value">Norcuron</div>
+                                </div>
+                                <div class="ref-item warning">
+                                    <div class="ref-label">Redosing</div>
+                                    <div class="ref-value">May repeat PRN</div>
+                                </div>
+                            </div>
+
+                            <!-- NMB comparison -->
+                            <div style="margin-top: 18px;">
+                                <div class="ref-label" style="margin-bottom: 8px; font-size: 0.75rem; font-weight: 700;">⚖️ LFN NON-DEPOLARIZING NMB AGENTS — Paralysis of the Intubated Patient</div>
+                                <div class="compare-strip triple">
+                                    <div class="compare-card left">
+                                        <div class="compare-label">Vecuronium 12.84</div>
+                                        <div class="compare-dose">0.1 mg/kg</div>
+                                        <div class="compare-detail">Paralysis of intubated pt<br>May repeat PRN<br>Onset 2–3 min<br>Duration 30–45 min<br>Peds: same as adult</div>
+                                    </div>
+                                    <div class="compare-card center">
+                                        <div class="compare-label">Rocuronium 12.74</div>
+                                        <div class="compare-dose">0.5 mg/kg (maintain)</div>
+                                        <div class="compare-detail">Maintain paralysis<br>May repeat PRN (max 100 mg)<br>RSI: 1 mg/kg IV or 1.8 mg/kg IM<br>Onset 1 min / Duration 30+ min<br>Peds &lt;10: paralytic of choice</div>
+                                    </div>
+                                    <div class="compare-card right">
+                                        <div class="compare-label">Cisatracurium 12.14</div>
+                                        <div class="compare-dose">0.1–0.2 mg/kg</div>
+                                        <div class="compare-detail">Ongoing paralysis<br>Bolus + 1–3 mcg/kg/min infusion<br>Onset 2–3 min<br>Duration 35–45 min<br>Organ-independent metabolism</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Key context -->
+                            <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-radius: 10px; padding: 16px; margin-top: 14px;">
+                                <div class="ref-label" style="color: #1e3a5f; margin-bottom: 8px;">💡 Vecuronium Role in LFN Protocol</div>
+                                <p style="font-size: 0.85rem; color: #1e40af; line-height: 1.8;">
+                                    Vecuronium is used for <strong>paralysis of the already-intubated patient</strong> — it is not used for RSI per LFN protocol (succinylcholine and rocuronium are used for RSI per 8.27). Per RSI 8.27, rocuronium 0.5 mg/kg is specified for maintaining paralysis and 1 mg/kg for initiating paralysis. Vecuronium is an alternative non-depolarizing agent at 0.1 mg/kg for ongoing paralysis.
+                                </p>
+                            </div>
+
+                            <div class="ref-grid" style="margin-top: 14px;">
+                                <div class="ref-item critical">
+                                    <div class="ref-label">⚠️ Critical Requirement</div>
+                                    <div class="ref-value">Patient MUST be intubated — this drug causes apnea</div>
+                                </div>
+                                <div class="ref-item warning">
+                                    <div class="ref-label">🧠 Sedation Required</div>
+                                    <div class="ref-value">Must provide sedation + analgesia to paralyzed patients (2.08)</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TAB 2: PHARMACOLOGY -->
+                        <div class="qr-panel" id="panel-pharmacology">
+                            <div class="ref-grid" style="margin-bottom: 18px;">
+                                <div class="ref-item steel">
+                                    <div class="ref-label">Pharmacologic Category</div>
+                                    <div class="ref-value">Non-Depolarizing Neuromuscular Blocker Agent</div>
+                                </div>
+                                <div class="ref-item info">
+                                    <div class="ref-label">Trade Name</div>
+                                    <div class="ref-value">Norcuron</div>
+                                </div>
+                                <div class="ref-item steel">
+                                    <div class="ref-label">Onset</div>
+                                    <div class="ref-value">2–3 minutes</div>
+                                </div>
+                                <div class="ref-item warning">
+                                    <div class="ref-label">Duration</div>
+                                    <div class="ref-value">30–45 minutes</div>
+                                </div>
+                                <div class="ref-item info">
+                                    <div class="ref-label">Peak</div>
+                                    <div class="ref-value">Not specified in LFN formulary</div>
+                                </div>
+                                <div class="ref-item steel">
+                                    <div class="ref-label">Recommended Mixture</div>
+                                    <div class="ref-value">Not specified in LFN formulary</div>
+                                </div>
+                            </div>
+
+                            <div class="info-box">
+                                <div class="warn-title">📊 Onset / Peak / Duration</div>
+                                <p><strong>Onset:</strong> 2–3 min &nbsp;|&nbsp; <strong>Peak:</strong> Not specified &nbsp;|&nbsp; <strong>Duration:</strong> 30–45 min<br>Moderate onset (2–3 min) — slower than succinylcholine (30–60 sec) and rocuronium (1 min). Duration of 30–45 min allows repeated dosing PRN to maintain paralysis during transport.</p>
+                            </div>
+
+                            <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-radius: 12px; padding: 20px; margin-bottom: 18px;">
+                                <h4 style="color: #1e40af; margin-bottom: 10px; font-size: 0.95rem;">🔬 Mechanism of Action</h4>
+                                <p style="color: #1e3a8a; font-size: 0.9rem; line-height: 1.8;"><strong>Blocks acetylcholine from binding to receptors on motor endplate</strong>, inhibiting depolarization. This prevents neuromuscular transmission → skeletal muscle paralysis. As a <strong>non-depolarizing</strong> agent, vecuronium competitively blocks the nicotinic ACh receptor without causing initial depolarization (no fasciculations).</p>
+                            </div>
+
+                            <!-- Depolarizing vs Non-depolarizing comparison -->
+                            <div style="margin-bottom: 18px;">
+                                <div class="ref-label" style="margin-bottom: 8px; font-size: 0.75rem; font-weight: 700;">🧬 DEPOLARIZING vs NON-DEPOLARIZING NMB Agents</div>
+                                <div class="compare-strip">
+                                    <div class="compare-card left">
+                                        <div class="compare-label">Non-Depolarizing (Vecuronium)</div>
+                                        <div class="compare-dose">Competitive Blockade</div>
+                                        <div class="compare-detail">Blocks ACh at motor endplate<br>No initial depolarization<br>No fasciculations<br>Reversible (neostigmine/sugammadex)<br>Longer onset (2–3 min)<br>Duration 30–45 min</div>
+                                    </div>
+                                    <div class="compare-card right">
+                                        <div class="compare-label">Depolarizing (Succinylcholine 12.78)</div>
+                                        <div class="compare-dose">Depolarizing Blockade</div>
+                                        <div class="compare-detail">Mimics ACh → depolarizes endplate<br>Initial depolarization then block<br>Fasciculations occur<br>Not reversible (metabolized by pseudocholinesterase)<br>Rapid onset (30–60 sec)<br>Short duration (~8 min)</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-radius: 12px; padding: 20px; margin-bottom: 18px;">
+                                <h4 style="color: #92400e; margin-bottom: 10px; font-size: 0.95rem;">⚠️ Adverse Reactions</h4>
+                                <p style="color: #78350f; font-size: 0.9rem; line-height: 1.8;">Apnea; dysrhythmias; transient hypotension; tachycardia</p>
+                            </div>
+
+                            <div style="background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%); border-radius: 12px; padding: 20px;">
+                                <h4 style="color: #9d174d; margin-bottom: 10px; font-size: 0.95rem;">🤰 Pregnancy Considerations</h4>
+                                <p style="color: #831843; font-size: 0.9rem; line-height: 1.8;">Data is limited, but its use during pregnancy has been reported.</p>
+                            </div>
+                        </div>
+
+                        <!-- TAB 3: CONSIDERATIONS -->
+                        <div class="qr-panel" id="panel-considerations">
+                            <ul class="consideration-list">
+                                <li data-num="1"><strong>Intubated patients only:</strong> Vecuronium is indicated for <strong>paralysis of the intubated patient</strong>. The patient must have a secured airway before administration — vecuronium causes apnea and the patient will be unable to breathe independently.</li>
+                                <li data-num="2"><strong>Sedation and analgesia are mandatory:</strong> Per Post-Intubation Sedation 2.08, chemically paralyzed patients must receive sedation AND analgesia. Paralysis without sedation is unacceptable — the patient may be fully aware but unable to move or communicate. Use higher-end dosing ranges for sedation as BP permits.</li>
+                                <li data-num="3"><strong>Not used for RSI per LFN:</strong> RSI 8.27 specifies succinylcholine (first-line) and rocuronium (alternative) for RSI paralysis. Vecuronium is reserved for maintaining paralysis in the already-intubated patient. Rocuronium 1 mg/kg is used to initiate paralysis in the non-paralyzed intubated patient.</li>
+                                <li data-num="4"><strong>May repeat PRN:</strong> Unlike succinylcholine (do not repeat dose), vecuronium may be repeated as needed. With a 30–45 min duration, anticipate redosing during extended transports. Monitor for return of muscle tone/movement as cue for redosing.</li>
+                                <li data-num="5"><strong>Not necessary on every patient:</strong> Per RSI 8.27: "It is not necessary to maintain paralysis on every patient but consider continued paralysis for patients with a history of combativeness or agitation. Consider the constraints of the aircraft/vehicle, patient size, and crew safety."</li>
+                                <li data-num="6"><strong>No RASS scores for paralyzed patients:</strong> Per Post-Intubation Sedation 2.08 Pearl #5, chemically paralyzed patients should NOT have RASS scores documented. Document "Chemically Paralyzed" under the GCS qualifier. Once no longer paralyzed, resume RASS scoring.</li>
+                            </ul>
+
+                            <!-- Paralysis decision workflow -->
+                            <div style="margin-top: 18px;">
+                                <div class="ref-label" style="margin-bottom: 8px; font-size: 0.75rem; font-weight: 700;">🔄 PARALYSIS DECISION WORKFLOW — Intubated Patient</div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+                                    <div style="background: linear-gradient(135deg, #eff6ff 0%, #bfdbfe 100%); border: 2px solid #3b82f6; border-radius: 10px; padding: 12px; text-align: center;">
+                                        <div style="font-size: 0.7rem; font-weight: 700; color: #1e40af; text-transform: uppercase; margin-bottom: 4px;">Assess</div>
+                                        <div style="font-size: 0.85rem; font-weight: 700; color: #1e3a8a;">Paralysis Needed?</div>
+                                        <div style="font-size: 0.75rem; color: #1e40af; margin-top: 4px;">Combativeness, agitation, crew safety, aircraft constraints</div>
+                                    </div>
+                                    <div style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); border: 2px solid #22c55e; border-radius: 10px; padding: 12px; text-align: center;">
+                                        <div style="font-size: 0.7rem; font-weight: 700; color: #166534; text-transform: uppercase; margin-bottom: 4px;">Ensure</div>
+                                        <div style="font-size: 0.85rem; font-weight: 700; color: #14532d;">Sedation + Analgesia</div>
+                                        <div style="font-size: 0.75rem; color: #166534; margin-top: 4px;">Must be administered BEFORE or WITH paralytic</div>
+                                    </div>
+                                    <div style="background: linear-gradient(135deg, #eff6ff 0%, #93c5fd 100%); border: 2px solid #2563eb; border-radius: 10px; padding: 12px; text-align: center;">
+                                        <div style="font-size: 0.7rem; font-weight: 700; color: #1e3a5f; text-transform: uppercase; margin-bottom: 4px;">Administer</div>
+                                        <div style="font-size: 0.85rem; font-weight: 700; color: #1e3a5f;">Vecuronium 0.1 mg/kg</div>
+                                        <div style="font-size: 0.75rem; color: #1e40af; margin-top: 4px;">May repeat PRN<br>Monitor for return of tone</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-radius: 10px; padding: 16px; margin-top: 14px;">
+                                <div class="ref-label" style="color: #1e3a5f; margin-bottom: 8px;">💡 Clinical Context — Paralysis in Transport</div>
+                                <p style="font-size: 0.85rem; color: #1e40af; line-height: 1.8;">Maintaining paralysis during transport prevents patient-ventilator dyssynchrony, unplanned extubation, and dangerous movement in the confined aircraft environment. However, paralysis also eliminates all clinical assessment of consciousness and pain response — making sedation monitoring extremely challenging. BP and HR elevations are indirect measures of distress and must be managed with sedation and analgesia per 2.08.</p>
+                            </div>
+                        </div>
+
+                        <!-- TAB 4: WARNINGS & PRECAUTIONS -->
+                        <div class="qr-panel" id="panel-warnings">
+                            <div class="danger-box">
+                                <div class="warn-title">🚫 CONTRAINDICATIONS</div>
+                                <p><strong>Hypersensitivity</strong> to vecuronium or any component of the formulation.</p>
+                            </div>
+
+                            <div class="danger-box">
+                                <div class="warn-title">🚫 APNEA — This Drug Causes Respiratory Arrest</div>
+                                <p>Vecuronium produces complete skeletal muscle paralysis including the diaphragm and intercostal muscles. The patient <strong>will be unable to breathe</strong>. Must have a <strong>secured airway and mechanical ventilation</strong> before administration. Apnea is listed as the first adverse reaction.</p>
+                            </div>
+
+                            <div class="danger-box">
+                                <div class="warn-title">🚫 NEVER Paralyze Without Sedation</div>
+                                <p>Per Post-Intubation Sedation 2.08: Chemically paralyzed patients must receive <strong>sedation AND analgesia</strong>. Expedite administration of sedatives to avoid paralysis without sedation. Use <strong>higher-end dosing ranges</strong> as BP permits. BP and HR elevations are <strong>indirect measures of distress</strong>.</p>
+                            </div>
+
+                            <div class="warning-box">
+                                <div class="warn-title">⚠️ No Warnings/Precautions Listed</div>
+                                <p>The LFN formulary does not list specific Warnings/Precautions for vecuronium. However, all neuromuscular blockers require extreme caution: ensure secured airway, continuous monitoring (ECG, SpO2, ETCO2), and adequate sedation/analgesia.</p>
+                            </div>
+
+                            <div class="warning-box">
+                                <div class="warn-title">⚠️ Adverse Reactions</div>
+                                <p><strong>Apnea; dysrhythmias; transient hypotension; tachycardia.</strong> Monitor cardiac rhythm continuously. Transient hypotension may occur — be prepared to treat hemodynamic changes. Tachycardia may be a sign of inadequate sedation/analgesia in the paralyzed patient.</p>
+                            </div>
+
+                            <div style="background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%); border: 2px solid #ec4899; border-radius: 10px; padding: 16px; margin-bottom: 12px;">
+                                <div style="font-weight: 700; color: #9d174d; font-size: 0.85rem; margin-bottom: 8px;">🤰 Pregnancy Considerations</div>
+                                <p style="color: #831843; font-size: 0.85rem; line-height: 1.7;">Data is limited, but its use during pregnancy has been reported. Not contraindicated in pregnancy per LFN formulary.</p>
+                            </div>
+
+                            <div class="info-box">
+                                <div class="warn-title">📋 Documentation — Paralyzed Patients</div>
+                                <p>Per 2.08 Pearl #5: Chemically paralyzed patients should <strong>NOT have RASS scores</strong> documented. Document <strong>"Chemically Paralyzed"</strong> under the GCS qualifier. Resume RASS scoring once no longer paralyzed.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUIZ PANEL -->
+        <div class="mode-panel" id="panel-quiz">
+            <div class="progress-section" id="progressSection">
+                <div class="progress-header">
+                    <span class="progress-title" id="progressTitle">Question 1 of 10</span>
+                    <div class="progress-stats">
+                        <span>✅ <span id="correctCount">0</span></span>
+                        <span>❌ <span id="incorrectCount">0</span></span>
+                    </div>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div id="quizContainer"></div>
+
+            <div class="results-card" id="resultsCard">
+                <div class="results-icon" id="resultsIcon">🏆</div>
+                <div class="results-title">Quiz Complete!</div>
+                <div class="results-score" id="resultsScore">0%</div>
+                <div class="results-message" id="resultsMessage"></div>
+                <div class="results-breakdown">
+                    <div class="breakdown-item"><div class="breakdown-value" id="finalCorrect" style="color: #16a34a;">0</div><div class="breakdown-label">Correct</div></div>
+                    <div class="breakdown-item"><div class="breakdown-value" id="finalIncorrect" style="color: #dc2626;">0</div><div class="breakdown-label">Incorrect</div></div>
+                </div>
+                <div class="results-qr">
+                    <h3>💉 Vecuronium 12.84 — Quick Reference</h3>
+                    <div class="ref-grid" style="margin-bottom: 15px;">
+                        <div class="ref-item steel"><div class="ref-label">Class</div><div class="ref-value">Non-Depolarizing NMB Agent</div></div>
+                        <div class="ref-item info"><div class="ref-label">Trade Name</div><div class="ref-value">Norcuron</div></div>
+                        <div class="ref-item steel"><div class="ref-label">Onset / Duration</div><div class="ref-value">2–3 min / 30–45 min</div></div>
+                        <div class="ref-item warning"><div class="ref-label">Redosing</div><div class="ref-value">May repeat PRN</div></div>
+                    </div>
+                    <table class="results-dose-table">
+                        <tr><th>Indication</th><th>Adult Dose</th><th>Pediatric Dose</th></tr>
+                        <tr><td><strong>Paralysis of the Intubated Patient</strong></td><td>0.1 mg/kg IV<br>May repeat PRN</td><td>Same as Adult</td></tr>
+                    </table>
+                    <div class="results-warning-list">
+                        <h4>⚠️ Key Points &amp; Warnings</h4>
+                        <ul>
+                            <li><strong>CI:</strong> Hypersensitivity</li>
+                            <li><strong>Adverse:</strong> Apnea; dysrhythmias; transient hypotension; tachycardia</li>
+                            <li><strong>CRITICAL:</strong> Patient must be intubated — causes apnea</li>
+                            <li><strong>CRITICAL:</strong> Must provide sedation + analgesia (2.08)</li>
+                            <li><strong>Not for RSI:</strong> Use succinylcholine or rocuronium for RSI (8.27)</li>
+                            <li><strong>Documentation:</strong> No RASS scores — document "Chemically Paralyzed"</li>
+                            <li><strong>Mechanism:</strong> Blocks ACh at motor endplate → inhibits depolarization</li>
+                            <li><strong>Pregnancy:</strong> Limited data; use reported in pregnancy</li>
+                        </ul>
+                    </div>
+                </div>
+                <button class="nav-btn primary" onclick="restartQuiz()" style="margin-top: 25px;">Restart Quiz</button>
+            </div>
+        </div>
+
+        <div class="disclaimer">⚕️ This quiz is designed for educational purposes for LFN flight nurses and is based on LFN's Drug Formulary Section 12.84, RSI 8.27, and Post-Intubation Sedation 2.08. Always refer to current PCGs and medical direction for clinical decisions.</div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                type: 'recall',
+                scenario: 'You are reviewing the LFN drug formulary with a new flight nurse and discussing when vecuronium is used.',
+                vitals: null,
+                question: 'What is the indication for vecuronium per LFN protocol 12.84?',
+                options: [
+                    { letter: 'A', text: 'Rapid Sequence Induction (RSI) paralysis', correct: false },
+                    { letter: 'B', text: 'Paralysis of the intubated patient', correct: true },
+                    { letter: 'C', text: 'Sedation of the combative patient', correct: false },
+                    { letter: 'D', text: 'Treatment of muscle spasms and rigidity', correct: false }
+                ],
+                rationale: 'Per LFN formulary 12.84, vecuronium is indicated for <strong>paralysis of the intubated patient</strong>.',
+                mechanism: '<strong>Vecuronium indication — key points:</strong><br>• <strong>Paralysis of the intubated patient</strong> — ongoing/maintenance paralysis<br>• NOT for RSI — succinylcholine (12.78) and rocuronium (12.74) are used for RSI per 8.27<br>• Patient MUST already be intubated with a secured airway<br>• Vecuronium is a paralytic ONLY — it provides zero sedation or analgesia<br>• Sedation + analgesia must be provided concurrently (per 2.08)',
+                pearl: 'Vecuronium is a neuromuscular blocker — it only produces paralysis. It has NO sedative, analgesic, or anxiolytic properties. A paralyzed patient can be fully conscious, feeling pain, and terrified but completely unable to move or communicate. This is why sedation and analgesia are absolutely mandatory.',
+                protocol: 'LFN 12.84 Vecuronium\nIndication: Paralysis of the\nintubated patient\nAdult: 0.1 mg/kg, may repeat PRN\nPediatric: Same as Adult'
+            },
+            {
+                type: 'calculation',
+                scenario: 'An 85 kg intubated trauma patient is becoming combative and fighting the ventilator during transport. Sedation has been maximized. You decide to administer vecuronium.',
+                vitals: { HR: '118', BP: '142/88', SpO2: '93%', RR: '28', ETCO2: '32' },
+                question: 'What is the correct vecuronium dose for this 85 kg patient?',
+                options: [
+                    { letter: 'A', text: '8.5 mg (0.1 mg/kg × 85 kg)', correct: true },
+                    { letter: 'B', text: '85 mg (1 mg/kg × 85 kg)', correct: false },
+                    { letter: 'C', text: '42.5 mg (0.5 mg/kg × 85 kg)', correct: false },
+                    { letter: 'D', text: '17 mg (0.2 mg/kg × 85 kg)', correct: false }
+                ],
+                rationale: 'Per LFN formulary 12.84: Adult dose is <strong>0.1 mg/kg</strong>. For this 85 kg patient: 0.1 × 85 = <strong>8.5 mg</strong>. May repeat PRN.',
+                mechanism: '<strong>Vecuronium dose calculation:</strong><br>• <strong>Weight:</strong> 85 kg<br>• <strong>Formula:</strong> 0.1 mg/kg × 85 kg = <strong>8.5 mg</strong><br>• <strong>No max dose specified</strong> in LFN formulary<br>• <strong>May repeat PRN</strong> — anticipate q 30–45 min based on duration<br><br><strong>Common dose confusion:</strong><br>• Option B (1 mg/kg) = rocuronium RSI dose<br>• Option C (0.5 mg/kg) = rocuronium maintenance dose<br>• Option D (0.2 mg/kg) = cisatracurium high-end bolus',
+                pearl: 'Know your NMB dosing: Vecuronium 0.1 mg/kg is a much lower dose than rocuronium RSI (1 mg/kg). A common error is confusing paralytic doses. At 0.1 mg/kg, an 85 kg patient gets only 8.5 mg — much less than the 85 mg that 1 mg/kg would give.',
+                protocol: 'LFN 12.84 Vecuronium\nAdult Dose: 0.1 mg/kg\nMay repeat PRN\n85 kg × 0.1 mg/kg = 8.5 mg'
+            },
+            {
+                type: 'recall',
+                scenario: 'A nursing student on a ride-along asks you to explain how vecuronium produces paralysis.',
+                vitals: null,
+                question: 'What is the mechanism of action of vecuronium per LFN protocol?',
+                options: [
+                    { letter: 'A', text: 'Mimics acetylcholine to produce sustained depolarization of the motor endplate', correct: false },
+                    { letter: 'B', text: 'Blocks acetylcholine from binding to receptors on motor endplate inhibiting depolarization', correct: true },
+                    { letter: 'C', text: 'Inhibits acetylcholinesterase, causing excess ACh accumulation', correct: false },
+                    { letter: 'D', text: 'Directly acts on muscle fibers to prevent calcium release from the sarcoplasmic reticulum', correct: false }
+                ],
+                rationale: 'Per LFN formulary 12.84: Vecuronium <strong>blocks acetylcholine from binding to receptors on motor endplate inhibiting depolarization</strong>.',
+                mechanism: '<strong>Vecuronium mechanism — step by step:</strong><br><br><strong>Normal neuromuscular transmission:</strong><br>1. Nerve impulse reaches motor endplate<br>2. Acetylcholine (ACh) released into synapse<br>3. ACh binds nicotinic receptors on muscle<br>4. Depolarization → muscle contraction<br><br><strong>With vecuronium:</strong><br>1. Vecuronium competitively binds nicotinic ACh receptors<br>2. ACh CANNOT bind → no depolarization<br>3. No muscle contraction → paralysis<br>4. <strong>Non-depolarizing</strong> = no initial fasciculations<br><br>Option A describes succinylcholine (depolarizing agent).',
+                pearl: 'The "non-depolarizing" distinction matters clinically: vecuronium does NOT cause fasciculations (unlike succinylcholine), does NOT cause hyperkalemia from potassium release, and does NOT trigger malignant hyperthermia. These are important safety advantages in specific patient populations.',
+                protocol: 'LFN 12.84 Vecuronium\nMechanism: Blocks acetylcholine from\nbinding to receptors on motor endplate\ninhibiting depolarization\nCategory: Non-depolarizing NMB agent'
+            },
+            {
+                type: 'recall',
+                scenario: 'You have administered vecuronium to an intubated patient and the receiving physician asks about expected duration of action.',
+                vitals: null,
+                question: 'What is the onset and duration of vecuronium per LFN protocol?',
+                options: [
+                    { letter: 'A', text: 'Onset: 30–60 seconds / Duration: 8 minutes', correct: false },
+                    { letter: 'B', text: 'Onset: 2–3 minutes / Duration: 30–45 minutes', correct: true },
+                    { letter: 'C', text: 'Onset: 1 minute / Duration: 30+ minutes', correct: false },
+                    { letter: 'D', text: 'Onset: 5–15 minutes / Duration: 3 hours', correct: false }
+                ],
+                rationale: 'Per LFN formulary 12.84: <strong>Onset: 2–3 min / Duration: 30–45 min.</strong> Peak is not specified.',
+                mechanism: '<strong>Vecuronium pharmacokinetics:</strong><br>• <strong>Onset:</strong> 2–3 minutes<br>• <strong>Peak:</strong> Not specified in LFN formulary<br>• <strong>Duration:</strong> 30–45 minutes<br><br><strong>Compare other LFN NMB agents:</strong><br>• Succinylcholine: onset 30–60 sec / duration ~8 min<br>• Rocuronium: onset 1 min / duration 30+ min<br>• Cisatracurium: onset 2–3 min / duration 35–45 min<br><br>Option A = succinylcholine pharmacokinetics<br>Option C = rocuronium pharmacokinetics<br>Option D = TXA pharmacokinetics',
+                pearl: 'With a 30–45 min duration, plan for redosing during extended transports. If your transport time is 90 minutes, you may need to redose vecuronium 2–3 times. Watch for return of muscle tone, spontaneous respiratory effort, or patient movement as indicators that paralysis is wearing off.',
+                protocol: 'LFN 12.84 Vecuronium\nOnset / Duration: 2–3 min / 30–45 min\nPeak: Not specified\nMay repeat PRN'
+            },
+            {
+                type: 'critical',
+                scenario: 'You are preparing to administer vecuronium to an intubated patient. The nurse asks what contraindications to check.',
+                vitals: null,
+                question: 'What are the contraindications for vecuronium per LFN protocol?',
+                options: [
+                    { letter: 'A', text: 'Hypersensitivity; hyperkalemia; malignant hyperthermia', correct: false },
+                    { letter: 'B', text: 'Hypersensitivity', correct: true },
+                    { letter: 'C', text: 'Hypersensitivity; chronic nephritis; heart failure', correct: false },
+                    { letter: 'D', text: 'No contraindications listed in LFN formulary', correct: false }
+                ],
+                rationale: 'Per LFN formulary 12.84 Contraindications: <strong>Hypersensitivity.</strong> This is the only contraindication listed.',
+                mechanism: '<strong>Vecuronium contraindications vs other NMBs:</strong><br><br><strong>Vecuronium 12.84:</strong> Hypersensitivity (only)<br><br><strong>Succinylcholine 12.78:</strong> Hypersensitivity; history of malignant hyperthermia; hyperkalemia; subacute burns; multiple sclerosis; ALS; crush injury; muscular dystrophy; subacute spinal cord injury; patient age &lt;10 (unless emergent airway)<br><br><strong>Rocuronium 12.74:</strong> Hypersensitivity<br><br><strong>Cisatracurium 12.14:</strong> Hypersensitivity<br><br>Note: Option A lists succinylcholine contraindications, not vecuronium. Non-depolarizing agents have fewer contraindications than succinylcholine.',
+                pearl: 'The minimal contraindication profile of non-depolarizing agents like vecuronium is one reason they\'re preferred for ongoing paralysis. Succinylcholine has many more contraindications because its depolarizing mechanism can cause hyperkalemia, malignant hyperthermia, and other complications.',
+                protocol: 'LFN 12.84 Vecuronium\nContraindications: Hypersensitivity'
+            },
+            {
+                type: 'critical',
+                scenario: 'You have just administered vecuronium to an intubated patient. A new flight nurse asks what you must ensure regarding the patient\'s sedation.',
+                vitals: { HR: '92', BP: '118/72', SpO2: '99%', ETCO2: '38' },
+                question: 'Per Post-Intubation Sedation 2.08, what is required for chemically paralyzed patients?',
+                options: [
+                    { letter: 'A', text: 'Sedation only — analgesia is optional during paralysis', correct: false },
+                    { letter: 'B', text: 'No sedation needed — vecuronium provides adequate sedation', correct: false },
+                    { letter: 'C', text: 'Expedite sedation AND analgesia; use higher-end dosing as BP permits; BP/HR elevations are indirect measures of distress', correct: true },
+                    { letter: 'D', text: 'Sedation should be withheld to allow neurological assessment', correct: false }
+                ],
+                rationale: 'Per 2.08: Chemically paralyzed patients must receive <strong>sedation AND analgesia</strong>. <strong>Expedite administration</strong> to avoid paralysis without sedation. Use <strong>higher-end dosing ranges</strong> as BP permits. <strong>BP and HR elevations are indirect measures of distress</strong>.',
+                mechanism: '<strong>Post-Intubation Sedation 2.08 — Paralyzed patients:</strong><br>• <strong>Expedite</strong> sedation + analgesia → avoid paralysis without sedation<br>• <strong>No direct measure</strong> of dosing adequacy in paralyzed patients<br>• Use <strong>higher-end dosing ranges</strong> as BP permits<br>• <strong>BP and HR elevations</strong> = indirect measures of distress<br>• Must be controlled by pain/sedation medications<br>• Any deviations must be documented in medical decision making<br><br><strong>Available sedatives (2.08):</strong><br>• Midazolam, Lorazepam, Ketamine, Propofol, Dexmedetomidine<br>• Analgesia should be provided IN ADDITION to sedation — may reduce amount of sedation required',
+                pearl: 'Paralysis without adequate sedation is one of the most feared complications in critical care — the patient can be fully conscious, experiencing pain and terror, while completely unable to move, speak, or signal distress. This is why 2.08 says to "expedite" sedation and use "higher-end dosing ranges." When in doubt, sedate more, not less.',
+                protocol: 'Post-Intubation Sedation 2.08:\nChemically paralyzed patients:\n- Expedite sedation + analgesia\n- Use higher-end dosing as BP permits\n- BP/HR elevations = indirect distress\n- No direct measure of adequacy'
+            },
+            {
+                type: 'clinical',
+                scenario: 'You arrive to transport a 6-year-old (22 kg) intubated pediatric patient who is fighting the ventilator. The sending physician requests you maintain paralysis during transport.',
+                vitals: { HR: '140', BP: '92/58', SpO2: '94%', RR: '30', ETCO2: '48' },
+                question: 'What is the pediatric vecuronium dose for this patient?',
+                options: [
+                    { letter: 'A', text: '2.2 mg (0.1 mg/kg × 22 kg) — same dosing as adult', correct: true },
+                    { letter: 'B', text: '22 mg (1 mg/kg × 22 kg)', correct: false },
+                    { letter: 'C', text: '11 mg (0.5 mg/kg × 22 kg)', correct: false },
+                    { letter: 'D', text: 'No LFN Standing Order for pediatric vecuronium', correct: false }
+                ],
+                rationale: 'Per LFN formulary 12.84: Pediatric dose is <strong>Same as Adult — 0.1 mg/kg, may repeat PRN.</strong> For 22 kg: 0.1 × 22 = <strong>2.2 mg</strong>.',
+                mechanism: '<strong>Pediatric vecuronium calculation:</strong><br>• <strong>Weight:</strong> 22 kg<br>• <strong>Formula:</strong> 0.1 mg/kg × 22 kg = <strong>2.2 mg</strong><br>• <strong>Pediatric dose:</strong> Same as Adult<br>• May repeat PRN<br><br><strong>Pediatric NMB notes:</strong><br>• Rocuronium 12.74 is the "paralytic agent of choice if patient age &lt; 10 years" per SC #1<br>• However, vecuronium is not contraindicated in pediatrics<br>• Both are non-depolarizing agents<br>• Ensure pediatric-appropriate sedation dosing per 2.08',
+                pearl: 'While rocuronium is specified as the paralytic of choice for patients under 10, vecuronium is still available as an option per 12.84 (pediatric dose = same as adult). If the sending facility has started vecuronium, continue it. Always ensure adequate sedation — pediatric patients are particularly vulnerable.',
+                protocol: 'LFN 12.84 Vecuronium\nPediatric Dose: Same as Adult\n0.1 mg/kg, may repeat PRN\n22 kg × 0.1 mg/kg = 2.2 mg'
+            },
+            {
+                type: 'recall',
+                scenario: 'You are monitoring an intubated, paralyzed patient during transport and the patient develops new-onset tachycardia and transient hypotension.',
+                vitals: { HR: '124', BP: '86/52', SpO2: '98%', ETCO2: '36' },
+                question: 'What are the adverse reactions of vecuronium per LFN protocol?',
+                options: [
+                    { letter: 'A', text: 'Angina; hypertension', correct: false },
+                    { letter: 'B', text: 'Nausea/vomiting; headache; visual disturbances', correct: false },
+                    { letter: 'C', text: 'Apnea; dysrhythmias; transient hypotension; tachycardia', correct: true },
+                    { letter: 'D', text: 'Muscular fasciculations; hyperkalemia; malignant hyperthermia', correct: false }
+                ],
+                rationale: 'Per LFN formulary 12.84 Adverse Reactions: <strong>Apnea; dysrhythmias; transient hypotension; tachycardia.</strong>',
+                mechanism: '<strong>Vecuronium adverse reactions:</strong><br>• <strong>Apnea:</strong> Expected — this is a paralytic agent; patient must be ventilated<br>• <strong>Dysrhythmias:</strong> Monitor ECG continuously<br>• <strong>Transient hypotension:</strong> May occur after administration; generally self-limiting<br>• <strong>Tachycardia:</strong> Can be a drug effect OR a sign of inadequate sedation/analgesia<br><br><strong>Key distinction:</strong><br>• Option A = vasopressin adverse reactions<br>• Option B = TXA adverse reactions<br>• Option D = succinylcholine adverse reactions (fasciculations, hyperkalemia, MH are depolarizing-agent effects)<br><br>In this scenario: tachycardia + hypotension — consider both drug effect AND inadequate sedation. Assess and treat.',
+                pearl: 'Tachycardia in a paralyzed patient has two critical differential diagnoses: (1) drug adverse effect, and (2) inadequate sedation/pain control. Per 2.08, BP and HR elevations are indirect measures of distress. If this patient\'s tachycardia is from pain/awareness, they need more sedation/analgesia — not just a rate-control medication.',
+                protocol: 'LFN 12.84 Vecuronium\nAdverse Reactions: Apnea; dysrhythmias;\ntransient hypotension; tachycardia'
+            },
+            {
+                type: 'critical',
+                scenario: 'A flight nurse states: "I don\'t think we need to keep this patient paralyzed — they\'re sedated and not moving. But the sending doc used succinylcholine for RSI and it\'s worn off."',
+                vitals: { HR: '78', BP: '124/76', SpO2: '99%', ETCO2: '36' },
+                question: 'Per RSI 8.27, when should you consider continued paralysis during transport?',
+                options: [
+                    { letter: 'A', text: 'All intubated patients must remain paralyzed during transport', correct: false },
+                    { letter: 'B', text: 'Consider for patients with history of combativeness or agitation; consider aircraft constraints, patient size, and crew safety', correct: true },
+                    { letter: 'C', text: 'Only if the patient is actively fighting the ventilator', correct: false },
+                    { letter: 'D', text: 'Paralysis should never be maintained — sedation alone is sufficient', correct: false }
+                ],
+                rationale: 'Per RSI 8.27: <strong>"It is not necessary to maintain paralysis on every patient but consider continued paralysis for patients with a history of combativeness or agitation. Consider the constraints of the aircraft/vehicle, patient size, and crew safety."</strong>',
+                mechanism: '<strong>RSI 8.27 paralysis guidance:</strong><br>• <strong>Not necessary on every patient</strong><br>• <strong>Consider continued paralysis if:</strong><br>&nbsp;&nbsp;→ History of combativeness or agitation<br>&nbsp;&nbsp;→ Aircraft/vehicle constraints<br>&nbsp;&nbsp;→ Patient size<br>&nbsp;&nbsp;→ Crew safety concerns<br>• <strong>For other patients:</strong> consider sedation only without ongoing paralysis<br>• <strong>To maintain paralysis:</strong> Rocuronium 0.5 mg/kg (per 8.27) or Vecuronium 0.1 mg/kg (per 12.84)<br>• <strong>To initiate paralysis in non-paralyzed intubated pt:</strong> Rocuronium 1 mg/kg IV or 1.8 mg/kg IM',
+                pearl: 'This is a clinical judgment call. The key factors: Was this patient combative before intubation? Are they adequately sedated? Is the aircraft environment high-risk for complications if they become agitated? If the patient is hemodynamically stable and well-sedated with no history of combativeness, it may be reasonable to not re-paralyze. Document your reasoning.',
+                protocol: 'RSI 8.27 Post-Intubation:\n"Not necessary to maintain paralysis on\nevery patient but consider for h/o\ncombativeness/agitation. Consider\naircraft constraints, patient size,\nand crew safety."'
+            },
+            {
+                type: 'clinical',
+                scenario: 'A pregnant patient at 32 weeks who was intubated for status epilepticus needs maintained paralysis during transport. The team asks about vecuronium safety in pregnancy.',
+                vitals: { HR: '100', BP: '134/82', SpO2: '98%', ETCO2: '34', FHR: '145' },
+                question: 'What does LFN protocol say about vecuronium in pregnancy?',
+                options: [
+                    { letter: 'A', text: 'Absolutely contraindicated in pregnancy', correct: false },
+                    { letter: 'B', text: 'Data is limited, but its use during pregnancy has been reported', correct: true },
+                    { letter: 'C', text: 'Safe in pregnancy with extensive clinical data supporting use', correct: false },
+                    { letter: 'D', text: 'No pregnancy considerations listed in LFN formulary', correct: false }
+                ],
+                rationale: 'Per LFN formulary 12.84 Pregnancy Considerations: <strong>Data is limited, but its use during pregnancy has been reported.</strong>',
+                mechanism: '<strong>Vecuronium in pregnancy — LFN formulary data:</strong><br>• <strong>Limited data</strong> — but use has been reported<br>• <strong>NOT contraindicated</strong> in pregnancy per LFN<br>• <strong>Compare other LFN NMB pregnancy data:</strong><br>&nbsp;&nbsp;→ Rocuronium 12.74: crosses placenta, "may be used in pregnancy"<br>&nbsp;&nbsp;→ Succinylcholine 12.78: crosses placenta, no increased risk of major anomalies<br>&nbsp;&nbsp;→ Cisatracurium 12.14: insufficient evidence, use with caution<br><br><strong>This patient:</strong><br>• 32 weeks with status epilepticus — life-threatening condition<br>• Intubated — paralysis may be needed for safe transport<br>• Limited data does not mean contraindicated',
+                pearl: 'In a life-threatening situation like status epilepticus requiring intubation at 32 weeks, the risk of NOT maintaining paralysis (accidental extubation, aspiration, ventilator dyssynchrony) likely outweighs the limited pregnancy data concerns. Communicate with medical control and document clinical reasoning.',
+                protocol: 'LFN 12.84 Vecuronium Pregnancy:\nData is limited, but its use during\npregnancy has been reported.\nNot contraindicated.'
+            }
+        ];
+
+        let currentQuestion = 0, correctAnswers = 0, incorrectAnswers = 0, answered = [];
+
+        function switchMode(mode) {
+            document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.mode-panel').forEach(p => p.classList.remove('active'));
+            document.querySelector(`.mode-tab[data-mode="${mode}"]`).classList.add('active');
+            document.getElementById('panel-' + mode).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleQuickRef() {
+            document.getElementById('qrBody').classList.toggle('collapsed');
+            document.getElementById('qrToggle').classList.toggle('collapsed');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.qr-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.qr-tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('#panel-reference .qr-panel').forEach(p => p.classList.remove('active'));
+                    tab.classList.add('active');
+                    document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+                });
+            });
+            renderQuiz();
+        });
+
+        function renderQuiz() {
+            const container = document.getElementById('quizContainer');
+            questions.forEach((q, i) => {
+                const vitalsHTML = q.vitals ? `<div class="vital-signs">${Object.entries(q.vitals).map(([k,v]) => `<div class="vital-item"><div class="vital-label">${k}</div><div class="vital-value">${v}</div></div>`).join('')}</div>` : '';
+                const optionsHTML = q.options.map(o => `<div class="option-btn" data-correct="${o.correct}"><span class="option-letter">${o.letter}</span><span class="option-text">${o.text}</span></div>`).join('');
+                container.innerHTML += `
+                    <div class="question-card" id="q${i}" style="display: ${i === 0 ? 'block' : 'none'};">
+                        <div class="question-header">
+                            <span class="question-number">Question ${i + 1} of ${questions.length}</span>
+                            <span class="question-type ${q.type}">${q.type}</span>
+                        </div>
+                        <div class="question-body">
+                            <div class="scenario-box">
+                                <div class="scenario-label">📋 Clinical Scenario</div>
+                                <div class="scenario-text">${q.scenario}</div>
+                                ${vitalsHTML}
+                            </div>
+                            <div class="question-text">${q.question}</div>
+                            <div class="options-list">${optionsHTML}</div>
+                            <div class="rationale-box" id="rat${i}">
+                                <div class="mechanism-section"><h4>🔬 Mechanism & Key Concepts</h4><p>${q.mechanism}</p></div>
+                                <div class="clinical-pearl-box"><h4>💡 Clinical Pearl</h4><p>${q.pearl}</p></div>
+                                <div class="protocol-box"><h4>📖 Protocol Reference</h4><p>${q.protocol}</p></div>
+                            </div>
+                        </div>
+                        <div class="nav-buttons">
+                            <button class="nav-btn secondary" onclick="navigate(${i}, -1)" ${i === 0 ? 'disabled' : ''}>Previous</button>
+                            <button class="nav-btn primary" id="next${i}" onclick="navigate(${i}, 1)" disabled>${i === questions.length - 1 ? 'View Results' : 'Next Question'}</button>
+                        </div>
+                    </div>`;
+            });
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (this.classList.contains('disabled')) return;
+                    const card = this.closest('.question-card');
+                    const idx = parseInt(card.id.replace('q', ''));
+                    if (answered[idx]) return;
+                    answered[idx] = true;
+                    card.querySelectorAll('.option-btn').forEach(o => { o.classList.add('disabled'); if (o.dataset.correct === 'true') o.classList.add('correct'); });
+                    const isCorrect = this.dataset.correct === 'true';
+                    if (!isCorrect) this.classList.add('incorrect');
+                    if (isCorrect) correctAnswers++; else incorrectAnswers++;
+                    document.getElementById('correctCount').textContent = correctAnswers;
+                    document.getElementById('incorrectCount').textContent = incorrectAnswers;
+                    document.getElementById(`rat${idx}`).classList.add('show');
+                    document.getElementById(`next${idx}`).disabled = false;
+                });
+            });
+        }
+
+        function navigate(current, dir) {
+            const next = current + dir;
+            if (next >= questions.length) { showResults(); return; }
+            if (next < 0) return;
+            document.getElementById(`q${current}`).style.display = 'none';
+            document.getElementById(`q${next}`).style.display = 'block';
+            currentQuestion = next;
+            updateProgress();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateProgress() {
+            document.getElementById('progressBar').style.width = ((currentQuestion + 1) / questions.length * 100) + '%';
+            document.getElementById('progressTitle').textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+        }
+
+        function showResults() {
+            document.getElementById('quizContainer').style.display = 'none';
+            document.getElementById('progressSection').style.display = 'none';
+            const card = document.getElementById('resultsCard');
+            card.classList.add('show');
+            const pct = Math.round((correctAnswers / questions.length) * 100);
+            const scoreEl = document.getElementById('resultsScore');
+            const iconEl = document.getElementById('resultsIcon');
+            const msgEl = document.getElementById('resultsMessage');
+            scoreEl.textContent = pct + '%';
+            document.getElementById('finalCorrect').textContent = correctAnswers;
+            document.getElementById('finalIncorrect').textContent = incorrectAnswers;
+            if (pct >= 90) {
+                scoreEl.className = 'results-score excellent'; iconEl.className = 'results-icon excellent'; iconEl.textContent = '🌟';
+                msgEl.textContent = 'Excellent! Outstanding vecuronium knowledge — indication (paralysis of intubated patient), dose (0.1 mg/kg, repeat PRN), mechanism (blocks ACh at motor endplate, non-depolarizing), CI (hypersensitivity only), onset/duration (2–3 min / 30–45 min), mandatory sedation + analgesia (2.08), adverse (apnea, dysrhythmias, transient hypotension, tachycardia), and paralysis decision-making (8.27).';
+            } else if (pct >= 70) {
+                scoreEl.className = 'results-score good'; iconEl.className = 'results-icon good'; iconEl.textContent = '👍';
+                msgEl.textContent = 'Good work! Review: paralysis of intubated patient only, 0.1 mg/kg (peds same), may repeat PRN, onset 2–3 min / duration 30–45 min, non-depolarizing (no fasciculations), CI: hypersensitivity only, MUST sedate + provide analgesia, not for RSI (use succinylcholine/rocuronium), adverse: apnea/dysrhythmias/hypotension/tachycardia, document "Chemically Paralyzed" (no RASS).';
+            } else {
+                scoreEl.className = 'results-score needs-work'; iconEl.className = 'results-icon needs-work'; iconEl.textContent = '📚';
+                msgEl.textContent = 'Keep studying! Focus on: paralysis of intubated patient ONLY, 0.1 mg/kg (same adult/peds) may repeat PRN, blocks ACh at motor endplate (non-depolarizing), onset 2–3 min / duration 30–45 min, CI: hypersensitivity only, MUST provide sedation + analgesia (never paralyze without sedation), not for RSI, adverse: apnea/dysrhythmias/transient hypotension/tachycardia, consider paralysis for combativeness/crew safety, no RASS for paralyzed patients.';
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0; correctAnswers = 0; incorrectAnswers = 0; answered = [];
+            document.getElementById('correctCount').textContent = '0';
+            document.getElementById('incorrectCount').textContent = '0';
+            document.querySelectorAll('.option-btn').forEach(o => o.classList.remove('disabled', 'correct', 'incorrect'));
+            document.querySelectorAll('.rationale-box').forEach(r => r.classList.remove('show'));
+            questions.forEach((_, i) => { document.getElementById(`next${i}`).disabled = true; document.getElementById(`q${i}`).style.display = i === 0 ? 'block' : 'none'; });
+            document.getElementById('resultsCard').classList.remove('show');
+            document.getElementById('quizContainer').style.display = 'block';
+            document.getElementById('progressSection').style.display = 'block';
+            updateProgress();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

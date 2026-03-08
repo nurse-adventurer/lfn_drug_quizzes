@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LFN Drug Quiz | Midazolam (Section 12.54)</title>
+    <style>
+        :root{--primary:#1e40af;--primary-light:#3b82f6;--accent:#bfdbfe;--success:#16a34a;--danger:#dc2626;--bg-light:#eff6ff;--bg-card:#fff;--text-primary:#1e293b;--text-secondary:#475569;--border:#e2e8f0;--shadow:0 4px 6px -1px rgba(0,0,0,.1);--shadow-lg:0 10px 15px -3px rgba(0,0,0,.1)}*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#eff6ff 0%,#bfdbfe 50%,#1e40af 100%);min-height:100vh;color:var(--text-primary);line-height:1.6;padding:20px}.container{max-width:900px;margin:0 auto}.header{background:linear-gradient(135deg,#1e3a8a 0%,#3b82f6 100%);color:#fff;padding:30px;border-radius:16px;margin-bottom:25px;text-align:center;box-shadow:var(--shadow-lg)}.header h1{font-size:1.8rem;margin-bottom:8px}.header .subtitle{opacity:.9;font-size:1rem}.header .drug-class{display:inline-block;background:rgba(255,255,255,.2);padding:5px 15px;border-radius:20px;margin-top:10px;font-size:.85rem}.badge-container{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:12px}.indication-badge{padding:5px 12px;border-radius:15px;font-size:.7rem;font-weight:600;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3)}.mode-tabs{display:flex;gap:0;margin-bottom:25px;border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}.mode-tab{flex:1;padding:16px 20px;background:#fff;border:none;font-size:1rem;font-weight:700;cursor:pointer;transition:all .2s;color:var(--text-secondary);text-align:center}.mode-tab:first-child{border-radius:12px 0 0 12px}.mode-tab:last-child{border-radius:0 12px 12px 0}.mode-tab:hover{background:#eff6ff;color:var(--primary)}.mode-tab.active{background:linear-gradient(135deg,#1e3a8a 0%,#3b82f6 100%);color:#fff}.mode-panel{display:none}.mode-panel.active{display:block}.quick-reference{background:var(--bg-card);border-radius:12px;margin-bottom:25px;box-shadow:var(--shadow);overflow:hidden}.qr-header{background:linear-gradient(135deg,#1e3a8a 0%,#3b82f6 100%);color:#fff;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none}.qr-header h3{font-size:1rem;margin:0}.qr-toggle{font-size:1.2rem;transition:transform .3s}.qr-toggle.collapsed{transform:rotate(-90deg)}.qr-body{padding:0;max-height:10000px;overflow:hidden;transition:max-height .4s,padding .3s}.qr-body.collapsed{max-height:0;padding:0}.qr-body-inner{padding:20px}.qr-tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;padding-bottom:12px;border-bottom:2px solid var(--border)}.qr-tab{padding:8px 16px;border-radius:8px;border:2px solid var(--border);background:#fff;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .2s;color:var(--text-secondary);white-space:nowrap}.qr-tab:hover{border-color:var(--accent);color:var(--primary)}.qr-tab.active{background:var(--primary);color:#fff;border-color:var(--primary)}.qr-panel{display:none}.qr-panel.active{display:block}.dose-table{width:100%;border-collapse:collapse;font-size:.74rem;margin-bottom:10px}.dose-table th{background:linear-gradient(135deg,#1e3a8a 0%,#3b82f6 100%);color:#fff;padding:8px;text-align:left;font-size:.66rem;text-transform:uppercase}.dose-table td{padding:7px 8px;border-bottom:1px solid var(--border);vertical-align:top}.dose-table tr:last-child td{border-bottom:none}.dose-table tr:nth-child(even) td{background:#eff6ff}.dose-table .indication-cell{font-weight:600;color:var(--primary);min-width:80px;font-size:.72rem}.dose-table .dose-cell{font-family:'Courier New',monospace;font-size:.72rem;line-height:1.5}.dose-detail{color:var(--text-secondary);font-size:.66rem;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}.ref-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px}.ref-item{background:var(--bg-light);padding:12px;border-radius:8px}.ref-label{font-size:.7rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;font-weight:600}.ref-value{font-weight:600;color:var(--text-primary);font-size:.88rem}.ref-item.warning{background:#fef3c7;border:1px solid #fde047}.ref-item.warning .ref-label{color:#92400e}.ref-item.warning .ref-value{color:#78350f;font-size:.84rem}.ref-item.critical{background:#fee2e2;border:2px solid #fecaca}.ref-item.critical .ref-label{color:#991b1b}.ref-item.critical .ref-value{color:#7f1d1d}.ref-item.blue{background:#eff6ff;border:1px solid #bfdbfe}.ref-item.blue .ref-label{color:#1e40af}.ref-item.blue .ref-value{color:#1e3a8a}.warning-box{background:linear-gradient(135deg,#fef3c7 0%,#fde68a 100%);border:2px solid #f59e0b;border-radius:10px;padding:16px;margin-bottom:12px}.warning-box .warn-title{font-weight:700;color:#92400e;font-size:.85rem;margin-bottom:8px}.warning-box p{color:#78350f;font-size:.85rem;line-height:1.7}.danger-box{background:linear-gradient(135deg,#fee2e2 0%,#fecaca 100%);border:2px solid #ef4444;border-radius:10px;padding:16px;margin-bottom:12px}.danger-box .warn-title{font-weight:700;color:#991b1b;font-size:.85rem;margin-bottom:8px}.danger-box p{color:#7f1d1d;font-size:.85rem;line-height:1.7}.info-box{background:linear-gradient(135deg,#eff6ff 0%,#dbeafe 100%);border:2px solid #bfdbfe;border-radius:10px;padding:16px;margin-bottom:12px}.info-box .warn-title{font-weight:700;color:#1e40af;font-size:.85rem;margin-bottom:8px}.info-box p{color:#1e3a8a;font-size:.85rem;line-height:1.7}.progress-section{background:var(--bg-card);border-radius:12px;padding:20px 25px;margin-bottom:25px;box-shadow:var(--shadow)}.progress-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:10px}.progress-title{font-weight:600;color:var(--primary)}.progress-stats{display:flex;gap:20px;font-size:.9rem;color:var(--text-secondary)}.progress-bar-container{height:10px;background:var(--border);border-radius:5px;overflow:hidden}.progress-bar{height:100%;background:linear-gradient(90deg,#bfdbfe 0%,#3b82f6 100%);border-radius:5px;transition:width .4s}.question-card{background:var(--bg-card);border-radius:16px;box-shadow:var(--shadow-lg);overflow:hidden;margin-bottom:25px}.question-header{background:linear-gradient(135deg,#1e3a8a 0%,#3b82f6 100%);color:#fff;padding:20px 25px;display:flex;justify-content:space-between;align-items:center}.question-number{font-size:1.1rem;font-weight:600}.question-type{padding:5px 14px;border-radius:20px;font-size:.8rem;font-weight:600;text-transform:uppercase}.question-type.clinical{background:#22c55e}.question-type.critical{background:#1e3a8a}.question-type.recall{background:#8b5cf6}.question-body{padding:30px}.scenario-box{background:linear-gradient(135deg,#eff6ff 0%,#dbeafe 100%);border-left:4px solid #3b82f6;padding:20px;border-radius:0 10px 10px 0;margin-bottom:20px}.scenario-label{font-size:.75rem;text-transform:uppercase;letter-spacing:1px;color:var(--primary);font-weight:700;margin-bottom:10px}.scenario-text{font-size:1rem;color:var(--text-primary);line-height:1.7}.vital-signs{display:grid;grid-template-columns:repeat(auto-fit,minmax(80px,1fr));gap:10px;margin-top:15px;padding-top:15px;border-top:1px dashed var(--accent)}.vital-item{text-align:center;padding:8px;background:#fff;border-radius:8px}.vital-label{font-size:.7rem;color:var(--text-secondary);text-transform:uppercase}.vital-value{font-size:.95rem;font-weight:700;color:var(--primary)}.question-text{font-size:1.15rem;font-weight:500;color:var(--text-primary);margin-bottom:25px;line-height:1.7}.options-list{display:flex;flex-direction:column;gap:12px}.option-btn{display:flex;align-items:flex-start;padding:16px 20px;background:var(--bg-light);border:2px solid var(--border);border-radius:10px;cursor:pointer;transition:all .2s;text-align:left}.option-btn:hover:not(.disabled){border-color:var(--accent);background:#fff;transform:translateX(5px)}.option-btn.correct{border-color:var(--success);background:rgba(22,163,74,.1)}.option-btn.incorrect{border-color:var(--danger);background:rgba(220,38,38,.1)}.option-btn.disabled{cursor:default}.option-letter{width:32px;height:32px;min-width:32px;background:var(--primary);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600;margin-right:15px;font-size:.9rem}.option-btn.correct .option-letter{background:var(--success)}.option-btn.incorrect .option-letter{background:var(--danger)}.option-text{flex:1;font-size:1rem;line-height:1.5}.rationale-box{margin-top:25px;padding:25px;border-radius:12px;background:#f8fafc;display:none}.rationale-box.show{display:block}.mechanism-section{background:linear-gradient(135deg,#eff6ff 0%,#dbeafe 100%);border-radius:12px;padding:20px;margin-bottom:15px}.mechanism-section h4{color:#1e40af;margin-bottom:12px;font-size:1rem}.mechanism-section p{color:#1e3a8a;font-size:.95rem;line-height:1.8}.clinical-pearl-box{background:linear-gradient(135deg,#dcfce7 0%,#bbf7d0 100%);border-radius:12px;padding:20px;margin-bottom:15px}.clinical-pearl-box h4{color:#166534;margin-bottom:12px;font-size:1rem}.clinical-pearl-box p{color:#14532d;font-size:.95rem;line-height:1.8}.protocol-box{background:linear-gradient(135deg,#eff6ff 0%,#dbeafe 100%);border-radius:12px;padding:20px}.protocol-box h4{color:#1e40af;margin-bottom:12px;font-size:1rem}.protocol-box p{color:#1e3a8a;font-size:.95rem;line-height:1.8;font-family:'Courier New',monospace}.nav-buttons{display:flex;justify-content:space-between;gap:15px;padding:0 30px 30px}.nav-btn{padding:14px 28px;border:none;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;transition:all .2s}.nav-btn.primary{background:var(--primary);color:#fff}.nav-btn.primary:hover{background:var(--primary-light)}.nav-btn.secondary{background:var(--border);color:var(--text-secondary)}.nav-btn:disabled{opacity:.5;cursor:not-allowed}.results-card{background:var(--bg-card);border-radius:16px;box-shadow:var(--shadow-lg);padding:40px;text-align:center;display:none}.results-card.show{display:block}.results-icon{width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:2.5rem}.results-icon.excellent{background:rgba(22,163,74,.15)}.results-icon.good{background:rgba(30,64,175,.15)}.results-icon.needs-work{background:rgba(220,38,38,.15)}.results-title{font-size:1.8rem;font-weight:700;color:var(--primary)}.results-score{font-size:3rem;font-weight:800;margin:20px 0}.results-score.excellent{color:var(--success)}.results-score.good{color:var(--primary)}.results-score.needs-work{color:var(--danger)}.results-message{color:var(--text-secondary);font-size:1.1rem;margin-bottom:30px}.results-breakdown{display:flex;justify-content:center;gap:40px;margin-bottom:30px}.breakdown-item{text-align:center}.breakdown-value{font-size:1.5rem;font-weight:700}.breakdown-label{font-size:.85rem;color:var(--text-secondary)}.results-qr{background:linear-gradient(135deg,#eff6ff 0%,#dbeafe 100%);border-radius:12px;padding:25px;margin-top:25px;text-align:left}.results-qr h3{color:#1e40af;margin-bottom:15px;text-align:center;font-size:1.1rem}.results-dose-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:.67rem}.results-dose-table th{background:#1e3a8a;color:#fff;padding:5px 6px;text-align:left}.results-dose-table td{padding:5px 6px;border-bottom:1px solid #bfdbfe;font-size:.67rem;vertical-align:top}.results-warning-list{background:#dbeafe;border:2px solid #bfdbfe;border-radius:10px;padding:15px;margin-top:15px}.results-warning-list h4{color:#1e40af;margin-bottom:10px;font-size:.9rem}.results-warning-list ul{color:#1e3a8a;margin-left:20px;font-size:.78rem}.results-warning-list li{margin-bottom:5px}.disclaimer{text-align:center;font-size:.72rem;color:var(--text-secondary);margin-top:20px;padding:15px;background:rgba(255,255,255,.6);border-radius:8px;line-height:1.5}@media(max-width:600px){body{padding:10px}.header{padding:20px 15px;border-radius:12px}.header h1{font-size:1.5rem}.mode-tab{padding:12px 10px;font-size:.85rem}.qr-body-inner{padding:15px}.qr-tabs{gap:4px}.qr-tab{padding:6px 10px;font-size:.72rem}.dose-table{font-size:.66rem}.ref-grid{grid-template-columns:1fr}.question-body{padding:20px}.nav-buttons{flex-direction:column;padding:0 20px 20px}}
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="header">
+        <h1>💙 Midazolam</h1>
+        <p class="subtitle">LFN Protocol Section 12.54 | Clinical Application Quiz</p>
+        <span class="drug-class">Benzodiazepine / Schedule IV (Versed) | Mixture: 10 mg / 100 mL</span>
+        <div class="badge-container">
+            <span class="indication-badge">😤 Sedation/Combative: 2-5 mg IV/IM q15 min</span>
+            <span class="indication-badge">💉 Post-Intubation: 2-5 mg IV q15 min</span>
+            <span class="indication-badge">⚡ Seizures: 0.1 mg/kg IV/IM q5 min</span>
+            <span class="indication-badge">🔴 RSI: 0.2 mg/kg IV (0.1 if ↓BP)</span>
+            <span class="indication-badge">😌 Anxiolysis: 0.01 mg/kg q15 min</span>
+            <span class="indication-badge">🚫 CI: Hypersensitivity only</span>
+        </div>
+    </div>
+
+    <div class="mode-tabs">
+        <button class="mode-tab active" data-mode="reference" onclick="switchMode('reference')">📋 Quick Reference</button>
+        <button class="mode-tab" data-mode="quiz" onclick="switchMode('quiz')">📝 Quiz</button>
+    </div>
+
+    <div class="mode-panel active" id="panel-reference">
+        <div class="quick-reference">
+            <div class="qr-header" onclick="toggleQR()">
+                <h3>📋 Quick Reference — Key Doses for Midazolam 12.54</h3>
+                <span class="qr-toggle" id="qrToggle">▼</span>
+            </div>
+            <div class="qr-body" id="qrBody">
+                <div class="qr-body-inner">
+                    <div class="qr-tabs">
+                        <button class="qr-tab active" data-tab="dosing">Dosing &amp; Indications</button>
+                        <button class="qr-tab" data-tab="pharmacology">Pharmacology</button>
+                        <button class="qr-tab" data-tab="infusion">Infusion Protocol</button>
+                        <button class="qr-tab" data-tab="warnings">Warnings &amp; Precautions</button>
+                    </div>
+
+                    <!-- DOSING TAB -->
+                    <div class="qr-panel active" id="panel-dosing">
+                        <div style="overflow-x:auto">
+                            <table class="dose-table">
+                                <thead>
+                                    <tr><th>Indication</th><th>Adult Dose</th><th>Pediatric Dose</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="indication-cell">😤 Sedation:<br>Combative Patient</td>
+                                        <td class="dose-cell">2–5 mg IV/IM q 15 min<br><strong>OR</strong><br>0.3 mg/kg IN (max 10 mg, split both nostrils)<br><span class="dose-detail">Lower doses for frail/elderly/debilitated</span></td>
+                                        <td class="dose-cell">0.05–0.1 mg/kg IV/IM q 15 min<br><strong>OR</strong><br>0.3 mg/kg IN (max 10 mg, split both nostrils)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="indication-cell">💉 Post-Intubation<br>Sedation</td>
+                                        <td class="dose-cell">2–5 mg IV q 15 min<br><span class="dose-detail">Consider infusion for long transports</span></td>
+                                        <td class="dose-cell">0.05–0.1 mg/kg IV/IM<br>Max single dose 2.5 mg<br>q 15 min<br><span class="dose-detail">Consider infusion for long transports</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="indication-cell">📈 Infusion</td>
+                                        <td class="dose-cell">Bolus, then:<br>&lt;100 kg: 2 mg/hr<br>≥100 kg: 4 mg/hr<br>Titrate 1 mg/hr q 5-10 min<br>Max 10 mg/hr<br><span class="dose-detail">Give additional 2 mg bolus between titrations</span></td>
+                                        <td class="dose-cell">Bolus, then 50 mcg/kg/hr<br>Titrate 10 mcg/kg/hr q 5-10 min<br>Max 100 mcg/kg/hr<br><span class="dose-detail">Give additional bolus prior to titrations</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="indication-cell">⚡ Seizures</td>
+                                        <td class="dose-cell">0.1 mg/kg IV/IM q 5 min<br>Max single dose 5 mg<br><strong>OR</strong><br>0.3 mg/kg IN (max 10 mg, split both nostrils)</td>
+                                        <td class="dose-cell">Same as Adult</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="indication-cell">🔴 RSI Induction</td>
+                                        <td class="dose-cell">0.2 mg/kg IV<br>0.1 mg/kg if hypotensive<br>Max dose 20 mg<br><span class="dose-detail">Wait 3 min before paralytic</span></td>
+                                        <td class="dose-cell">0.1 mg/kg<br>Max dose 20 mg<br><span class="dose-detail">Wait 3 min before paralytic<br>Administer fentanyl pre-treatment if BP allows</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="indication-cell">😌 Anxiolysis</td>
+                                        <td class="dose-cell">0.01 mg/kg IV q 15 min PRN<br>Max single dose 5 mg</td>
+                                        <td class="dose-cell">Same as Adult</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div style="margin-top:14px">
+                            <div class="ref-grid">
+                                <div class="ref-item blue"><div class="ref-label">Onset / Peak / Duration</div><div class="ref-value">1-2 min / 3-5 min / 30 min</div></div>
+                                <div class="ref-item blue"><div class="ref-label">Trade Name / Mixture</div><div class="ref-value">Versed | 10 mg / 100 mL</div></div>
+                                <div class="ref-item critical"><div class="ref-label">Contraindication</div><div class="ref-value">Hypersensitivity only</div></div>
+                                <div class="ref-item blue"><div class="ref-label">Category</div><div class="ref-value">Benzodiazepine / Schedule IV</div></div>
+                            </div>
+                        </div>
+
+                        <div style="margin-top:14px;background:linear-gradient(135deg,#fef3c7 0%,#fde68a 100%);border:2px solid #fbbf24;border-radius:10px;padding:14px">
+                            <div style="font-size:.75rem;font-weight:700;color:#92400e;margin-bottom:8px">🔑 KEY PATTERNS — Critical Dose Distinctions</div>
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:.75rem;color:#78350f">
+                                <div><strong>IN dose is always 0.3 mg/kg</strong> for ALL indications (split both nostrils, max 10 mg) — not indication-specific</div>
+                                <div><strong>Seizure repeat q5 min</strong>; Sedation/post-intubation repeat q15 min; Anxiolysis repeat q15 min</div>
+                                <div><strong>RSI adult dose is 0.2 mg/kg</strong> (not 0.1-0.3 mg/kg range) with a specific hypotensive modification to 0.1 mg/kg</div>
+                                <div><strong>RSI max is 20 mg</strong> (not 10 mg); peds RSI adds fentanyl pre-treatment if BP allows</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PHARMACOLOGY TAB -->
+                    <div class="qr-panel" id="panel-pharmacology">
+                        <div class="ref-grid" style="margin-bottom:18px">
+                            <div class="ref-item blue"><div class="ref-label">Category</div><div class="ref-value">Benzodiazepine / Schedule IV</div></div>
+                            <div class="ref-item blue"><div class="ref-label">Onset / Peak / Duration</div><div class="ref-value">1-2 min / 3-5 min / 30 min</div></div>
+                            <div class="ref-item blue"><div class="ref-label">Mixture</div><div class="ref-value">10 mg / 100 mL</div></div>
+                            <div class="ref-item critical"><div class="ref-label">Contraindication</div><div class="ref-value">Hypersensitivity only</div></div>
+                        </div>
+
+                        <div style="background:linear-gradient(135deg,#eff6ff 0%,#dbeafe 100%);border:2px solid #bfdbfe;border-radius:12px;padding:20px;margin-bottom:18px">
+                            <h4 style="color:#1e40af;margin-bottom:10px;font-size:.95rem">🔬 Mechanism of Action</h4>
+                            <p style="color:#1e3a8a;font-size:.9rem;line-height:1.8">
+                                <strong>Midazolam is a short-acting parenteral benzodiazepine with CNS depressant, muscle relaxant, anticonvulsant, and anterograde amnestic effects.</strong><br><br>
+                                Intensifies activity of gamma-aminobutyric acid (GABA), a major inhibitory neurotransmitter of the brain, by interfering with its reuptake and promoting its accumulation at neuronal synapses.<br><br>
+                                <strong>Clinical effects:</strong><br>
+                                • Sedation / anxiolysis<br>
+                                • Anterograde amnesia (patient won't remember peri-procedure period)<br>
+                                • Muscle relaxation<br>
+                                • Anticonvulsant<br>
+                                • Does NOT provide analgesia — pain must be managed separately
+                            </p>
+                        </div>
+
+                        <div style="background:linear-gradient(135deg,#fef3c7 0%,#fde68a 100%);border-radius:12px;padding:16px">
+                            <h4 style="color:#92400e;margin-bottom:8px;font-size:.9rem">🤰 Pregnancy Considerations</h4>
+                            <p style="color:#78350f;font-size:.85rem;line-height:1.7">Midazolam crosses the placenta. Data related to the treatment of status epilepticus in pregnancy are limited; <strong>use of midazolam may be considered.</strong> When a pregnant patient has a seizure requiring intervention, the maternal benefit of seizure control outweighs the risk of placental transfer.</p>
+                        </div>
+                    </div>
+
+                    <!-- INFUSION PROTOCOL TAB -->
+                    <div class="qr-panel" id="panel-infusion">
+                        <div class="info-box">
+                            <div class="warn-title">📋 ADULT INFUSION PROTOCOL — Weight-Based Starting Rate</div>
+                            <p><strong>Step 1: Give bolus dose</strong> (2-5 mg IV for sedation, or indication-appropriate dose)<br>
+                            <strong>Step 2: Start infusion based on weight:</strong><br>
+                            • &lt;100 kg → Start at <strong>2 mg/hr</strong><br>
+                            • ≥100 kg → Start at <strong>4 mg/hr</strong><br><br>
+                            <strong>Step 3: Titrate</strong> by 1 mg/hr q 5-10 min to effect<br>
+                            <strong>Maximum: 10 mg/hr</strong><br><br>
+                            <strong>Between titrations:</strong> Give additional 2 mg bolus before each rate increase — this bridges the gap while the new infusion rate reaches steady state.</p>
+                        </div>
+
+                        <div class="info-box" style="margin-top:12px">
+                            <div class="warn-title">📋 PEDIATRIC INFUSION PROTOCOL — Weight-Based mcg/kg/hr</div>
+                            <p><strong>Step 1: Give bolus dose</strong> (indication-appropriate)<br>
+                            <strong>Step 2: Start infusion at 50 mcg/kg/hr</strong><br>
+                            <strong>Step 3: Titrate</strong> by 10 mcg/kg/hr q 5-10 min<br>
+                            <strong>Maximum: 100 mcg/kg/hr</strong><br><br>
+                            <strong>Before each titration:</strong> Give additional bolus prior to increasing rate<br><br>
+                            <strong>Note:</strong> Peds infusion uses mcg/kg/hr (micrograms), not mg/hr. Convert for pump programming: 50 mcg/kg/hr = 0.05 mg/kg/hr.</p>
+                        </div>
+
+                        <div class="warning-box" style="margin-top:12px">
+                            <div class="warn-title">⚠️ When to Consider Infusion</div>
+                            <p>LFN 12.54 specifies "consider infusion for long transports" under both sedation (combative) and post-intubation sedation indications. Bolus dosing every 15 minutes may be sufficient for short transports; infusions provide more consistent serum levels and reduce the peaks-and-troughs of intermittent bolusing on extended transports.</p>
+                        </div>
+                    </div>
+
+                    <!-- WARNINGS TAB -->
+                    <div class="qr-panel" id="panel-warnings">
+                        <div class="danger-box">
+                            <div class="warn-title">🚫 CONTRAINDICATION — Hypersensitivity Only</div>
+                            <p><strong>Known hypersensitivity to midazolam or its components is the only listed contraindication in LFN 12.54.</strong><br><br>
+                            Important distinction: <strong>Acute narrow-angle glaucoma is NOT a contraindication for midazolam per LFN 12.54</strong> — that CI belongs to diazepam (LFN 12.20). This is a common point of confusion because both are benzodiazepines. Always verify CIs by drug, not by drug class.<br><br>
+                            The LFN 12.54 CI list is minimal: hypersensitivity only. Clinical cautions (elderly, opioid co-administration, alcohol intoxication) are listed as Warnings, not CIs.</p>
+                        </div>
+
+                        <div class="warning-box">
+                            <div class="warn-title">⚠️ Warnings / Precautions (2 per LFN 12.54)</div>
+                            <p><strong>1. Alcohol intoxication</strong><br>
+                            Alcohol potentiates CNS and respiratory depression through GABA enhancement. In an acutely intoxicated patient, midazolam doses produce substantially more sedation and respiratory depression than in a sober patient. The synergy is additive to supraadditive — clinical effect can far exceed what dose calculations predict.<br><br>
+                            <strong>2. Concomitant use of opioids</strong><br>
+                            Opioids (fentanyl, morphine) and benzodiazepines together produce respiratory depression that is greater than either drug alone. This is one of the most common causes of iatrogenic respiratory compromise in transport. When both are used together (e.g., post-intubation sedation with fentanyl + midazolam), monitor ventilation continuously. LFN 12.30 (Fentanyl) also requires ETCO2 monitoring with multiple doses or sedative combinations.</p>
+                        </div>
+
+                        <div class="danger-box">
+                            <div class="warn-title">🚫 Adverse Reactions</div>
+                            <p><strong>Hypotension; nausea/vomiting; respiratory depression.</strong><br><br>
+                            • <strong>Hypotension:</strong> Midazolam reduces sympathetic tone and has mild vasodilatory effects. Most significant in volume-depleted, elderly, or catecholamine-dependent patients. RSI dosing in hypotensive patients uses the reduced 0.1 mg/kg dose for this reason.<br>
+                            • <strong>Respiratory depression:</strong> The most clinically dangerous adverse effect — dose-dependent, worsened by opioid co-administration and alcohol. Have BVM and reversal agent (flumazenil 12.31) immediately available.<br>
+                            • <strong>Nausea/vomiting:</strong> Less common but relevant post-sedation, particularly with IN administration.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- QUIZ PANEL -->
+    <div class="mode-panel" id="panel-quiz">
+        <div class="progress-section" id="progressSection">
+            <div class="progress-header">
+                <span class="progress-title" id="progressTitle">Question 1 of 10</span>
+                <div class="progress-stats">
+                    <span>✅ <span id="correctCount">0</span></span>
+                    <span>❌ <span id="incorrectCount">0</span></span>
+                </div>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progressBar" style="width:0%"></div>
+            </div>
+        </div>
+
+        <div id="quizContainer"></div>
+
+        <div class="results-card" id="resultsCard">
+            <div class="results-icon" id="resultsIcon">🏆</div>
+            <div class="results-title">Quiz Complete!</div>
+            <div class="results-score" id="resultsScore">0%</div>
+            <div class="results-message" id="resultsMessage"></div>
+            <div class="results-breakdown">
+                <div class="breakdown-item"><div class="breakdown-value" id="finalCorrect" style="color:#16a34a">0</div><div class="breakdown-label">Correct</div></div>
+                <div class="breakdown-item"><div class="breakdown-value" id="finalIncorrect" style="color:#dc2626">0</div><div class="breakdown-label">Incorrect</div></div>
+            </div>
+            <div class="results-qr">
+                <h3>💙 Midazolam 12.54 — Quick Reference</h3>
+                <table class="results-dose-table">
+                    <tr><th>Indication</th><th>Adult IV/IM</th><th>Adult IN</th><th>Peds IV/IM</th><th>Repeat</th></tr>
+                    <tr><td>Sedation/Combative</td><td>2–5 mg</td><td>0.3 mg/kg (max 10 mg)</td><td>0.05–0.1 mg/kg</td><td>q 15 min</td></tr>
+                    <tr><td>Post-Intubation</td><td>2–5 mg</td><td>—</td><td>0.05–0.1 mg/kg (max 2.5 mg)</td><td>q 15 min</td></tr>
+                    <tr><td>Seizures</td><td>0.1 mg/kg (max 5 mg)</td><td>0.3 mg/kg (max 10 mg)</td><td>Same as adult</td><td>q 5 min</td></tr>
+                    <tr><td>RSI</td><td>0.2 mg/kg (0.1 if ↓BP; max 20 mg)</td><td>—</td><td>0.1 mg/kg (max 20 mg) + fentanyl pre-tx</td><td>Wait 3 min before paralytic</td></tr>
+                    <tr><td>Anxiolysis</td><td>0.01 mg/kg (max 5 mg)</td><td>—</td><td>Same as adult</td><td>q 15 min</td></tr>
+                    <tr><td>Infusion &lt;100 kg</td><td>2 mg/hr start; titrate 1 mg/hr q5-10 min; max 10 mg/hr</td><td colspan="3">Peds: 50 mcg/kg/hr; titrate 10 mcg/kg/hr; max 100 mcg/kg/hr</td></tr>
+                </table>
+                <div class="results-warning-list">
+                    <h4>⚠️ Key Points</h4>
+                    <ul>
+                        <li><strong>Section 12.54</strong> — not 12.53</li>
+                        <li><strong>CI: Hypersensitivity only</strong> — narrow-angle glaucoma is diazepam's CI (12.20), NOT midazolam's</li>
+                        <li><strong>Warnings:</strong> Alcohol intoxication; concomitant opioid use (both ↑ respiratory depression)</li>
+                        <li><strong>IN dose</strong> is always 0.3 mg/kg for ALL indications — split between both nostrils, max 10 mg</li>
+                        <li><strong>Seizure repeat q5 min</strong>; Sedation/post-intubation repeat q15 min; Anxiolysis q15 min</li>
+                        <li><strong>RSI: 0.2 mg/kg</strong> (specific dose, not range); 0.1 mg/kg if hypotensive; max 20 mg; wait 3 min before paralytic</li>
+                        <li><strong>Infusion adult:</strong> &lt;100 kg = 2 mg/hr start; ≥100 kg = 4 mg/hr start; titrate 1 mg/hr; max 10 mg/hr; give 2 mg bolus between titrations</li>
+                        <li><strong>Peds post-intubation:</strong> Max single dose 2.5 mg (lower ceiling than adult)</li>
+                        <li><strong>Anxiolysis dose (0.01 mg/kg)</strong> is much lower than sedation dose (2-5 mg) — do not confuse</li>
+                        <li><strong>Onset/Peak/Duration:</strong> 1-2 min / 3-5 min / 30 min | Mixture: 10 mg / 100 mL</li>
+                        <li><strong>Adverse reactions:</strong> Hypotension, nausea/vomiting, respiratory depression</li>
+                        <li><strong>Reversal:</strong> Flumazenil 12.31 (0.2 mg IV q45 sec; max 1 mg adult)</li>
+                    </ul>
+                </div>
+            </div>
+            <button class="nav-btn primary" onclick="restartQuiz()" style="margin-top:25px">Restart Quiz</button>
+        </div>
+    </div>
+
+    <div class="disclaimer">⚕️ This quiz is a personal study resource based on LFN Drug Formulary 12.54. It is NOT an official LFN training product and may not reflect the most current protocols. Always refer to current PCGs and medical direction.</div>
+</div>
+
+<script>
+const questions=[
+{type:'recall',scenario:'You review the full midazolam formulary entry for LFN 12.54.',vitals:null,question:'Per LFN 12.54, what is the contraindication for midazolam — and how does it differ from diazepam (12.20)?',options:[
+{letter:'A',text:'Both midazolam and diazepam share the same CI list: hypersensitivity and acute narrow-angle glaucoma.',correct:false},
+{letter:'B',text:'Per LFN 12.54, midazolam\'s only CI is hypersensitivity. Acute narrow-angle glaucoma is a CI for diazepam (12.20), NOT midazolam. The CI lists differ between these two benzodiazepines in the LFN formulary.',correct:true},
+{letter:'C',text:'Midazolam is contraindicated in acute narrow-angle glaucoma, chronic respiratory disease, and ETOH intoxication.',correct:false},
+{letter:'D',text:'Midazolam has no contraindications — all CI listings are precautions, not absolute CIs.',correct:false}],
+rationale:'Per LFN 12.54: <strong>Hypersensitivity is the only CI. Narrow-angle glaucoma belongs to diazepam 12.20, not midazolam.</strong>',
+mechanism:'<strong>Why this distinction matters clinically:</strong><br><br>Both midazolam and diazepam are benzodiazepines, but their LFN CI lists are different. Providers who apply class-level thinking (all benzos = same CIs) will incorrectly withhold midazolam from patients with narrow-angle glaucoma when it is not contraindicated.<br><br><strong>Diazepam 12.20 CIs:</strong> Hypersensitivity to diazepam or formulation components; acute narrow-angle glaucoma<br><br><strong>Midazolam 12.54 CI:</strong> Hypersensitivity only<br><br>The narrow-angle glaucoma CI for diazepam relates to its mydriatic (pupil-dilating) properties, which can worsen acute angle closure. Midazolam does not have this CI listed in LFN 12.54 — the concern may still exist physiologically, but it is NOT listed as a LFN protocol CI for midazolam.<br><br><strong>Warnings vs. CIs in LFN 12.54:</strong><br>• Alcohol intoxication → Warning (use with caution, not absolute stop)<br>• Opioid co-use → Warning<br>• Elderly/frail → Noted in dosing notes, not listed as a formal warning field',
+pearl:'This is a targeted protocol-accuracy question. In clinical care, you may still exercise judgment about midazolam near a patient with narrow-angle glaucoma — but for LFN protocol purposes, the answer is that it is NOT a listed CI. Always anchor to what the LFN formulary actually states, not general pharmacology textbook CIs. The difference between a CI and a Warning matters for protocol-based decision-making.',
+protocol:'LFN 12.54 CI:\nHypersensitivity only\n\nLFN 12.20 (Diazepam) CIs:\nHypersensitivity\nAcute narrow-angle glaucoma\n\nDo not apply diazepam\'s CI list\nto midazolam — different drugs,\ndifferent LFN CI entries'},
+
+{type:'clinical',scenario:'A 78 kg adult patient is actively seizing. EMS has established IV access. The seizure has been ongoing for 4 minutes.',vitals:{HR:'124',SpO2:'90%',GCS:'3 (seizing)',Wt:'78 kg',IV:'Established'},question:'Per LFN 12.54, what is the correct midazolam dose and route for this adult seizure, and when may the dose be repeated?',options:[
+{letter:'A',text:'5 mg IV push — adult seizure dose is fixed at 5 mg.',correct:false},
+{letter:'B',text:'Per LFN 12.54 Seizures: 0.1 mg/kg IV. 0.1 × 78 = 7.8 mg, capped at max single dose of 5 mg → give 5 mg IV. May repeat q 5 min as needed.',correct:true},
+{letter:'C',text:'2-5 mg IV — sedation dosing applies to seizures also.',correct:false},
+{letter:'D',text:'0.3 mg/kg IV — same as the intranasal dose, applied via IV.',correct:false}],
+rationale:'Per LFN 12.54 Seizures: <strong>0.1 mg/kg IV/IM, max single dose 5 mg, may repeat q 5 min.</strong>',
+mechanism:'<strong>Seizure dosing — weight-based with ceiling:</strong><br><br>• Formula: 0.1 mg/kg IV/IM<br>• 0.1 × 78 kg = 7.8 mg — exceeds the 5 mg single-dose max<br>• Give 5 mg IV<br>• Repeat interval: q 5 min (faster than sedation q15 min — seizures require more aggressive titration)<br><br><strong>Why weight-based for seizures but flat-dose for sedation?</strong><br>Seizure termination requires reaching a threshold CNS drug level quickly. Weight-based dosing ensures adequate effect in larger patients. The 5 mg ceiling prevents excessive respiratory depression in a single bolus.<br><br><strong>IN alternative for seizures:</strong><br>If no IV: 0.3 mg/kg IN (max 10 mg, split both nostrils). For this 78 kg patient: 0.3 × 78 = 23.4 mg → capped at 10 mg IN.',
+pearl:'Option A is the "reasonable-sounding wrong answer" — 5 mg is actually correct for this patient because the weight-based calculation (7.8 mg) exceeds the 5 mg cap. But the process matters: you arrive at 5 mg by calculating 0.1 mg/kg first and hitting the ceiling, not by applying a fixed 5 mg dose. For a 30 kg patient: 0.1 × 30 = 3 mg — give 3 mg, not 5 mg. The distinction is critical for pediatric patients where the same seizure formula (0.1 mg/kg, max 5 mg) applies.',
+protocol:'Seizures per 12.54:\nAdult: 0.1 mg/kg IV/IM\n  Max single dose: 5 mg\n  May repeat q 5 min\n\nOR 0.3 mg/kg IN\n  Max 10 mg\n  Split both nostrils\n\nPeds: Same as Adult\n\n78 kg → 0.1 × 78 = 7.8 mg\n→ Capped at 5 mg single dose'},
+
+{type:'critical',scenario:'A combative patient weighing 65 kg has no IV access. You elect intranasal midazolam for chemical sedation.',vitals:{Wt:'65 kg',Status:'Combative, no IV',HR:'142',BP:'168/104'},question:'Per LFN 12.54, what is the correct intranasal dose for sedation of a combative patient, and how should it be administered?',options:[
+{letter:'A',text:'5 mg IN — flat adult dose for IN route.',correct:false},
+{letter:'B',text:'Per LFN 12.54: 0.3 mg/kg IN for sedation of combative patient. 0.3 × 65 = 19.5 mg → capped at max 10 mg IN. Administer split between both nostrils.',correct:true},
+{letter:'C',text:'0.1 mg/kg IN — same as the IV/IM seizure dose applied intranasally.',correct:false},
+{letter:'D',text:'2-5 mg IN — same flat dose range as IV/IM for this indication.',correct:false}],
+rationale:'Per LFN 12.54 Sedation/Combative: <strong>0.3 mg/kg IN, max 10 mg, split between both nostrils.</strong>',
+mechanism:'<strong>IN dosing — the 0.3 mg/kg rule for all IN indications:</strong><br><br>In LFN 12.54, the intranasal dose is <strong>always 0.3 mg/kg</strong> regardless of indication (sedation, seizure, or other). This is higher than the IV/IM seizure dose (0.1 mg/kg) to account for lower bioavailability via the nasal mucosa (~50-80% vs. ~100% IV).<br><br><strong>For this 65 kg patient:</strong><br>0.3 × 65 = 19.5 mg → exceeds 10 mg max → give 10 mg IN<br><br><strong>Split dose technique:</strong><br>• Use atomizer (MAD device) if available<br>• Divide dose between both nostrils (e.g., 5 mg each)<br>• Reason: nasal mucosa has limited absorption surface; splitting reduces drip-down into pharynx and improves absorption<br>• Maximum volume per nostril: ~1 mL (use concentrated solution)<br><br><strong>Onset via IN:</strong> ~5 min (slower than IV\'s 1-2 min but faster than IM\'s 5-15 min)',
+pearl:'Option C is the most common wrong answer — providers see "0.1 mg/kg" in the IV/IM seizure column and apply it to the IN route. The IN dose is ALWAYS 0.3 mg/kg in LFN 12.54, for any indication. The higher dose compensates for lower nasal bioavailability. The max 10 mg and split-dose requirement apply to all IN administrations.',
+protocol:'IN Dosing per 12.54:\nALL indications: 0.3 mg/kg IN\nMax dose: 10 mg\nSplit between both nostrils\n\n65 kg → 0.3 × 65 = 19.5 mg\n→ Cap at 10 mg\n→ 5 mg each nostril\n\nHigher dose than IV because\nIN bioavailability is ~50-80%'},
+
+{type:'critical',scenario:'You are preparing for RSI on a 80 kg patient with a GCS of 8. BP is 102/68, which you consider borderline hypotensive for this patient.',vitals:{GCS:'8',Wt:'80 kg',BP:'102/68',HR:'106',SpO2:'93%'},question:'Per LFN 12.54 RSI, what is the correct midazolam induction dose for this borderline hypotensive patient?',options:[
+{letter:'A',text:'0.2 mg/kg = 16 mg IV — standard RSI dose regardless of BP.',correct:false},
+{letter:'B',text:'Per LFN 12.54 RSI: use the hypotensive modification — 0.1 mg/kg IV. 0.1 × 80 = 8 mg IV. Wait 3 minutes before administering the paralytic.',correct:true},
+{letter:'C',text:'0.3 mg/kg = 24 mg IV — higher dose needed to ensure unconsciousness despite the borderline pressure.',correct:false},
+{letter:'D',text:'Skip midazolam entirely — benzodiazepines are contraindicated when SBP < 110.',correct:false}],
+rationale:'Per LFN 12.54 RSI: <strong>If hypotensive: 0.1 mg/kg IV. 80 kg → 8 mg. Wait 3 min before paralytic.</strong>',
+mechanism:'<strong>RSI dosing structure in LFN 12.54:</strong><br><br><strong>Standard (normotensive):</strong><br>• 0.2 mg/kg IV → 80 kg = 16 mg<br>• Max 20 mg<br>• Wait 3 minutes, then paralytic<br><br><strong>Hypotensive modification:</strong><br>• 0.1 mg/kg IV → 80 kg = 8 mg<br>• Same 20 mg max<br>• Same 3-minute wait<br><br><strong>Why halve the dose?</strong><br>Midazolam\'s hypotension adverse effect is most significant in volume-depleted, catecholamine-dependent patients. A hypotensive patient is often compensating — giving full RSI induction doses can remove this compensation and precipitate cardiovascular collapse post-intubation. The 0.1 mg/kg dose reduces sedation depth slightly but maintains the drug\'s amnestic and anticonvulsant benefits while limiting hypotensive impact.<br><br><strong>The 3-minute wait:</strong> Midazolam onset is 1-2 min; waiting 3 min before giving the paralytic ensures the patient is sedated before paralysis to avoid awareness.',
+pearl:'Option D is clinically wrong and protocol-wrong: hypotension is not a CI for midazolam, and RSI should not be performed with an awake patient. The LFN protocol provides the right tool for this exact scenario — the hypotensive modification (0.1 mg/kg). Paralyzing without sedating is a serious clinical error. The dose reduction strategy balances the need for induction against the risk of worsening hemodynamics.',
+protocol:'RSI per 12.54:\nStandard: 0.2 mg/kg IV (max 20 mg)\nHypotensive: 0.1 mg/kg IV\n\nAll RSI:\nWait 3 min before paralytic\n\n80 kg hypotensive:\n0.1 × 80 = 8 mg IV\nWait 3 min → then paralytic\n\nAdverse reaction:\nHypotension — reason for\nreduced dose modification'},
+
+{type:'recall',scenario:'You review the midazolam sedation doses across all indications to understand how they differ.',vitals:null,question:'Per LFN 12.54, a patient needs anxiolysis (not full sedation) during a painful procedure. What dose and interval applies?',options:[
+{letter:'A',text:'2-5 mg IV — same as combative patient sedation dosing.',correct:false},
+{letter:'B',text:'Per LFN 12.54 Anxiolysis: 0.01 mg/kg IV q 15 min PRN, max single dose 5 mg. This is a much lower dose than the 2-5 mg sedation dose, targeting relaxation without deep sedation.',correct:true},
+{letter:'C',text:'0.1 mg/kg IV — seizure dosing applies when anxiolysis is the goal.',correct:false},
+{letter:'D',text:'0.3 mg/kg IN — intranasal is the only appropriate route for anxiolysis.',correct:false}],
+rationale:'Per LFN 12.54 Anxiolysis: <strong>0.01 mg/kg IV q 15 min PRN, max single dose 5 mg.</strong>',
+mechanism:'<strong>Anxiolysis dose comparison within LFN 12.54:</strong><br><br>| Indication | Adult IV/IM Dose |<br>|---|---|<br>| Anxiolysis | 0.01 mg/kg q 15 min (max 5 mg) |<br>| Sedation/Combative | 2–5 mg q 15 min |<br>| Seizures | 0.1 mg/kg q 5 min (max 5 mg single) |<br>| RSI | 0.2 mg/kg (max 20 mg) |<br><br>For a 70 kg patient:<br>• Anxiolysis: 0.01 × 70 = 0.7 mg (tiny dose)<br>• Sedation/Combative: 2-5 mg (3-7× higher)<br>• Seizures: 0.1 × 70 = 7 mg → capped at 5 mg<br>• RSI: 0.2 × 70 = 14 mg (20× higher than anxiolysis)<br><br>Anxiolysis targets the anxiolytic/amnestic effects of GABA enhancement at low doses, well below the sedative threshold. The patient remains responsive and cooperative but calm and less anxious.',
+pearl:'The anxiolysis dose (0.01 mg/kg) is 10× lower than the seizure dose (0.1 mg/kg) and orders of magnitude lower than RSI dosing. Confusing these in the other direction — using the sedation dose when anxiolysis is the goal — would over-sedate a spontaneously breathing patient, potentially causing respiratory depression. The q15 min repeat interval is the same as sedation/post-intubation, but the dose itself is dramatically lower.',
+protocol:'Anxiolysis per 12.54:\n0.01 mg/kg IV q 15 min PRN\nMax single dose 5 mg\nSame as Adult for peds\n\nDose comparison (70 kg adult):\nAnxiolysis: 0.7 mg\nSedation: 2-5 mg\nSeizure: 5 mg (capped)\nRSI std: 14 mg'},
+
+{type:'clinical',scenario:'A post-intubated patient has been receiving bolus midazolam 5 mg q15 min, but transport will take another 90 minutes. You are setting up an infusion. The patient weighs 85 kg.',vitals:{Wt:'85 kg',Status:'Intubated, ventilated',HR:'82',BP:'118/72',ETT:'7.5 mm secured'},question:'Per LFN 12.54 infusion protocol, what is the correct starting rate and titration for this 85 kg patient?',options:[
+{letter:'A',text:'Start at 5 mg/hr — no weight-based calculation needed for adults.',correct:false},
+{letter:'B',text:'Per LFN 12.54 Infusion: 85 kg is <100 kg → start at 2 mg/hr. Titrate by 1 mg/hr q 5-10 min to effect. Max 10 mg/hr. Give additional 2 mg IV bolus between titrations.',correct:true},
+{letter:'C',text:'Start at 4 mg/hr — the ≥100 kg starting rate applies to all adult patients.',correct:false},
+{letter:'D',text:'0.02 mg/kg/hr = 1.7 mg/hr — use weight-based infusion rates for adults.',correct:false}],
+rationale:'Per LFN 12.54 Infusion: <strong>&lt;100 kg → start 2 mg/hr; ≥100 kg → start 4 mg/hr. Titrate 1 mg/hr q5-10 min; max 10 mg/hr. Give 2 mg bolus between titrations.</strong>',
+mechanism:'<strong>LFN 12.54 adult infusion structure:</strong><br><br><strong>Starting rate — weight threshold:</strong><br>• &lt;100 kg: 2 mg/hr<br>• ≥100 kg: 4 mg/hr<br><br>This is a categorical weight threshold (not a continuous weight-based calculation like mcg/kg/hr). 85 kg falls below 100 kg → 2 mg/hr starting rate.<br><br><strong>Titration:</strong><br>• Increase by 1 mg/hr every 5-10 min until adequate sedation<br>• Maximum: 10 mg/hr<br>• Each titration is preceded by a 2 mg bolus — this bridges the time to new steady state<br><br><strong>Why a bolus between titrations?</strong><br>When you increase an infusion rate, it takes time (roughly 4-5 half-lives) to reach the new steady state. A small bridge bolus (2 mg) provides immediate drug effect while the new infusion rate builds up.',
+pearl:'Option D references a "0.02 mg/kg/hr" formula — this is NOT the LFN 12.54 infusion structure. The adult midazolam infusion in LFN 12.54 uses a categorical weight threshold (≥100 kg vs. &lt;100 kg) with fixed starting rates, not a continuous weight-based formula. The weight-based formula (mcg/kg/hr) IS used for pediatric infusions. Keep adult and peds infusion structures separate.',
+protocol:'Adult Infusion per 12.54:\nGive bolus, then start:\n<100 kg: 2 mg/hr\n≥100 kg: 4 mg/hr\nTitrate: 1 mg/hr q 5-10 min\nMax: 10 mg/hr\nBetween titrations: 2 mg bolus\n\n85 kg → <100 kg threshold\n→ Start 2 mg/hr'},
+
+{type:'recall',scenario:'During RSI of a pediatric patient, the team reviews pre-treatment requirements per LFN protocol.',vitals:{Age:'8 years',Wt:'26 kg',SpO2:'91%',GCS:'10'},question:'Per LFN 12.54 and 12.30, what pre-treatment is required before administering midazolam for RSI in a pediatric patient?',options:[
+{letter:'A',text:'No pre-treatment required for pediatric RSI with midazolam.',correct:false},
+{letter:'B',text:'Per LFN 12.54 peds RSI: administer fentanyl pre-treatment (per 12.30: 2 mcg/kg IV) if BP allows, before the midazolam induction dose.',correct:true},
+{letter:'C',text:'Atropine pre-treatment is required before all pediatric RSI regardless of drug choice.',correct:false},
+{letter:'D',text:'Ketamine pre-treatment is required before midazolam RSI in all pediatric patients.',correct:false}],
+rationale:'Per LFN 12.54 peds RSI: <strong>Administer fentanyl pre-treatment if BP allows. Per 12.30: fentanyl 2 mcg/kg IV for peds RSI pre-treatment.</strong>',
+mechanism:'<strong>Peds RSI with midazolam — special pre-treatment requirement:</strong><br><br>LFN 12.54 peds RSI dosing note states: "Administer fentanyl pre-treatment, if BP allows."<br><br>LFN 12.30 Fentanyl peds RSI pre-treatment dose: 2 mcg/kg IV (hold if hypotensive)<br><br><strong>Why fentanyl pre-treatment for peds midazolam RSI?</strong><br>• Laryngoscopy and intubation trigger a sympathetic surge (↑ HR, ↑ BP, ↑ ICP)<br>• In pediatric patients, this response is exaggerated<br>• Fentanyl blunts this sympathetic surge<br>• Midazolam provides sedation/amnesia/anxiolysis<br>• Together they provide a more complete induction than midazolam alone<br><br><strong>For this 26 kg patient:</strong><br>• Fentanyl pre-treatment: 2 mcg/kg × 26 = 52 mcg IV (if BP allows)<br>• Midazolam induction: 0.1 mg/kg × 26 = 2.6 mg IV (peds RSI dose)<br>• Wait 3 min<br>• Administer paralytic',
+pearl:'Option C is a common "general knowledge" wrong answer. While atropine has historically been used as peds RSI pre-treatment (to blunt vagal responses to succinylcholine in young children), LFN 12.54 specifically lists fentanyl as the peds midazolam RSI pre-treatment — not atropine. Always check what your specific protocol requires, not historical general practice.',
+protocol:'Peds RSI per 12.54:\n0.1 mg/kg IV (max 20 mg)\nWait 3 min before paralytic\n"Administer fentanyl\npre-treatment, if BP allows"\n\nFentanyl (per 12.30):\nRSI peds pre-treatment:\n2 mcg/kg IV\nHold if hypotensive\n\n26 kg → 2 × 26 = 52 mcg fentanyl\nthen 0.1 × 26 = 2.6 mg midazolam'},
+
+{type:'clinical',scenario:'You administer midazolam 4 mg IV and fentanyl 150 mcg IV over 10 minutes for a painful procedure on a spontaneously breathing patient. SpO2 begins dropping to 88%.',vitals:{SpO2:'88% (dropping)',RR:'6/min',HR:'64',BP:'104/62',Status:'Groggy, slow response'},question:'Per LFN 12.54 warnings, what interaction is occurring and what is the priority action?',options:[
+{letter:'A',text:'This is expected — midazolam always causes hypoxia and no intervention is needed.',correct:false},
+{letter:'B',text:'Per LFN 12.54 Warning #2 (concomitant opioids): midazolam + fentanyl produces additive/synergistic respiratory depression. Priority: airway support (BVM, positioning), supplemental O2. Consider flumazenil (12.31) for benzodiazepine reversal and/or naloxone for opioid reversal.',correct:true},
+{letter:'C',text:'Administer more midazolam — the hypoxia is from agitation causing breath-holding.',correct:false},
+{letter:'D',text:'This is only concerning if SpO2 drops below 80% — 88% is within acceptable range.',correct:false}],
+rationale:'Per LFN 12.54 Warning: <strong>Concomitant opioid use → additive respiratory depression. Priority: airway, BVM, consider flumazenil and/or naloxone.</strong>',
+mechanism:'<strong>Midazolam + opioid interaction mechanism:</strong><br><br>Both midazolam (GABA enhancement) and fentanyl (opioid mu receptor agonism) cause respiratory depression through different receptor pathways:<br>• Midazolam: reduces respiratory drive via GABA-mediated brainstem inhibition<br>• Fentanyl: suppresses respiratory rate and tidal volume via mu receptors in the pre-Bötzinger complex<br>• Combined: the effects are additive to synergistic — not simply the sum of each drug alone<br><br><strong>LFN 12.30 SC #2</strong> explicitly requires ETCO2 monitoring when opioids are combined with sedative agents — this scenario demonstrates exactly why.<br><br><strong>Management priority:</strong><br>1. Airway positioning (jaw thrust, head tilt)<br>2. Supplemental O2 or BVM ventilation if needed<br>3. Flumazenil 12.31: 0.2 mg IV (reverses midazolam component)<br>4. Naloxone: if opioid component needs reversal<br>5. Monitor closely — flumazenil duration (60 min) may be shorter than midazolam duration',
+pearl:'Option D is dangerous anchoring — 88% SpO2 in a spontaneously breathing patient on both a benzodiazepine and an opioid is a developing emergency, not a threshold to simply observe. The trajectory matters: a patient at 88% and RR 6 who received both drugs 10 minutes ago is likely to continue deteriorating. Intervene early. The LFN 12.54 warning about opioid co-administration exists precisely for this scenario.',
+protocol:'Warning per 12.54:\n"Concomitant use of opioids"\n→ additive respiratory depression\n\nManagement:\n1. Airway positioning\n2. O2 / BVM ventilation\n3. Flumazenil 12.31:\n   0.2 mg IV q45 sec, max 1 mg\n4. Naloxone if opioid-dominant\n\nPrevention:\nETCO2 monitoring required\nwhen opioids + sedatives combined\n(per LFN 12.30 SC #2)'},
+
+{type:'recall',scenario:'You review the pediatric post-intubation sedation dosing for a long transport.',vitals:{Age:'6 years',Wt:'22 kg',Status:'Intubated on ventilator',Transport:'2.5 hours estimated'},question:'Per LFN 12.54 peds post-intubation sedation, what is the maximum single bolus dose, and when should an infusion be considered?',options:[
+{letter:'A',text:'Max single bolus 10 mg; infusion only for adult patients.',correct:false},
+{letter:'B',text:'Per LFN 12.54 peds post-intubation: max single dose 2.5 mg (lower ceiling than adult). May repeat q 15 min. Consider infusion for long transports — a 2.5-hour transport qualifies.',correct:true},
+{letter:'C',text:'Max single bolus 5 mg; same ceiling as adult.',correct:false},
+{letter:'D',text:'No maximum for peds post-intubation — titrate to sedation level without ceiling.',correct:false}],
+rationale:'Per LFN 12.54 peds post-intubation: <strong>Max single dose 2.5 mg (distinct from adult 5 mg). Consider infusion for long transports.</strong>',
+mechanism:'<strong>Peds vs. adult post-intubation sedation ceiling:</strong><br><br>• Adult: 2-5 mg IV, q15 min, consider infusion for long transports<br>• Peds: 0.05-0.1 mg/kg IV/IM, MAX SINGLE DOSE 2.5 mg, q15 min, consider infusion for long transports<br><br>The 2.5 mg peds ceiling is lower than the adult 5 mg ceiling. For a 22 kg child:<br>• Calculated range: 0.05 × 22 = 1.1 mg to 0.1 × 22 = 2.2 mg<br>• Both are below the 2.5 mg ceiling → give the calculated dose (1.1-2.2 mg)<br>• The ceiling only activates for larger peds patients: &gt;25 kg would calculate to &gt;2.5 mg at 0.1 mg/kg and be capped<br><br><strong>Infusion for long transports:</strong><br>LFN 12.54 explicitly says "consider infusion for long transports" under both the adult and peds post-intubation indications. At 2.5 hours, an infusion provides more consistent sedation than repeated boluses every 15 minutes.',
+pearl:'The 2.5 mg peds post-intubation ceiling is easy to miss — it appears only in the peds column and is lower than all other adult ceilings. If you apply adult post-intubation dosing (up to 5 mg) to a small child, you may give double the intended maximum. For peds, always check both the weight-based calculated dose AND the ceiling.',
+protocol:'Peds Post-Intubation per 12.54:\n0.05–0.1 mg/kg IV/IM\nMax single dose: 2.5 mg\nMay repeat q 15 min\nConsider infusion for long transport\n\nPeds Infusion:\nBolus, then 50 mcg/kg/hr\nTitrate 10 mcg/kg/hr q5-10 min\nMax 100 mcg/kg/hr\n\nAdult max = 5 mg per dose\nPeds max = 2.5 mg per dose'},
+
+{type:'recall',scenario:'You compare sedation intervals across indications to prepare for a challenging transport.',vitals:null,question:'Per LFN 12.54, what are the repeat intervals for seizures vs. sedation/post-intubation vs. anxiolysis?',options:[
+{letter:'A',text:'All three indications use the same q5 min interval for consistent management.',correct:false},
+{letter:'B',text:'Seizures and sedation both use q15 min; anxiolysis uses q30 min.',correct:false},
+{letter:'C',text:'Per LFN 12.54: Seizures → q5 min. Sedation (combative) and post-intubation sedation → q15 min. Anxiolysis → q15 min. Seizures use the fastest repeat interval because of the urgency of seizure termination.',correct:true},
+{letter:'D',text:'Seizures: q10 min. Sedation: q5 min. Anxiolysis: q20 min.',correct:false}],
+rationale:'Per LFN 12.54: <strong>Seizures q5 min. Sedation/post-intubation/anxiolysis all q15 min.</strong>',
+mechanism:'<strong>Repeat intervals by indication — clinical rationale:</strong><br><br>| Indication | IV/IM Repeat Interval |<br>|---|---|<br>| Seizures | q 5 min |<br>| Sedation: Combative | q 15 min |<br>| Post-Intubation Sedation | q 15 min |<br>| Anxiolysis | q 15 min |<br>| RSI | Wait 3 min before paralytic |<br><br><strong>Why seizures use q5 min:</strong><br>Active seizures are neurological emergencies — each minute of uncontrolled seizure activity risks neuronal injury (excitotoxicity), aspiration, hypoxia, and metabolic derangement. The faster repeat interval reflects the urgency of seizure termination over sedation titration safety.<br><br><strong>Why q15 min for sedation:</strong><br>Midazolam\'s peak effect is 3-5 min and duration is ~30 min. The 15-minute interval allows full drug effect to manifest before repeating, preventing stacking and over-sedation.',
+pearl:'The q5 min seizure interval vs. q15 min sedation interval is a high-yield distinction. A provider who applies the sedation interval (q15 min) to a seizing patient is undertreating a neurological emergency. Conversely, applying the seizure interval (q5 min) to a combative sedation scenario would stack doses dangerously. Each indication has its interval for a reason — memorize the difference.',
+protocol:'Repeat Intervals per 12.54:\nSeizures: q 5 min\n  (fastest — neurological emergency)\nSedation/Combative: q 15 min\nPost-Intubation: q 15 min\nAnxiolysis: q 15 min\nRSI: wait 3 min before paralytic\n\nKey distinction:\nSeizure q5 ≠ Sedation q15\nDo NOT confuse intervals'}
+];
+
+let currentQuestion=0,correctAnswers=0,incorrectAnswers=0,answered=[];
+function switchMode(m){document.querySelectorAll('.mode-tab').forEach(function(t){t.classList.remove('active')});document.querySelectorAll('.mode-panel').forEach(function(p){p.classList.remove('active')});document.querySelector('.mode-tab[data-mode="'+m+'"]').classList.add('active');document.getElementById('panel-'+m).classList.add('active');window.scrollTo({top:0,behavior:'smooth'})}
+function toggleQR(){document.getElementById('qrBody').classList.toggle('collapsed');document.getElementById('qrToggle').classList.toggle('collapsed')}
+document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.qr-tab').forEach(function(t){t.addEventListener('click',function(){document.querySelectorAll('.qr-tab').forEach(function(x){x.classList.remove('active')});document.querySelectorAll('#panel-reference .qr-panel').forEach(function(p){p.classList.remove('active')});t.classList.add('active');document.getElementById('panel-'+t.dataset.tab).classList.add('active')})});renderQuiz()});
+function renderQuiz(){var c=document.getElementById('quizContainer');questions.forEach(function(q,i){var v=q.vitals?'<div class="vital-signs">'+Object.keys(q.vitals).map(function(k){return '<div class="vital-item"><div class="vital-label">'+k.replace(/_/g,' ')+'</div><div class="vital-value">'+q.vitals[k]+'</div></div>'}).join('')+'</div>':'';var o=q.options.map(function(x){return '<div class="option-btn" data-correct="'+x.correct+'"><span class="option-letter">'+x.letter+'</span><span class="option-text">'+x.text+'</span></div>'}).join('');c.innerHTML+='<div class="question-card" id="q'+i+'" style="display:'+(i===0?'block':'none')+'"><div class="question-header"><span class="question-number">Question '+(i+1)+' of '+questions.length+'</span><span class="question-type '+q.type+'">'+q.type+'</span></div><div class="question-body"><div class="scenario-box"><div class="scenario-label">\ud83d\udccb Clinical Scenario</div><div class="scenario-text">'+q.scenario+'</div>'+v+'</div><div class="question-text">'+q.question+'</div><div class="options-list">'+o+'</div><div class="rationale-box" id="rat'+i+'"><div class="mechanism-section"><h4>\ud83d\udd2c Mechanism &amp; Key Concepts</h4><p>'+q.mechanism+'</p></div><div class="clinical-pearl-box"><h4>\ud83d\udca1 Clinical Pearl</h4><p>'+q.pearl+'</p></div><div class="protocol-box"><h4>\ud83d\udcd6 Protocol Reference</h4><p>'+q.protocol+'</p></div></div></div><div class="nav-buttons"><button class="nav-btn secondary" onclick="navigate('+i+',-1)" '+(i===0?'disabled':'')+'>Previous</button><button class="nav-btn primary" id="next'+i+'" onclick="navigate('+i+',1)" disabled>'+(i===questions.length-1?'View Results':'Next Question')+'</button></div></div>'});document.querySelectorAll('.option-btn').forEach(function(b){b.addEventListener('click',function(){if(this.classList.contains('disabled'))return;var card=this.closest('.question-card');var idx=parseInt(card.id.replace('q',''));if(answered[idx])return;answered[idx]=true;card.querySelectorAll('.option-btn').forEach(function(o){o.classList.add('disabled');if(o.dataset.correct==='true')o.classList.add('correct')});if(this.dataset.correct!=='true')this.classList.add('incorrect');if(this.dataset.correct==='true')correctAnswers++;else incorrectAnswers++;document.getElementById('correctCount').textContent=correctAnswers;document.getElementById('incorrectCount').textContent=incorrectAnswers;document.getElementById('rat'+idx).classList.add('show');document.getElementById('next'+idx).disabled=false})})}
+function navigate(c,d){var n=c+d;if(n>=questions.length){showResults();return}if(n<0)return;document.getElementById('q'+c).style.display='none';document.getElementById('q'+n).style.display='block';currentQuestion=n;updateProgress();window.scrollTo({top:0,behavior:'smooth'})}
+function updateProgress(){document.getElementById('progressBar').style.width=((currentQuestion+1)/questions.length*100)+'%';document.getElementById('progressTitle').textContent='Question '+(currentQuestion+1)+' of '+questions.length}
+function showResults(){document.getElementById('quizContainer').style.display='none';document.getElementById('progressSection').style.display='none';var c=document.getElementById('resultsCard');c.classList.add('show');var p=Math.round((correctAnswers/questions.length)*100);var s=document.getElementById('resultsScore');var ic=document.getElementById('resultsIcon');var m=document.getElementById('resultsMessage');s.textContent=p+'%';document.getElementById('finalCorrect').textContent=correctAnswers;document.getElementById('finalIncorrect').textContent=incorrectAnswers;if(p>=90){s.className='results-score excellent';ic.className='results-icon excellent';ic.textContent='\ud83c\udf1f';m.textContent='Excellent! CI = hypersensitivity only (not narrow-angle glaucoma), IN always 0.3 mg/kg, seizure q5 vs. sedation q15, RSI hypotensive halving, 20 mg RSI max, peds 2.5 mg post-intubation ceiling, infusion weight threshold, peds fentanyl pre-treatment, and opioid interaction warning all mastered.';}else if(p>=70){s.className='results-score good';ic.className='results-icon good';ic.textContent='\ud83d\udc4d';m.textContent='Good! Review: CI is hypersensitivity only (NOT narrow-angle glaucoma), IN dose is 0.3 mg/kg for all indications, seizure repeat is q5 min (not q15), RSI uses 0.1 mg/kg if hypotensive with 20 mg max, and peds post-intubation has a 2.5 mg single-dose ceiling.';}else{s.className='results-score needs-work';ic.className='results-icon needs-work';ic.textContent='\ud83d\udcda';m.textContent='Keep studying! Key targets: CI = hypersensitivity only, IN always 0.3 mg/kg (split nostrils), seizure 0.1 mg/kg q5 min (max 5 mg), RSI 0.2 mg/kg (0.1 if hypotensive, max 20 mg), infusion <100 kg = 2 mg/hr start, peds post-intubation max 2.5 mg, anxiolysis 0.01 mg/kg.';}window.scrollTo({top:0,behavior:'smooth'})}
+function restartQuiz(){currentQuestion=0;correctAnswers=0;incorrectAnswers=0;answered=[];document.getElementById('correctCount').textContent='0';document.getElementById('incorrectCount').textContent='0';document.querySelectorAll('.option-btn').forEach(function(o){o.classList.remove('disabled','correct','incorrect')});document.querySelectorAll('.rationale-box').forEach(function(r){r.classList.remove('show')});questions.forEach(function(_,i){document.getElementById('next'+i).disabled=true;document.getElementById('q'+i).style.display=i===0?'block':'none'});document.getElementById('resultsCard').classList.remove('show');document.getElementById('quizContainer').style.display='block';document.getElementById('progressSection').style.display='block';updateProgress();window.scrollTo({top:0,behavior:'smooth'})}
+</script>
+</body>
+</html>

@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LFN Drug Quiz | Ticagrelor (Section 12.81)</title>
+    <style>
+        :root {
+            --primary: #064e3b;
+            --primary-light: #065f46;
+            --accent: #10b981;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --bg-light: #f0fdf4;
+            --bg-card: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #dcfce7 0%, #10b981 50%, #064e3b 100%); min-height: 100vh; color: var(--text-primary); line-height: 1.6; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+
+        .header { background: linear-gradient(135deg, #064e3b 0%, #10b981 100%); color: white; padding: 30px; border-radius: 16px; margin-bottom: 25px; text-align: center; box-shadow: var(--shadow-lg); }
+        .header h1 { font-size: 1.8rem; margin-bottom: 8px; }
+        .header .subtitle { opacity: 0.9; font-size: 1rem; }
+        .header .drug-class { display: inline-block; background: rgba(255,255,255,0.2); padding: 5px 15px; border-radius: 20px; margin-top: 10px; font-size: 0.85rem; }
+        .badge-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 12px; }
+        .indication-badge { padding: 5px 12px; border-radius: 15px; font-size: 0.75rem; font-weight: 600; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); }
+
+        /* ── Top-Level Mode Tabs ── */
+        .mode-tabs { display: flex; gap: 0; margin-bottom: 25px; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+        .mode-tab { flex: 1; padding: 16px 20px; background: white; border: none; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; color: var(--text-secondary); text-align: center; }
+        .mode-tab:first-child { border-radius: 12px 0 0 12px; }
+        .mode-tab:last-child { border-radius: 0 12px 12px 0; }
+        .mode-tab:hover { background: #f0fdf4; color: var(--primary); }
+        .mode-tab.active { background: linear-gradient(135deg, #064e3b 0%, #10b981 100%); color: white; }
+        .mode-panel { display: none; }
+        .mode-panel.active { display: block; }
+
+        /* ── Quick Reference (Four-Tab) ── */
+        .quick-reference { background: var(--bg-card); border-radius: 12px; margin-bottom: 25px; box-shadow: var(--shadow); overflow: hidden; }
+        .qr-header { background: linear-gradient(135deg, #064e3b 0%, #10b981 100%); color: white; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; }
+        .qr-header h3 { font-size: 1rem; margin: 0; }
+        .qr-toggle { font-size: 1.2rem; transition: transform 0.3s ease; }
+        .qr-toggle.collapsed { transform: rotate(-90deg); }
+        .qr-body { padding: 0; max-height: 5000px; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s ease; }
+        .qr-body.collapsed { max-height: 0; padding: 0; }
+        .qr-body-inner { padding: 20px; }
+        .qr-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 2px solid var(--border); }
+        .qr-tab { padding: 8px 16px; border-radius: 8px; border: 2px solid var(--border); background: white; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; color: var(--text-secondary); white-space: nowrap; }
+        .qr-tab:hover { border-color: var(--accent); color: var(--primary); }
+        .qr-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .qr-panel { display: none; }
+        .qr-panel.active { display: block; }
+
+        .dose-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-bottom: 10px; }
+        .dose-table th { background: linear-gradient(135deg, #064e3b 0%, #065f46 100%); color: white; padding: 10px 12px; text-align: left; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .dose-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+        .dose-table tr:last-child td { border-bottom: none; }
+        .dose-table tr:nth-child(even) td { background: #f0fdf4; }
+        .dose-table .indication-cell { font-weight: 600; color: var(--primary); min-width: 110px; }
+        .dose-table .dose-cell { font-family: 'Courier New', monospace; font-size: 0.82rem; line-height: 1.6; }
+        .dose-detail { color: var(--text-secondary); font-size: 0.78rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+
+        .ref-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .ref-item { background: var(--bg-light); padding: 12px; border-radius: 8px; }
+        .ref-label { font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; font-weight: 600; }
+        .ref-value { font-weight: 600; color: var(--text-primary); font-size: 0.88rem; }
+        .ref-item.warning { background: #fef3c7; border: 1px solid #fde047; }
+        .ref-item.warning .ref-label { color: #92400e; }
+        .ref-item.warning .ref-value { color: #78350f; font-size: 0.84rem; }
+        .ref-item.critical { background: #fee2e2; border: 2px solid #fecaca; }
+        .ref-item.critical .ref-label { color: #991b1b; }
+        .ref-item.critical .ref-value { color: #7f1d1d; }
+        .ref-item.info { background: #eff6ff; border: 1px solid #bfdbfe; }
+        .ref-item.info .ref-label { color: #1e40af; }
+        .ref-item.info .ref-value { color: #1e3a8a; }
+        .ref-item.success { background: #f0fdf4; border: 1px solid #bbf7d0; }
+        .ref-item.success .ref-label { color: #166534; }
+        .ref-item.success .ref-value { color: #14532d; }
+        .ref-item.green { background: #f0fdf4; border: 1px solid #86efac; }
+        .ref-item.green .ref-label { color: #064e3b; }
+        .ref-item.green .ref-value { color: #052e16; }
+
+        .consideration-list { list-style: none; padding: 0; }
+        .consideration-list li { padding: 10px 12px 10px 36px; position: relative; border-bottom: 1px solid #f1f5f9; font-size: 0.88rem; line-height: 1.6; }
+        .consideration-list li:last-child { border-bottom: none; }
+        .consideration-list li::before { content: attr(data-num); position: absolute; left: 6px; top: 10px; width: 22px; height: 22px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; }
+
+        .warning-box { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border: 2px solid #f59e0b; border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+        .warning-box .warn-title { font-weight: 700; color: #92400e; font-size: 0.85rem; margin-bottom: 8px; }
+        .warning-box p { color: #78350f; font-size: 0.85rem; line-height: 1.7; }
+        .danger-box { background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); border: 2px solid #ef4444; border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+        .danger-box .warn-title { font-weight: 700; color: #991b1b; font-size: 0.85rem; margin-bottom: 8px; }
+        .danger-box p { color: #7f1d1d; font-size: 0.85rem; line-height: 1.7; }
+        .info-box { background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 2px solid #3b82f6; border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+        .info-box .warn-title { font-weight: 700; color: #1e40af; font-size: 0.85rem; margin-bottom: 8px; }
+        .info-box p { color: #1e3a8a; font-size: 0.85rem; line-height: 1.7; }
+        .success-box { background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); border: 2px solid #22c55e; border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+        .success-box .warn-title { font-weight: 700; color: #166534; font-size: 0.85rem; margin-bottom: 8px; }
+        .success-box p { color: #14532d; font-size: 0.85rem; line-height: 1.7; }
+
+        .compare-strip { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+        .compare-card { padding: 12px 14px; border-radius: 10px; }
+        .compare-card.left { background: linear-gradient(135deg, #f0fdf4 0%, #bbf7d0 100%); border: 2px solid #4ade80; }
+        .compare-card.right { background: linear-gradient(135deg, #eff6ff 0%, #bfdbfe 100%); border: 2px solid #60a5fa; }
+        .compare-label { font-size: 0.7rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .compare-card.left .compare-label { color: #064e3b; }
+        .compare-card.right .compare-label { color: #1e40af; }
+        .compare-dose { font-size: 1rem; font-weight: 800; color: var(--text-primary); margin-bottom: 4px; }
+        .compare-detail { font-size: 0.78rem; line-height: 1.5; }
+        .compare-card.left .compare-detail { color: #052e16; }
+        .compare-card.right .compare-detail { color: #1e3a8a; }
+
+        /* ── Quiz Styles ── */
+        .progress-section { background: var(--bg-card); border-radius: 12px; padding: 20px 25px; margin-bottom: 25px; box-shadow: var(--shadow); }
+        .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px; }
+        .progress-title { font-weight: 600; color: var(--primary); }
+        .progress-stats { display: flex; gap: 20px; font-size: 0.9rem; color: var(--text-secondary); }
+        .progress-bar-container { height: 10px; background: var(--border); border-radius: 5px; overflow: hidden; }
+        .progress-bar { height: 100%; background: linear-gradient(90deg, #4ade80 0%, #10b981 100%); border-radius: 5px; transition: width 0.4s ease; }
+
+        .question-card { background: var(--bg-card); border-radius: 16px; box-shadow: var(--shadow-lg); overflow: hidden; margin-bottom: 25px; }
+        .question-header { background: linear-gradient(135deg, #064e3b 0%, #10b981 100%); color: white; padding: 20px 25px; display: flex; justify-content: space-between; align-items: center; }
+        .question-number { font-size: 1.1rem; font-weight: 600; }
+        .question-type { padding: 5px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; }
+        .question-type.clinical { background: #22c55e; }
+        .question-type.critical { background: #dc2626; }
+        .question-type.recall { background: #3b82f6; }
+        .question-type.calculation { background: #f59e0b; }
+        .question-body { padding: 30px; }
+
+        .scenario-box { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border-left: 4px solid #10b981; padding: 20px; border-radius: 0 10px 10px 0; margin-bottom: 20px; }
+        .scenario-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--primary); font-weight: 700; margin-bottom: 10px; }
+        .scenario-text { font-size: 1rem; color: var(--text-primary); line-height: 1.7; }
+        .vital-signs { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 10px; margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border); }
+        .vital-item { text-align: center; padding: 8px; background: white; border-radius: 8px; }
+        .vital-label { font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; }
+        .vital-value { font-size: 0.95rem; font-weight: 700; color: var(--primary); }
+
+        .question-text { font-size: 1.15rem; font-weight: 500; color: var(--text-primary); margin-bottom: 25px; line-height: 1.7; }
+        .options-list { display: flex; flex-direction: column; gap: 12px; }
+        .option-btn { display: flex; align-items: flex-start; padding: 16px 20px; background: var(--bg-light); border: 2px solid var(--border); border-radius: 10px; cursor: pointer; transition: all 0.2s ease; text-align: left; }
+        .option-btn:hover:not(.disabled) { border-color: var(--accent); background: white; transform: translateX(5px); }
+        .option-btn.correct { border-color: var(--success); background: rgba(22, 163, 74, 0.1); }
+        .option-btn.incorrect { border-color: var(--danger); background: rgba(220, 38, 38, 0.1); }
+        .option-btn.disabled { cursor: default; }
+        .option-letter { width: 32px; height: 32px; min-width: 32px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; margin-right: 15px; font-size: 0.9rem; }
+        .option-btn.correct .option-letter { background: var(--success); }
+        .option-btn.incorrect .option-letter { background: var(--danger); }
+        .option-text { flex: 1; font-size: 1rem; line-height: 1.5; }
+
+        .rationale-box { margin-top: 25px; padding: 25px; border-radius: 12px; background: #f8fafc; display: none; }
+        .rationale-box.show { display: block; }
+        .mechanism-section { background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-radius: 12px; padding: 20px; margin-bottom: 15px; }
+        .mechanism-section h4 { color: #1e40af; margin-bottom: 12px; font-size: 1rem; }
+        .mechanism-section p { color: #1e3a8a; font-size: 0.95rem; line-height: 1.8; }
+        .clinical-pearl-box { background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); border-radius: 12px; padding: 20px; margin-bottom: 15px; }
+        .clinical-pearl-box h4 { color: #166534; margin-bottom: 12px; font-size: 1rem; }
+        .clinical-pearl-box p { color: #14532d; font-size: 0.95rem; line-height: 1.8; }
+        .protocol-box { background: linear-gradient(135deg, #f0fdf4 0%, #bbf7d0 100%); border-radius: 12px; padding: 20px; }
+        .protocol-box h4 { color: #064e3b; margin-bottom: 12px; font-size: 1rem; }
+        .protocol-box p { color: #052e16; font-size: 0.95rem; line-height: 1.8; font-family: 'Courier New', monospace; }
+
+        .nav-buttons { display: flex; justify-content: space-between; gap: 15px; padding: 0 30px 30px; }
+        .nav-btn { padding: 14px 28px; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+        .nav-btn.primary { background: var(--primary); color: white; }
+        .nav-btn.primary:hover { background: var(--primary-light); }
+        .nav-btn.secondary { background: var(--border); color: var(--text-secondary); }
+        .nav-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .results-card { background: var(--bg-card); border-radius: 16px; box-shadow: var(--shadow-lg); padding: 40px; text-align: center; display: none; }
+        .results-card.show { display: block; }
+        .results-icon { width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 2.5rem; }
+        .results-icon.excellent { background: rgba(22, 163, 74, 0.15); }
+        .results-icon.good { background: rgba(16, 185, 129, 0.15); }
+        .results-icon.needs-work { background: rgba(220, 38, 38, 0.15); }
+        .results-title { font-size: 1.8rem; font-weight: 700; color: var(--primary); }
+        .results-score { font-size: 3rem; font-weight: 800; margin: 20px 0; }
+        .results-score.excellent { color: var(--success); }
+        .results-score.good { color: var(--primary); }
+        .results-score.needs-work { color: var(--danger); }
+        .results-message { color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 30px; }
+        .results-breakdown { display: flex; justify-content: center; gap: 40px; margin-bottom: 30px; }
+        .breakdown-item { text-align: center; }
+        .breakdown-value { font-size: 1.5rem; font-weight: 700; }
+        .breakdown-label { font-size: 0.85rem; color: var(--text-secondary); }
+
+        .results-qr { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border-radius: 12px; padding: 25px; margin-top: 25px; text-align: left; }
+        .results-qr h3 { color: #064e3b; margin-bottom: 15px; text-align: center; font-size: 1.1rem; }
+        .results-dose-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.8rem; }
+        .results-dose-table th { background: #064e3b; color: white; padding: 8px 10px; text-align: left; }
+        .results-dose-table td { padding: 8px 10px; border-bottom: 1px solid #86efac; }
+        .results-warning-list { background: #fee2e2; border: 2px solid #dc2626; border-radius: 10px; padding: 15px; margin-top: 15px; }
+        .results-warning-list h4 { color: #7f1d1d; margin-bottom: 10px; font-size: 0.9rem; }
+        .results-warning-list ul { color: #991b1b; margin-left: 20px; font-size: 0.82rem; }
+        .results-warning-list li { margin-bottom: 5px; }
+
+        .disclaimer { text-align: center; font-size: 0.72rem; color: var(--text-secondary); margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.6); border-radius: 8px; line-height: 1.5; }
+
+        @media (max-width: 600px) {
+            body { padding: 10px; }
+            .header { padding: 20px 15px; border-radius: 12px; }
+            .header h1 { font-size: 1.5rem; }
+            .mode-tab { padding: 12px 10px; font-size: 0.85rem; }
+            .qr-header { padding: 14px 16px; }
+            .qr-body-inner { padding: 15px; }
+            .qr-tabs { gap: 4px; }
+            .qr-tab { padding: 6px 10px; font-size: 0.72rem; }
+            .dose-table { font-size: 0.78rem; }
+            .dose-table th, .dose-table td { padding: 8px 6px; }
+            .ref-grid { grid-template-columns: 1fr; }
+            .compare-strip { grid-template-columns: 1fr; }
+            .question-body { padding: 20px; }
+            .nav-buttons { flex-direction: column; padding: 0 20px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💊 Ticagrelor</h1>
+            <p class="subtitle">LFN Protocol Section 12.81 | Clinical Application Quiz</p>
+            <span class="drug-class">Antiplatelet | P2Y12 Receptor Antagonist (Brilinta)</span>
+            <div class="badge-container">
+                <span class="indication-badge">❤️ STEMI</span>
+                <span class="indication-badge">🩸 Antiplatelet</span>
+                <span class="indication-badge">💊 180 mg PO Loading</span>
+            </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════ -->
+        <!-- TOP-LEVEL MODE TABS                        -->
+        <!-- ══════════════════════════════════════════ -->
+        <div class="mode-tabs">
+            <button class="mode-tab active" data-mode="reference" onclick="switchMode('reference')">📋 Quick Reference</button>
+            <button class="mode-tab" data-mode="quiz" onclick="switchMode('quiz')">📝 Quiz</button>
+        </div>
+
+        <!-- ══════════════════════════════════════════ -->
+        <!-- QUICK REFERENCE PANEL                      -->
+        <!-- ══════════════════════════════════════════ -->
+        <div class="mode-panel active" id="panel-reference">
+            <div class="quick-reference" id="quickRef">
+                <div class="qr-header" onclick="toggleQuickRef()">
+                    <h3>📋 Quick Reference — Key Doses for Ticagrelor 12.81</h3>
+                    <span class="qr-toggle" id="qrToggle">▼</span>
+                </div>
+                <div class="qr-body" id="qrBody">
+                    <div class="qr-body-inner">
+                        <div class="qr-tabs" id="qrTabs">
+                            <button class="qr-tab active" data-tab="dosing">Dosing & Indications</button>
+                            <button class="qr-tab" data-tab="pharmacology">Pharmacology</button>
+                            <button class="qr-tab" data-tab="considerations">Considerations</button>
+                            <button class="qr-tab" data-tab="warnings">Warnings & Precautions</button>
+                        </div>
+
+                        <!-- ── TAB 1: DOSING & INDICATIONS ── -->
+                        <div class="qr-panel active" id="panel-dosing">
+                            <div style="overflow-x: auto;">
+                                <table class="dose-table">
+                                    <thead><tr><th>Indication</th><th>Adult Dose</th><th>Pediatric Dose</th></tr></thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="indication-cell">STEMI<br><span class="dose-detail">ST-Elevation Myocardial Infarction</span></td>
+                                            <td class="dose-cell">180 mg PO<br><span class="dose-detail">Oral loading dose</span></td>
+                                            <td class="dose-cell">No LFN Standing Order</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Key dose strip -->
+                            <div class="ref-grid" style="margin-top: 18px;">
+                                <div class="ref-item green">
+                                    <div class="ref-label">Loading Dose</div>
+                                    <div class="ref-value">180 mg PO</div>
+                                </div>
+                                <div class="ref-item info">
+                                    <div class="ref-label">Route</div>
+                                    <div class="ref-value">Oral (PO)</div>
+                                </div>
+                                <div class="ref-item info">
+                                    <div class="ref-label">Trade Name</div>
+                                    <div class="ref-value">Brilinta</div>
+                                </div>
+                                <div class="ref-item warning">
+                                    <div class="ref-label">Recommended Mixture</div>
+                                    <div class="ref-value">N/A — Oral tablet</div>
+                                </div>
+                            </div>
+
+                            <!-- STEMI Antiplatelet Comparison -->
+                            <div style="margin-top: 18px;">
+                                <div class="ref-label" style="margin-bottom: 8px; font-size: 0.75rem; font-weight: 700;">⚖️ LFN STEMI ANTIPLATELET AGENTS — Comparison</div>
+                                <div class="compare-strip">
+                                    <div class="compare-card left">
+                                        <div class="compare-label">Ticagrelor (12.81)</div>
+                                        <div class="compare-dose">180 mg PO</div>
+                                        <div class="compare-detail">P2Y12 receptor antagonist<br>Reversible binding<br>Onset: 30 min<br>Peak: 2 hours<br>Duration: ~110 hours</div>
+                                    </div>
+                                    <div class="compare-card right">
+                                        <div class="compare-label">Aspirin (12.08)</div>
+                                        <div class="compare-dose">324 mg PO</div>
+                                        <div class="compare-detail">Inhibitor of platelet function<br>Irreversible COX inhibition<br>Onset: Immediate<br>Peak: 1–2 hours<br>Platelet effect: up to 10 days</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- DAPT context -->
+                            <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border-radius: 10px; padding: 16px; margin-top: 14px;">
+                                <div class="ref-label" style="color: #064e3b; margin-bottom: 8px;">💊 Dual Antiplatelet Therapy (DAPT) in STEMI</div>
+                                <p style="font-size: 0.85rem; color: #052e16; line-height: 1.8;">
+                                    <strong>Ticagrelor 180 mg PO</strong> (P2Y12 inhibitor — blocks ADP receptor)<br>
+                                    <strong>+ Aspirin 324 mg PO</strong> (COX inhibitor — blocks thromboxane A2)<br>
+                                    Two different mechanisms targeting platelet activation and aggregation.
+                                </p>
+                            </div>
+
+                            <div class="ref-grid" style="margin-top: 14px;">
+                                <div class="ref-item critical">
+                                    <div class="ref-label">⚠️ Indication</div>
+                                    <div class="ref-value">STEMI only per LFN protocol</div>
+                                </div>
+                                <div class="ref-item warning">
+                                    <div class="ref-label">Peds Dosing</div>
+                                    <div class="ref-value">No LFN Standing Order</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ── TAB 2: PHARMACOLOGY ── -->
+                        <div class="qr-panel" id="panel-pharmacology">
+                            <div class="ref-grid" style="margin-bottom: 18px;">
+                                <div class="ref-item green">
+                                    <div class="ref-label">Pharmacologic Category</div>
+                                    <div class="ref-value">Antiplatelet</div>
+                                </div>
+                                <div class="ref-item info">
+                                    <div class="ref-label">Trade Name</div>
+                                    <div class="ref-value">Brilinta</div>
+                                </div>
+                                <div class="ref-item green">
+                                    <div class="ref-label">Onset</div>
+                                    <div class="ref-value">30 minutes</div>
+                                </div>
+                                <div class="ref-item info">
+                                    <div class="ref-label">Peak</div>
+                                    <div class="ref-value">2 hours</div>
+                                </div>
+                                <div class="ref-item warning">
+                                    <div class="ref-label">Duration</div>
+                                    <div class="ref-value">~110 hours (90% platelet inhibition)</div>
+                                </div>
+                                <div class="ref-item green">
+                                    <div class="ref-label">Route</div>
+                                    <div class="ref-value">PO (Oral)</div>
+                                </div>
+                            </div>
+
+                            <!-- Onset / Peak / Duration -->
+                            <div class="info-box">
+                                <div class="warn-title">📊 Onset / Peak / Duration</div>
+                                <p><strong>Onset:</strong> 30 min &nbsp;|&nbsp; <strong>Peak:</strong> 2 hours &nbsp;|&nbsp; <strong>Duration:</strong> ~110 hours (90% inhibition of platelet aggregation)<br>Rapid oral onset supports early STEMI intervention. Long duration (~4.6 days) from reversible but sustained receptor binding.</p>
+                            </div>
+
+                            <!-- Mechanism box -->
+                            <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-radius: 12px; padding: 20px; margin-bottom: 18px;">
+                                <h4 style="color: #1e40af; margin-bottom: 10px; font-size: 0.95rem;">🔬 Mechanism of Action</h4>
+                                <p style="color: #1e3a8a; font-size: 0.9rem; line-height: 1.8;">Reversibly and noncompetitively binds the <strong>adenosine diphosphate (ADP) P2Y12 receptor</strong> on the platelet surface, which prevents ADP-mediated activation of the <strong>GPIIb/IIIa receptor complex</strong>, thereby reducing platelet aggregation.</p>
+                            </div>
+
+                            <!-- Reversible vs Irreversible -->
+                            <div style="margin-bottom: 18px;">
+                                <div class="ref-label" style="margin-bottom: 8px; font-size: 0.75rem; font-weight: 700;">🧬 BINDING TYPE — Reversible vs Irreversible P2Y12 Inhibitors</div>
+                                <div class="compare-strip">
+                                    <div class="compare-card left">
+                                        <div class="compare-label">Ticagrelor (Reversible)</div>
+                                        <div class="compare-dose">Reversible Binding</div>
+                                        <div class="compare-detail">Binds P2Y12 directly (no prodrug)<br>Noncompetitive antagonist<br>Platelet recovery: ~110 hrs (~4.6 days)<br>No genetic variability<br>No hepatic activation needed</div>
+                                    </div>
+                                    <div class="compare-card right">
+                                        <div class="compare-label">Clopidogrel (Irreversible)</div>
+                                        <div class="compare-dose">Irreversible Binding</div>
+                                        <div class="compare-detail">Prodrug — requires hepatic activation<br>Permanent receptor modification<br>Platelet recovery: 7–10 days<br>CYP2C19 genetic variability<br>Some patients are "non-responders"</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Adverse reactions -->
+                            <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-radius: 12px; padding: 20px; margin-bottom: 18px;">
+                                <h4 style="color: #92400e; margin-bottom: 10px; font-size: 0.95rem;">⚠️ Adverse Reactions</h4>
+                                <p style="color: #78350f; font-size: 0.9rem; line-height: 1.8;">Dyspnea, nausea, hemorrhage, dizziness</p>
+                            </div>
+
+                            <!-- Pregnancy -->
+                            <div style="background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%); border-radius: 12px; padding: 20px;">
+                                <h4 style="color: #9d174d; margin-bottom: 10px; font-size: 0.95rem;">🤰 Pregnancy Considerations</h4>
+                                <p style="color: #831843; font-size: 0.9rem; line-height: 1.8;">Due to lack of data, use in pregnancy is <strong>not recommended</strong>.</p>
+                            </div>
+                        </div>
+
+                        <!-- ── TAB 3: CONSIDERATIONS ── -->
+                        <div class="qr-panel" id="panel-considerations">
+                            <ul class="consideration-list">
+                                <li data-num="1"><strong>STEMI-specific indication:</strong> Per LFN protocol 12.81, ticagrelor is indicated solely for <em>STEMI</em>. It is given as a 180 mg PO loading dose as part of dual antiplatelet therapy (DAPT) alongside aspirin 324 mg PO (per 12.08).</li>
+                                <li data-num="2"><strong>Oral administration:</strong> PO route only. No IV formulation. No recommended mixture — this is a tablet, not an infusion. If patient cannot swallow, tablets can be crushed per standard antiplatelet protocols.</li>
+                                <li data-num="3"><strong>Reversible P2Y12 inhibitor:</strong> Unlike clopidogrel (irreversible), ticagrelor binds reversibly. This means platelet function recovers more predictably when the drug is cleared (~110 hours for 90% inhibition). No prodrug activation required — no genetic variability concerns (unlike CYP2C19-dependent clopidogrel).</li>
+                                <li data-num="4"><strong>Rapid onset for STEMI:</strong> Onset of 30 minutes (oral) is relatively fast for antiplatelet therapy. Peak effect at 2 hours. Supports early PCI intervention by providing rapid platelet inhibition.</li>
+                                <li data-num="5"><strong>Cardiac conduction cautions:</strong> Per Warnings/Precautions, use caution in <strong>sick sinus syndrome</strong> and <strong>2nd or 3rd degree AV block without pacemaker</strong>. Ticagrelor may cause bradycardia via adenosine-related mechanisms. ECG monitoring is prudent.</li>
+                                <li data-num="6"><strong>No LFN pediatric standing order:</strong> No pediatric dosing established per LFN protocol.</li>
+                            </ul>
+
+                            <!-- STEMI Treatment Workflow -->
+                            <div style="margin-top: 18px;">
+                                <div class="ref-label" style="margin-bottom: 8px; font-size: 0.75rem; font-weight: 700;">🔄 STEMI ANTIPLATELET THERAPY WORKFLOW</div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+                                    <div style="background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); border: 2px solid #ef4444; border-radius: 10px; padding: 12px; text-align: center;">
+                                        <div style="font-size: 0.7rem; font-weight: 700; color: #991b1b; text-transform: uppercase; margin-bottom: 4px;">Step 1</div>
+                                        <div style="font-size: 0.85rem; font-weight: 700; color: #7f1d1d;">Recognize STEMI</div>
+                                        <div style="font-size: 0.75rem; color: #991b1b; margin-top: 4px;">12-lead ECG, clinical presentation</div>
+                                    </div>
+                                    <div style="background: linear-gradient(135deg, #eff6ff 0%, #bfdbfe 100%); border: 2px solid #3b82f6; border-radius: 10px; padding: 12px; text-align: center;">
+                                        <div style="font-size: 0.7rem; font-weight: 700; color: #1e40af; text-transform: uppercase; margin-bottom: 4px;">Step 2</div>
+                                        <div style="font-size: 0.85rem; font-weight: 700; color: #1e3a8a;">Aspirin 324 mg PO</div>
+                                        <div style="font-size: 0.75rem; color: #1e40af; margin-top: 4px;">COX inhibitor (12.08)</div>
+                                    </div>
+                                    <div style="background: linear-gradient(135deg, #f0fdf4 0%, #bbf7d0 100%); border: 2px solid #22c55e; border-radius: 10px; padding: 12px; text-align: center;">
+                                        <div style="font-size: 0.7rem; font-weight: 700; color: #064e3b; text-transform: uppercase; margin-bottom: 4px;">Step 3</div>
+                                        <div style="font-size: 0.85rem; font-weight: 700; color: #052e16;">Ticagrelor 180 mg PO</div>
+                                        <div style="font-size: 0.75rem; color: #064e3b; margin-top: 4px;">P2Y12 inhibitor (12.81)</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Clinical context -->
+                            <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border-radius: 10px; padding: 16px; margin-top: 14px;">
+                                <div class="ref-label" style="color: #064e3b; margin-bottom: 8px;">💡 Clinical Context — Why Dual Antiplatelet?</div>
+                                <p style="font-size: 0.85rem; color: #052e16; line-height: 1.8;">STEMI results from acute coronary thrombosis. Aspirin and ticagrelor target two different platelet activation pathways — COX/thromboxane A2 and ADP/P2Y12 respectively. Dual antiplatelet therapy (DAPT) provides synergistic inhibition of platelet aggregation, reducing risk of re-occlusion and stent thrombosis after PCI.</p>
+                            </div>
+                        </div>
+
+                        <!-- ── TAB 4: WARNINGS & PRECAUTIONS ── -->
+                        <div class="qr-panel" id="panel-warnings">
+                            <!-- DANGER boxes -->
+                            <div class="danger-box">
+                                <div class="warn-title">🚫 CONTRAINDICATIONS</div>
+                                <p><strong>Hypersensitivity</strong> to ticagrelor or any component; <strong>active bleeding</strong>; <strong>history of intracranial hemorrhage (ICH)</strong>; <strong>CABG surgery</strong>; <strong>severe hepatic impairment</strong>.</p>
+                            </div>
+
+                            <div class="danger-box">
+                                <div class="warn-title">🚫 HEMORRHAGE — Most Serious Adverse Reaction</div>
+                                <p>Hemorrhage is listed as an adverse reaction. As an antiplatelet agent, ticagrelor increases bleeding risk. Active bleeding of any type is an <strong>absolute contraindication</strong>. History of ICH — even remote — is also an absolute contraindication due to the devastating consequences of re-bleeding.</p>
+                            </div>
+
+                            <!-- WARNING boxes -->
+                            <div class="warning-box">
+                                <div class="warn-title">⚠️ Caution — High-Risk Populations</div>
+                                <p>Per LFN formulary Warnings/Precautions: Caution in <strong>elderly patients</strong>; <strong>recent elective surgery</strong>; <strong>sick sinus syndrome</strong>; <strong>2nd or 3rd degree AV block without pacemaker</strong>.</p>
+                            </div>
+
+                            <div class="warning-box">
+                                <div class="warn-title">⚠️ Cardiac Conduction — Sick Sinus &amp; AV Block</div>
+                                <p>Ticagrelor may affect cardiac conduction via adenosine-related mechanisms. Use caution in patients with <strong>sick sinus syndrome</strong> or <strong>2nd/3rd degree AV block without pacemaker</strong>. Monitor ECG and heart rate. Bradycardia has been reported.</p>
+                            </div>
+
+                            <div class="warning-box">
+                                <div class="warn-title">⚠️ Adverse Reactions</div>
+                                <p><strong>Dyspnea</strong> — commonly reported with ticagrelor, potentially related to adenosine reuptake inhibition. Also: <strong>nausea, hemorrhage, dizziness</strong>.</p>
+                            </div>
+
+                            <!-- CABG -->
+                            <div class="danger-box">
+                                <div class="warn-title">🚫 CABG Surgery — Contraindicated</div>
+                                <p>CABG surgery is listed as a contraindication. Perioperative antiplatelet therapy in CABG significantly increases surgical bleeding risk. Ticagrelor should be held before planned CABG.</p>
+                            </div>
+
+                            <!-- Pregnancy -->
+                            <div style="background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%); border: 2px solid #ec4899; border-radius: 10px; padding: 16px; margin-bottom: 12px;">
+                                <div style="font-weight: 700; color: #9d174d; font-size: 0.85rem; margin-bottom: 8px;">🤰 Pregnancy Considerations</div>
+                                <p style="color: #831843; font-size: 0.85rem; line-height: 1.7;">Due to lack of data, use in pregnancy is <strong>not recommended</strong>.</p>
+                            </div>
+
+                            <!-- Info -->
+                            <div class="info-box">
+                                <div class="warn-title">💊 Administration</div>
+                                <p>180 mg PO (oral loading dose). No IV formulation available. No recommended mixture — this is a tablet medication.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════ -->
+        <!-- QUIZ PANEL                                 -->
+        <!-- ══════════════════════════════════════════ -->
+        <div class="mode-panel" id="panel-quiz">
+            <div class="progress-section" id="progressSection">
+                <div class="progress-header">
+                    <span class="progress-title" id="progressTitle">Question 1 of 10</span>
+                    <div class="progress-stats">
+                        <span>✅ <span id="correctCount">0</span></span>
+                        <span>❌ <span id="incorrectCount">0</span></span>
+                    </div>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div id="quizContainer"></div>
+
+            <div class="results-card" id="resultsCard">
+                <div class="results-icon" id="resultsIcon">🏆</div>
+                <div class="results-title">Quiz Complete!</div>
+                <div class="results-score" id="resultsScore">0%</div>
+                <div class="results-message" id="resultsMessage"></div>
+                <div class="results-breakdown">
+                    <div class="breakdown-item"><div class="breakdown-value" id="finalCorrect" style="color: #16a34a;">0</div><div class="breakdown-label">Correct</div></div>
+                    <div class="breakdown-item"><div class="breakdown-value" id="finalIncorrect" style="color: #dc2626;">0</div><div class="breakdown-label">Incorrect</div></div>
+                </div>
+
+                <div class="results-qr">
+                    <h3>💊 Ticagrelor 12.81 — Quick Reference</h3>
+                    <div class="ref-grid" style="margin-bottom: 15px;">
+                        <div class="ref-item green"><div class="ref-label">Class</div><div class="ref-value">Antiplatelet (P2Y12 Receptor Antagonist)</div></div>
+                        <div class="ref-item info"><div class="ref-label">Trade Name</div><div class="ref-value">Brilinta</div></div>
+                        <div class="ref-item green"><div class="ref-label">Onset / Peak / Duration</div><div class="ref-value">30 min / 2 hrs / ~110 hrs</div></div>
+                        <div class="ref-item warning"><div class="ref-label">Route</div><div class="ref-value">PO (Oral) — No mixture</div></div>
+                    </div>
+                    <table class="results-dose-table">
+                        <tr><th>Indication</th><th>Adult Dose</th><th>Pediatric Dose</th></tr>
+                        <tr><td><strong>STEMI</strong></td><td>180 mg PO (loading dose)</td><td>No LFN Standing Order</td></tr>
+                    </table>
+                    <div class="results-warning-list">
+                        <h4>⚠️ Warnings, Contraindications &amp; Precautions</h4>
+                        <ul>
+                            <li><strong>CI:</strong> Hypersensitivity; active bleeding; history of ICH; CABG surgery; severe hepatic impairment</li>
+                            <li><strong>Adverse:</strong> Dyspnea, nausea, hemorrhage, dizziness</li>
+                            <li><strong>Caution:</strong> Elderly; recent elective surgery; sick sinus syndrome; 2nd/3rd degree AV block w/o pacemaker</li>
+                            <li><strong>Pregnancy:</strong> Not recommended due to lack of data</li>
+                            <li><strong>Mechanism:</strong> Reversibly blocks ADP P2Y12 receptor → prevents GPIIb/IIIa activation → reduces platelet aggregation</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <button class="nav-btn primary" onclick="restartQuiz()" style="margin-top: 25px;">Restart Quiz</button>
+            </div>
+        </div>
+
+        <div class="disclaimer">⚕️ This quiz is designed for educational purposes for LFN flight nurses and is based on LFN's Drug Formulary Section 12.81. Always refer to current PCGs and medical direction for clinical decisions.</div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                type: 'recall',
+                scenario: 'You\'re reviewing antiplatelet therapy for acute coronary syndromes and checking LFN formulary indications.',
+                vitals: null,
+                question: 'What is the indication for ticagrelor per LFN protocol 12.81?',
+                options: [
+                    { letter: 'A', text: 'All types of chest pain and ACS', correct: false },
+                    { letter: 'B', text: 'STEMI', correct: true },
+                    { letter: 'C', text: 'Stroke prevention and DVT prophylaxis', correct: false },
+                    { letter: 'D', text: 'NSTEMI and unstable angina only', correct: false }
+                ],
+                rationale: 'Per LFN formulary 12.81, ticagrelor is indicated for <strong>STEMI</strong> (ST-elevation myocardial infarction). It is given as part of dual antiplatelet therapy alongside aspirin.',
+                mechanism: '<strong>Ticagrelor for STEMI:</strong><br>• Indication: STEMI only per LFN protocol<br>• Given as 180 mg PO loading dose<br>• Part of dual antiplatelet therapy (DAPT) with aspirin 324 mg PO (12.08)<br>• Purpose: Prevent platelet aggregation and thrombus propagation<br>• P2Y12 receptor antagonist — blocks ADP-mediated platelet activation<br>• Reduces risk of re-occlusion and stent thrombosis after PCI',
+                pearl: 'LFN protocol specifically lists STEMI as the indication. Aspirin (324 mg PO per 12.08) covers "Chest Pain, STEMI, & ACS" more broadly, but ticagrelor\'s standing order is limited to STEMI. The two drugs target different platelet activation pathways for synergistic effect.',
+                protocol: 'LFN 12.81 Ticagrelor\nIndication: STEMI\nAdult Dose: 180 mg PO\nPediatric: No LFN Standing Order'
+            },
+            {
+                type: 'clinical',
+                scenario: 'A patient with acute STEMI confirmed on 12-lead ECG has received aspirin 324 mg PO. You need to administer the P2Y12 inhibitor.',
+                vitals: { HR: '92', BP: '138/82', SpO2: '96%', RR: '20', ECG: 'ST↑ II,III,aVF' },
+                question: 'What is the adult ticagrelor dose for STEMI per LFN protocol?',
+                options: [
+                    { letter: 'A', text: '90 mg PO twice daily', correct: false },
+                    { letter: 'B', text: '180 mg PO', correct: true },
+                    { letter: 'C', text: '60 mg PO loading dose', correct: false },
+                    { letter: 'D', text: '360 mg PO loading dose', correct: false }
+                ],
+                rationale: 'Per LFN formulary 12.81: Adult dose for STEMI is <strong>180 mg PO</strong> (oral loading dose).',
+                mechanism: '<strong>Ticagrelor dosing:</strong><br>• <strong>LFN dose:</strong> 180 mg PO (single loading dose)<br>• <strong>Route:</strong> Oral — no IV formulation<br>• <strong>No recommended mixture</strong> — oral tablet<br>• <strong>Onset:</strong> 30 minutes<br>• <strong>Peak:</strong> 2 hours<br>• Loading dose achieves rapid platelet inhibition<br>• Given alongside aspirin 324 mg PO for DAPT',
+                pearl: 'This patient has an inferior STEMI (ST elevation in II, III, aVF). The 180 mg loading dose provides rapid P2Y12 inhibition within 30 minutes, with peak effect at 2 hours — supporting early PCI intervention.',
+                protocol: 'LFN 12.81 Ticagrelor\nAdult Dose: 180 mg PO\nRoute: Oral\nNo Recommended Mixture (tablet)'
+            },
+            {
+                type: 'recall',
+                scenario: 'A physician asks you to explain how ticagrelor works and how it differs from clopidogrel.',
+                vitals: null,
+                question: 'What is the mechanism of action of ticagrelor per LFN protocol?',
+                options: [
+                    { letter: 'A', text: 'Irreversibly inhibits cyclooxygenase (COX) like aspirin', correct: false },
+                    { letter: 'B', text: 'Reversibly and noncompetitively binds the ADP P2Y12 receptor, preventing GPIIb/IIIa activation and reducing platelet aggregation', correct: true },
+                    { letter: 'C', text: 'Blocks glycoprotein IIb/IIIa receptors directly', correct: false },
+                    { letter: 'D', text: 'Enhances antithrombin III activity like heparin', correct: false }
+                ],
+                rationale: 'Per LFN formulary 12.81: Ticagrelor <strong>reversibly and noncompetitively binds the adenosine diphosphate (ADP) P2Y12 receptor on the platelet surface which prevents ADP-mediated activation of the GPIIb/IIIa receptor complex, thereby reducing platelet aggregation.</strong>',
+                mechanism: '<strong>Ticagrelor mechanism — step by step:</strong><br><br><strong>1. Binds P2Y12 receptor:</strong><br>• Reversible, noncompetitive binding<br>• P2Y12 = ADP receptor on platelet surface<br><br><strong>2. Blocks ADP signaling:</strong><br>• ADP cannot activate the receptor<br>• Prevents conformational change in GPIIb/IIIa<br><br><strong>3. Reduces platelet aggregation:</strong><br>• GPIIb/IIIa complex remains inactive<br>• Platelets cannot aggregate<br><br><strong>Key difference from clopidogrel:</strong><br>• Ticagrelor: REVERSIBLE binding, no prodrug activation<br>• Clopidogrel: IRREVERSIBLE binding, requires CYP2C19 activation<br>• Ticagrelor has no genetic variability in response',
+                pearl: 'The "reversible" nature of ticagrelor is clinically significant — platelet function recovers more predictably (~110 hours for 90% inhibition) compared to irreversible agents. Unlike clopidogrel, ticagrelor does not require hepatic CYP2C19 activation, so there are no "non-responder" patients.',
+                protocol: 'LFN 12.81 Ticagrelor\nMechanism: Reversibly and noncompetitively binds\nADP P2Y12 receptor → prevents GPIIb/IIIa\nactivation → reduces platelet aggregation\nCategory: Antiplatelet'
+            },
+            {
+                type: 'critical',
+                scenario: 'A patient with history of intracranial hemorrhage (ICH) 3 years ago presents with acute STEMI. The team is considering ticagrelor.',
+                vitals: { HR: '88', BP: '148/90', SpO2: '97%', RR: '18', ECG: 'ST↑ V1-V4' },
+                question: 'What are the contraindications for ticagrelor per LFN protocol?',
+                options: [
+                    { letter: 'A', text: 'Hypersensitivity only', correct: false },
+                    { letter: 'B', text: 'Hypersensitivity; active bleeding; history of ICH; CABG surgery; severe hepatic impairment', correct: true },
+                    { letter: 'C', text: 'Active bleeding and pregnancy', correct: false },
+                    { letter: 'D', text: 'No contraindications are listed', correct: false }
+                ],
+                rationale: 'Per LFN formulary 12.81 Contraindications: <strong>Hypersensitivity; active bleeding; history of ICH; CABG surgery; severe hepatic impairment.</strong> This patient with ICH history 3 years ago has a contraindication.',
+                mechanism: '<strong>All 5 contraindications explained:</strong><br><br><strong>1. Hypersensitivity:</strong> Allergic reaction to ticagrelor or components<br><br><strong>2. Active bleeding:</strong> Antiplatelet therapy worsens any active hemorrhage<br><br><strong>3. History of ICH:</strong> Even remote history (years ago) — once brain bleeds, re-bleed risk is higher; antiplatelet drugs increase this risk; ICH is often fatal/devastating<br><br><strong>4. CABG surgery:</strong> Perioperative antiplatelet use causes excessive surgical bleeding; must be held before CABG<br><br><strong>5. Severe hepatic impairment:</strong> Ticagrelor is hepatically metabolized; severe impairment → unpredictable drug levels + already ↑ bleeding risk from coagulopathy',
+                pearl: 'This patient has an anterior STEMI (V1-V4) — high-risk territory — BUT has a remote ICH history, which is an absolute contraindication. History of ICH means any history, not just recent. Alternative antiplatelet strategies would need medical control input.',
+                protocol: 'LFN 12.81 Ticagrelor\nContraindications: Hypersensitivity; active\nbleeding; history of ICH; CABG surgery;\nsevere hepatic impairment'
+            },
+            {
+                type: 'critical',
+                scenario: 'A patient with severe cirrhosis (Child-Pugh C) develops STEMI. The flight team considers antiplatelet therapy.',
+                vitals: { HR: '104', BP: '102/60', SpO2: '94%', RR: '22', ECG: 'ST↑ lateral' },
+                question: 'Can ticagrelor be given to this patient with severe hepatic impairment?',
+                options: [
+                    { letter: 'A', text: 'Yes — liver disease is only a precaution, not a contraindication', correct: false },
+                    { letter: 'B', text: 'No — severe hepatic impairment is a contraindication per LFN protocol', correct: true },
+                    { letter: 'C', text: 'Yes — reduce the dose to 90 mg for liver disease', correct: false },
+                    { letter: 'D', text: 'Yes — ticagrelor is not metabolized by the liver', correct: false }
+                ],
+                rationale: 'Per LFN formulary 12.81 Contraindications: <strong>Severe hepatic impairment</strong> is listed as a contraindication. This patient with Child-Pugh C cirrhosis is contraindicated.',
+                mechanism: '<strong>Why severe hepatic impairment is contraindicated:</strong><br>• Ticagrelor is metabolized by the liver (CYP3A4)<br>• Severe impairment → unpredictable drug levels<br>• Patients with severe liver disease already have:<br>&nbsp;&nbsp;→ ↓ Clotting factor production<br>&nbsp;&nbsp;→ ↓ Platelet count (thrombocytopenia)<br>&nbsp;&nbsp;→ Portal hypertension with varices<br>&nbsp;&nbsp;→ Baseline coagulopathy<br>• Adding an antiplatelet = very high bleeding risk<br><br><strong>Note:</strong> Mild-moderate liver disease is NOT listed as a contraindication — only "severe hepatic impairment."',
+                pearl: 'The distinction between severe hepatic impairment (contraindicated) and lesser degrees of liver disease is clinically important. Child-Pugh C = severe. For this STEMI patient, aspirin alone may be the only antiplatelet option, with medical control consultation.',
+                protocol: 'LFN 12.81 Ticagrelor\nContraindications: ...severe hepatic impairment\n(Ticagrelor is hepatically metabolized via CYP3A4)'
+            },
+            {
+                type: 'critical',
+                scenario: 'A STEMI patient has a known history of recent CABG surgery performed 2 weeks ago. The team wants to give ticagrelor.',
+                vitals: { HR: '96', BP: '130/78', SpO2: '95%', RR: '20', ECG: 'ST↑ inferior' },
+                question: 'Per LFN protocol, is CABG surgery a contraindication to ticagrelor?',
+                options: [
+                    { letter: 'A', text: 'No — CABG is not mentioned in the formulary', correct: false },
+                    { letter: 'B', text: 'Yes — CABG surgery is listed as a contraindication', correct: true },
+                    { letter: 'C', text: 'Only if CABG was within the last 24 hours', correct: false },
+                    { letter: 'D', text: 'CABG is a precaution but not a contraindication', correct: false }
+                ],
+                rationale: 'Per LFN formulary 12.81 Contraindications: <strong>CABG surgery</strong> is listed as a contraindication.',
+                mechanism: '<strong>Why CABG surgery is contraindicated:</strong><br>• CABG = Coronary Artery Bypass Grafting<br>• Major cardiothoracic surgery with significant wound surfaces<br>• Antiplatelet therapy dramatically increases surgical bleeding risk<br>• Mediastinal and graft site hemorrhage can be fatal<br>• Standard practice: hold P2Y12 inhibitors 5-7 days before CABG<br><br><strong>This patient (CABG 2 weeks ago):</strong><br>• Recent surgical wounds still healing<br>• Antiplatelet therapy contraindicated<br>• Contact medical control for guidance<br>• Aspirin alone may be option (per physician guidance)',
+                pearl: 'CABG surgery is a unique contraindication among the P2Y12 inhibitors. The LFN formulary lists it as a straightforward contraindication without specifying a timeframe. In the post-CABG STEMI scenario, medical control input is essential to weigh the bleeding risk against the ischemic benefit.',
+                protocol: 'LFN 12.81 Ticagrelor\nContraindications: Hypersensitivity; active\nbleeding; history of ICH; CABG surgery;\nsevere hepatic impairment'
+            },
+            {
+                type: 'recall',
+                scenario: 'You\'ve given ticagrelor 180 mg PO to a STEMI patient and need to anticipate when the antiplatelet effect will begin.',
+                vitals: null,
+                question: 'What is the onset, peak, and duration of ticagrelor per LFN protocol?',
+                options: [
+                    { letter: 'A', text: 'Onset: Immediate / Peak: 30 min / Duration: 24 hours', correct: false },
+                    { letter: 'B', text: 'Onset: 30 min / Peak: 2 hours / Duration: ~110 hours (90% inhibition of platelet aggregation)', correct: true },
+                    { letter: 'C', text: 'Onset: 2 hours / Peak: 6 hours / Duration: 7 days', correct: false },
+                    { letter: 'D', text: 'Onset: 5 min / Peak: 20 min / Duration: 8 hours', correct: false }
+                ],
+                rationale: 'Per LFN formulary 12.81: <strong>Onset: 30 min / Peak: 2 hours / Duration: ~110 hours (90% inhibition of platelet aggregation).</strong>',
+                mechanism: '<strong>Ticagrelor pharmacokinetics:</strong><br>• <strong>Onset:</strong> 30 minutes — relatively fast for oral antiplatelet<br>• <strong>Peak:</strong> 2 hours — maximal platelet inhibition<br>• <strong>Duration:</strong> ~110 hours (~4.6 days) for 90% inhibition<br><br><strong>Clinical implications:</strong><br>• Antiplatelet effect begins within 30 min of loading dose<br>• Full effect by 2 hours — supports early PCI<br>• Long duration from sustained receptor binding<br>• Reversible binding, but slow dissociation<br>• Faster onset than clopidogrel (which takes hours-days)<br>• Platelet function recovers predictably after discontinuation',
+                pearl: 'The ~110 hour duration represents the time to 90% inhibition of platelet aggregation — this is approximately 4.6 days. This long duration explains why ticagrelor must be held approximately 5 days before planned surgery to allow adequate platelet function recovery.',
+                protocol: 'LFN 12.81 Ticagrelor\nOnset / Peak / Duration:\n30 min / 2 hours / ~110 hours\n(90% inhibition of platelet aggregation)'
+            },
+            {
+                type: 'clinical',
+                scenario: 'A STEMI patient with a history of sick sinus syndrome (no pacemaker) needs ticagrelor. The team is discussing precautions.',
+                vitals: { HR: '52', BP: '110/70', SpO2: '97%', RR: '16', ECG: 'ST↑ + sinus brady' },
+                question: 'What populations require caution with ticagrelor per LFN Warnings/Precautions?',
+                options: [
+                    { letter: 'A', text: 'No specific precautions are listed', correct: false },
+                    { letter: 'B', text: 'Caution in elderly, recent elective surgery, sick sinus syndrome, 2nd/3rd degree AV block without pacemaker', correct: true },
+                    { letter: 'C', text: 'Caution only in renal disease and children', correct: false },
+                    { letter: 'D', text: 'Caution only in patients taking anticoagulants', correct: false }
+                ],
+                rationale: 'Per LFN formulary 12.81 Warnings/Precautions: <strong>Caution in elderly patients, recent elective surgery; sick sinus syndrome; 2nd or 3rd degree AV block without pacemaker.</strong>',
+                mechanism: '<strong>Why caution in these populations:</strong><br><br><strong>Elderly patients:</strong><br>• ↑ Bleeding risk with age<br>• Altered pharmacokinetics<br>• More likely to have comorbidities<br><br><strong>Recent elective surgery:</strong><br>• Fresh surgical sites at risk of bleeding<br>• Antiplatelet therapy can cause surgical hemorrhage<br><br><strong>Sick sinus syndrome (without pacemaker):</strong><br>• Ticagrelor may cause bradycardia<br>• Adenosine-related mechanism<br>• Could worsen existing conduction disease<br><br><strong>2nd/3rd degree AV block (without pacemaker):</strong><br>• Risk of worsening heart block<br>• May produce symptomatic bradycardia<br>• Pacemaker would mitigate this risk',
+                pearl: 'This patient has sick sinus syndrome with HR 52 — a caution population. Ticagrelor is not contraindicated but requires heightened monitoring. The bradycardia may worsen. However, for STEMI, the benefit of antiplatelet therapy often outweighs the conduction risk. Monitor closely and communicate with medical control.',
+                protocol: 'LFN 12.81 Ticagrelor\nWarnings/Precautions: Caution in elderly;\nrecent elective surgery; sick sinus syndrome;\n2nd or 3rd degree AV block w/o pacemaker'
+            },
+            {
+                type: 'clinical',
+                scenario: 'A pregnant patient at 30 weeks develops acute STEMI. The team considers dual antiplatelet therapy including ticagrelor.',
+                vitals: { HR: '108', BP: '126/78', SpO2: '97%', RR: '22', FHR: '150' },
+                question: 'What does LFN protocol say about ticagrelor in pregnancy?',
+                options: [
+                    { letter: 'A', text: 'Safe at any stage of pregnancy', correct: false },
+                    { letter: 'B', text: 'Use only if potential benefit justifies the risk to the fetus', correct: false },
+                    { letter: 'C', text: 'Due to lack of data, use in pregnancy is not recommended', correct: true },
+                    { letter: 'D', text: 'Absolutely contraindicated — listed under contraindications', correct: false }
+                ],
+                rationale: 'Per LFN formulary 12.81 Pregnancy Considerations: <strong>"Due to lack of data, use in pregnancy is not recommended."</strong>',
+                mechanism: '<strong>Ticagrelor in pregnancy:</strong><br>• <strong>LFN position:</strong> Not recommended due to lack of data<br>• <strong>Note:</strong> Pregnancy is NOT listed under "Contraindications" — it is under "Pregnancy Considerations"<br>• <strong>"Not recommended" ≠ "Contraindicated"</strong><br>• Limited safety data in pregnant patients<br>• Unknown fetal effects<br><br><strong>Risk considerations:</strong><br>• ↑ Bleeding risk during delivery<br>• Potential placental/fetal effects unknown<br>• STEMI in pregnancy is rare but life-threatening<br>• Maternal death = fetal death<br><br><strong>This patient (STEMI at 30 weeks):</strong><br>• Medical control consultation essential<br>• Aspirin 324 mg PO is standard (12.08)<br>• Ticagrelor "not recommended" but may be considered in extremis<br>• Multidisciplinary approach: cardiology, OB, neonatology',
+                pearl: 'The distinction between "not recommended" (pregnancy) and "contraindicated" (active bleeding, ICH history, CABG, severe liver disease, hypersensitivity) is clinically important. In a life-threatening STEMI, medical control may authorize ticagrelor despite the pregnancy consideration. Aspirin is the more established antiplatelet in pregnancy.',
+                protocol: 'LFN 12.81 Ticagrelor\nPregnancy: Due to lack of data, use in\npregnancy is not recommended.'
+            },
+            {
+                type: 'recall',
+                scenario: 'A patient on ticagrelor reports feeling short of breath and dizzy 2 days after loading dose. You review the formulary for expected adverse effects.',
+                vitals: null,
+                question: 'What adverse reactions are listed for ticagrelor per LFN protocol?',
+                options: [
+                    { letter: 'A', text: 'Hypotension, bradycardia, bronchospasm', correct: false },
+                    { letter: 'B', text: 'Dyspnea, nausea, hemorrhage, dizziness', correct: true },
+                    { letter: 'C', text: 'Only hemorrhage — no other adverse effects listed', correct: false },
+                    { letter: 'D', text: 'Chest pain, tachycardia, hypertension', correct: false }
+                ],
+                rationale: 'Per LFN formulary 12.81 Adverse Reactions: <strong>Dyspnea, nausea, hemorrhage, dizziness.</strong> This patient\'s shortness of breath and dizziness are consistent with known ticagrelor adverse effects.',
+                mechanism: '<strong>Ticagrelor adverse reactions:</strong><br><br><strong>Dyspnea:</strong><br>• Most characteristic adverse effect of ticagrelor<br>• Potentially related to adenosine reuptake inhibition<br>• Generally self-limiting<br>• Not related to heart failure or lung disease<br><br><strong>Nausea:</strong><br>• GI adverse effect<br><br><strong>Hemorrhage:</strong><br>• Most serious adverse reaction<br>• Expected with any antiplatelet agent<br>• Can range from minor bruising to life-threatening bleeding<br>• Monitor for signs of occult bleeding<br><br><strong>Dizziness:</strong><br>• CNS adverse effect<br>• May be related to adenosine mechanisms<br>• Generally mild',
+                pearl: 'Dyspnea is the hallmark adverse effect that distinguishes ticagrelor from other P2Y12 inhibitors. It occurs in a significant percentage of patients and is thought to be related to ticagrelor\'s inhibition of adenosine reuptake. While usually self-limiting, always rule out other causes (MI, PE, CHF) before attributing dyspnea to the medication.',
+                protocol: 'LFN 12.81 Ticagrelor\nAdverse Reactions: Dyspnea, nausea,\nhemorrhage, dizziness'
+            }
+        ];
+
+        let currentQuestion = 0, correctAnswers = 0, incorrectAnswers = 0, answered = [];
+
+        // ── Mode Tab Switching ──
+        function switchMode(mode) {
+            document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.mode-panel').forEach(p => p.classList.remove('active'));
+            document.querySelector(`.mode-tab[data-mode="${mode}"]`).classList.add('active');
+            document.getElementById('panel-' + mode).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ── Quick Reference Toggle & Tabs ──
+        function toggleQuickRef() {
+            const body = document.getElementById('qrBody');
+            const toggle = document.getElementById('qrToggle');
+            body.classList.toggle('collapsed');
+            toggle.classList.toggle('collapsed');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.qr-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.qr-tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('#panel-reference .qr-panel').forEach(p => p.classList.remove('active'));
+                    tab.classList.add('active');
+                    document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+                });
+            });
+            renderQuiz();
+        });
+
+        // ── Quiz Rendering ──
+        function renderQuiz() {
+            const container = document.getElementById('quizContainer');
+            questions.forEach((q, i) => {
+                const vitalsHTML = q.vitals ? `<div class="vital-signs">${Object.entries(q.vitals).map(([k,v]) => `<div class="vital-item"><div class="vital-label">${k}</div><div class="vital-value">${v}</div></div>`).join('')}</div>` : '';
+                const optionsHTML = q.options.map(o => `<div class="option-btn" data-correct="${o.correct}"><span class="option-letter">${o.letter}</span><span class="option-text">${o.text}</span></div>`).join('');
+                container.innerHTML += `
+                    <div class="question-card" id="q${i}" style="display: ${i === 0 ? 'block' : 'none'};">
+                        <div class="question-header">
+                            <span class="question-number">Question ${i + 1} of ${questions.length}</span>
+                            <span class="question-type ${q.type}">${q.type}</span>
+                        </div>
+                        <div class="question-body">
+                            <div class="scenario-box">
+                                <div class="scenario-label">📋 Clinical Scenario</div>
+                                <div class="scenario-text">${q.scenario}</div>
+                                ${vitalsHTML}
+                            </div>
+                            <div class="question-text">${q.question}</div>
+                            <div class="options-list">${optionsHTML}</div>
+                            <div class="rationale-box" id="rat${i}">
+                                <div class="mechanism-section"><h4>🔬 Mechanism & Key Concepts</h4><p>${q.mechanism}</p></div>
+                                <div class="clinical-pearl-box"><h4>💡 Clinical Pearl</h4><p>${q.pearl}</p></div>
+                                <div class="protocol-box"><h4>📖 Protocol Reference</h4><p>${q.protocol}</p></div>
+                            </div>
+                        </div>
+                        <div class="nav-buttons">
+                            <button class="nav-btn secondary" onclick="navigate(${i}, -1)" ${i === 0 ? 'disabled' : ''}>Previous</button>
+                            <button class="nav-btn primary" id="next${i}" onclick="navigate(${i}, 1)" disabled>${i === questions.length - 1 ? 'View Results' : 'Next Question'}</button>
+                        </div>
+                    </div>`;
+            });
+
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (this.classList.contains('disabled')) return;
+                    const card = this.closest('.question-card');
+                    const idx = parseInt(card.id.replace('q', ''));
+                    if (answered[idx]) return;
+                    answered[idx] = true;
+                    const options = card.querySelectorAll('.option-btn');
+                    options.forEach(o => {
+                        o.classList.add('disabled');
+                        if (o.dataset.correct === 'true') o.classList.add('correct');
+                    });
+                    const isCorrect = this.dataset.correct === 'true';
+                    if (!isCorrect) this.classList.add('incorrect');
+                    if (isCorrect) correctAnswers++; else incorrectAnswers++;
+                    document.getElementById('correctCount').textContent = correctAnswers;
+                    document.getElementById('incorrectCount').textContent = incorrectAnswers;
+                    document.getElementById(`rat${idx}`).classList.add('show');
+                    document.getElementById(`next${idx}`).disabled = false;
+                });
+            });
+        }
+
+        function navigate(current, dir) {
+            const next = current + dir;
+            if (next >= questions.length) { showResults(); return; }
+            if (next < 0) return;
+            document.getElementById(`q${current}`).style.display = 'none';
+            document.getElementById(`q${next}`).style.display = 'block';
+            currentQuestion = next;
+            updateProgress();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateProgress() {
+            const pct = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressBar').style.width = pct + '%';
+            document.getElementById('progressTitle').textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+        }
+
+        function showResults() {
+            document.getElementById('quizContainer').style.display = 'none';
+            document.getElementById('progressSection').style.display = 'none';
+            const card = document.getElementById('resultsCard');
+            card.classList.add('show');
+            const pct = Math.round((correctAnswers / questions.length) * 100);
+            const scoreEl = document.getElementById('resultsScore');
+            const iconEl = document.getElementById('resultsIcon');
+            const msgEl = document.getElementById('resultsMessage');
+            scoreEl.textContent = pct + '%';
+            document.getElementById('finalCorrect').textContent = correctAnswers;
+            document.getElementById('finalIncorrect').textContent = incorrectAnswers;
+            if (pct >= 90) {
+                scoreEl.className = 'results-score excellent'; iconEl.className = 'results-icon excellent'; iconEl.textContent = '🌟';
+                msgEl.textContent = 'Excellent! Outstanding ticagrelor knowledge — STEMI indication, 180 mg PO loading dose, reversible P2Y12 mechanism (blocks ADP → prevents GPIIb/IIIa activation), all 5 contraindications (hypersensitivity, active bleeding, ICH history, CABG, severe hepatic impairment), caution populations, onset 30 min / peak 2 hrs / duration ~110 hrs, adverse reactions (dyspnea, nausea, hemorrhage, dizziness), and pregnancy not recommended.';
+            } else if (pct >= 70) {
+                scoreEl.className = 'results-score good'; iconEl.className = 'results-icon good'; iconEl.textContent = '👍';
+                msgEl.textContent = 'Good work! Review: STEMI indication, 180 mg PO, reversible P2Y12 inhibitor, CI: hypersensitivity/active bleeding/ICH history/CABG/severe hepatic impairment, caution: elderly/recent surgery/sick sinus/AV block, onset 30 min / peak 2 hrs / duration ~110 hrs, adverse: dyspnea/nausea/hemorrhage/dizziness, pregnancy not recommended.';
+            } else {
+                scoreEl.className = 'results-score needs-work'; iconEl.className = 'results-icon needs-work'; iconEl.textContent = '📚';
+                msgEl.textContent = 'Keep studying! Focus on: STEMI indication, 180 mg PO loading dose, mechanism (reversibly binds ADP P2Y12 receptor → prevents GPIIb/IIIa activation → reduces platelet aggregation), 5 contraindications (hypersensitivity, active bleeding, history of ICH, CABG surgery, severe hepatic impairment), warnings (elderly, recent surgery, sick sinus, AV block w/o pacemaker), onset 30 min / peak 2 hrs / duration ~110 hrs, adverse reactions, pregnancy not recommended.';
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0; correctAnswers = 0; incorrectAnswers = 0; answered = [];
+            document.getElementById('correctCount').textContent = '0';
+            document.getElementById('incorrectCount').textContent = '0';
+            document.querySelectorAll('.option-btn').forEach(o => o.classList.remove('disabled', 'correct', 'incorrect'));
+            document.querySelectorAll('.rationale-box').forEach(r => r.classList.remove('show'));
+            questions.forEach((_, i) => { document.getElementById(`next${i}`).disabled = true; document.getElementById(`q${i}`).style.display = i === 0 ? 'block' : 'none'; });
+            document.getElementById('resultsCard').classList.remove('show');
+            document.getElementById('quizContainer').style.display = 'block';
+            document.getElementById('progressSection').style.display = 'block';
+            updateProgress();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

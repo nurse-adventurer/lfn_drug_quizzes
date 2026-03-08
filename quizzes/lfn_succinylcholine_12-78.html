@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LFN Drug Quiz | Succinylcholine (12.78)</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --primary:#991b1b;
+  --primary-light:#dc2626;
+  --primary-dark:#7f1d1d;
+  --success-bg:#dcfce7;
+  --error-bg:#fee2e2;
+  --warning-bg:#fef3c7;
+  --warning-border:#f59e0b;
+  --card:#ffffff;
+  --text:#1f2937;
+  --text-secondary:#4b5563;
+  --border:#e5e7eb;
+  --shadow:0 2px 8px rgba(0,0,0,0.10);
+  --shadow-lg:0 8px 24px rgba(153,27,27,0.18);
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#fff1f2 0%,#fecaca 50%,#fca5a5 100%);min-height:100vh;padding:16px}
+.container{max-width:820px;margin:0 auto}
+.header{background:var(--card);border-radius:16px;padding:28px 24px 20px;margin-bottom:20px;box-shadow:var(--shadow-lg);text-align:center}
+.header h1{font-size:2rem;color:var(--primary);margin-bottom:6px}
+.header .subtitle{color:var(--primary-light);font-size:1rem;margin-bottom:12px}
+.drug-class-badge{display:inline-block;background:linear-gradient(135deg,var(--primary-light),var(--primary));color:#fff;padding:7px 20px;border-radius:20px;font-size:0.85rem;font-weight:700;margin-bottom:12px}
+.badge-row{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;margin-top:4px}
+.badge{display:inline-block;padding:5px 11px;border-radius:14px;font-size:0.7rem;font-weight:700;border:2px solid}
+.badge-rsi{background:#fee2e2;color:#991b1b;border-color:#ef4444}
+.badge-fast{background:#dcfce7;color:#166534;border-color:#22c55e}
+.badge-short{background:#dbeafe;color:#1e40af;border-color:#3b82f6}
+.badge-dep{background:#fef3c7;color:#92400e;border-color:#f59e0b}
+.badge-fasc{background:#f3e8ff;color:#6b21a8;border-color:#a855f7}
+.mode-tabs{display:flex;background:var(--card);border-radius:12px;padding:6px;margin-bottom:18px;box-shadow:var(--shadow);gap:6px}
+.mode-tab{flex:1;padding:11px;text-align:center;border-radius:8px;cursor:pointer;font-weight:700;font-size:0.92rem;transition:all 0.2s;border:none;background:transparent;color:var(--text-secondary)}
+.mode-tab.active{background:linear-gradient(135deg,var(--primary-light),var(--primary));color:#fff;box-shadow:0 2px 8px rgba(153,27,27,0.3)}
+.ref-panel,.quiz-panel{display:none}
+.ref-panel.active,.quiz-panel.active{display:block}
+.ref-tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.ref-tab{padding:7px 14px;border-radius:8px;border:2px solid var(--border);background:var(--card);color:var(--text-secondary);font-size:0.8rem;font-weight:600;cursor:pointer;transition:all 0.2s}
+.ref-tab.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.ref-content{background:var(--card);border-radius:12px;padding:22px;box-shadow:var(--shadow)}
+.ref-section{display:none}
+.ref-section.active{display:block}
+.ref-section h3{color:var(--primary);font-size:1rem;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #fecaca}
+.dose-table{width:100%;border-collapse:collapse;font-size:0.83rem;margin-bottom:12px}
+.dose-table th{background:var(--primary);color:#fff;padding:9px 10px;text-align:left;font-size:0.78rem}
+.dose-table td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5}
+.dose-table tr:nth-child(even) td{background:#fff1f2}
+.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:12px}
+.info-card{background:#fff1f2;border-radius:8px;padding:12px;border-left:3px solid var(--primary-light)}
+.info-card .lbl{font-size:0.7rem;color:var(--text-secondary);text-transform:uppercase;font-weight:700;margin-bottom:4px}
+.info-card .val{font-size:0.88rem;color:var(--text);font-weight:600;line-height:1.4}
+.warn-card{background:var(--error-bg);border:2px solid #ef4444;border-radius:8px;padding:14px;margin-bottom:10px}
+.warn-card h4{color:#7f1d1d;font-size:0.85rem;margin-bottom:7px}
+.warn-card p,.warn-card li{font-size:0.83rem;color:#991b1b;line-height:1.5}
+.warn-card ul{margin-left:16px;margin-top:4px}
+.note-card{background:var(--warning-bg);border:2px solid var(--warning-border);border-radius:8px;padding:14px;margin-bottom:10px}
+.note-card h4{color:#92400e;font-size:0.85rem;margin-bottom:6px}
+.note-card p,.note-card li{font-size:0.83rem;color:#78350f;line-height:1.5}
+.note-card ul{margin-left:16px;margin-top:4px}
+.ok-card{background:var(--success-bg);border:2px solid #22c55e;border-radius:8px;padding:14px;margin-bottom:10px}
+.ok-card h4{color:#166534;font-size:0.85rem;margin-bottom:6px}
+.ok-card p{font-size:0.83rem;color:#166534;line-height:1.5}
+.ci-card{background:#fff1f2;border:2px solid #fb7185;border-radius:8px;padding:14px;margin-bottom:10px}
+.ci-card h4{color:#9f1239;font-size:0.85rem;margin-bottom:6px}
+.ci-card li{font-size:0.83rem;color:#9f1239;line-height:1.5;margin-left:16px;margin-bottom:2px}
+.sc-card{background:#f0fdf4;border:2px solid #86efac;border-radius:8px;padding:14px;margin-bottom:10px}
+.sc-card h4{color:#166534;font-size:0.85rem;margin-bottom:6px}
+.sc-card p,.sc-card li{font-size:0.83rem;color:#15803d;line-height:1.5}
+.sc-card ul{margin-left:16px;margin-top:4px}
+.progress-wrap{background:var(--card);border-radius:12px;padding:16px 20px;margin-bottom:16px;box-shadow:var(--shadow)}
+.progress-bar{height:10px;background:var(--border);border-radius:8px;overflow:hidden;margin-bottom:7px}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--primary-light),var(--primary));border-radius:8px;transition:width 0.4s ease}
+.progress-text{text-align:center;color:var(--primary);font-weight:700;font-size:0.88rem}
+.q-card{background:var(--card);border-radius:16px;padding:26px;margin-bottom:18px;box-shadow:var(--shadow-lg);display:none}
+.q-card.active{display:block;animation:fadeUp 0.4s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.q-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.q-num{background:linear-gradient(135deg,var(--primary-light),var(--primary));color:#fff;padding:6px 14px;border-radius:14px;font-size:0.85rem;font-weight:700}
+.q-type{padding:5px 11px;border-radius:12px;font-size:0.72rem;font-weight:700;text-transform:uppercase}
+.type-recall{background:#dbeafe;color:#1e40af}
+.type-clinical{background:#dcfce7;color:#166534}
+.type-critical{background:#fce7f3;color:#be185d}
+.type-calculation{background:#f3e8ff;color:#7c3aed}
+.scenario{background:linear-gradient(135deg,#fee2e2,#fecaca);border-left:4px solid var(--primary-light);padding:16px;border-radius:0 10px 10px 0;margin-bottom:16px}
+.scenario h3{color:var(--primary-dark);font-size:0.9rem;margin-bottom:6px}
+.scenario p{color:var(--primary-dark);font-size:0.93rem;line-height:1.6}
+.s-box{padding:10px 13px;border-radius:8px;margin-top:10px;font-size:0.87rem;font-weight:600;line-height:1.4}
+.s-rsi{background:#fee2e2;border:2px solid #ef4444;color:#991b1b}
+.s-pedi{background:#dbeafe;border:2px solid #3b82f6;color:#1e3a8a}
+.s-burn{background:#fee2e2;border:2px solid #dc2626;color:#7f1d1d}
+.s-mh{background:#fee2e2;border:2px solid #dc2626;color:#7f1d1d}
+.s-hk{background:#fef3c7;border:2px solid #f59e0b;color:#92400e}
+.s-apnea{background:#fee2e2;border:2px solid #dc2626;color:#7f1d1d}
+.s-preg{background:#fce7f3;border:2px solid #ec4899;color:#9d174d}
+.q-text{font-size:1.1rem;color:var(--text);margin-bottom:20px;line-height:1.6;font-weight:500}
+.options{display:flex;flex-direction:column;gap:10px}
+.option{padding:15px 18px;background:#f9fafb;border:2px solid var(--border);border-radius:10px;cursor:pointer;transition:all 0.2s;font-size:0.95rem;color:var(--text);display:flex;align-items:flex-start;gap:10px}
+.option:hover:not(.disabled){border-color:var(--primary-light);background:#fee2e2;transform:translateX(4px)}
+.opt-letter{min-width:28px;height:28px;line-height:28px;text-align:center;background:var(--primary);color:#fff;border-radius:50%;font-weight:700;font-size:0.82rem;flex-shrink:0}
+.option.correct{border-color:#22c55e;background:var(--success-bg);color:#166534}
+.option.incorrect{border-color:#ef4444;background:var(--error-bg);color:#991b1b}
+.option.disabled{cursor:not-allowed;opacity:0.75}
+.feedback{margin-top:20px;padding:20px;border-radius:12px;display:none}
+.feedback.show{display:block;animation:fadeUp 0.3s ease}
+.feedback.correct-fb{background:linear-gradient(135deg,#dcfce7,#bbf7d0);border:2px solid #22c55e}
+.feedback.incorrect-fb{background:linear-gradient(135deg,#fee2e2,#fecaca);border:2px solid #ef4444}
+.feedback h4{font-size:1.05rem;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.feedback.correct-fb h4{color:#166534}
+.feedback.incorrect-fb h4{color:#991b1b}
+.feedback p{color:var(--text);font-size:0.93rem;line-height:1.6;margin-bottom:10px}
+.insight-box{background:rgba(255,255,255,0.75);border-left:4px solid var(--primary-light);padding:13px;border-radius:0 8px 8px 0;margin-top:12px}
+.insight-box h5{color:var(--primary);font-size:0.88rem;margin-bottom:6px}
+.insight-box p{font-size:0.88rem;color:var(--text);margin-bottom:0}
+.proto-ref{background:rgba(255,255,255,0.8);padding:10px 13px;border-radius:7px;margin-top:12px;font-size:0.85rem;color:var(--primary)}
+.proto-link{color:var(--primary-dark);text-decoration:underline;cursor:pointer;font-weight:700}
+.nav-row{display:flex;justify-content:space-between;margin-top:20px;gap:10px}
+.btn{padding:12px 26px;border:none;border-radius:9px;font-size:0.95rem;font-weight:700;cursor:pointer;transition:all 0.2s}
+.btn-primary{background:linear-gradient(135deg,var(--primary-light),var(--primary));color:#fff}
+.btn-primary:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 4px 14px rgba(153,27,27,0.35)}
+.btn-secondary{background:var(--border);color:var(--text)}
+.btn:disabled{opacity:0.45;cursor:not-allowed;transform:none}
+.results{background:var(--card);border-radius:16px;padding:36px;text-align:center;box-shadow:var(--shadow-lg);display:none}
+.results.active{display:block;animation:fadeUp 0.4s ease}
+.results-score{font-size:4.5rem;font-weight:800;color:var(--primary);line-height:1}
+.results-label{font-size:1.3rem;color:var(--text-secondary);margin:8px 0 24px}
+.results-counts{display:flex;justify-content:center;gap:40px;margin-bottom:24px}
+.rc-item .num{font-size:2.2rem;font-weight:800}
+.rc-item .lbl{color:var(--text-secondary);font-size:0.85rem}
+.rc-correct .num{color:#22c55e}
+.rc-incorrect .num{color:#ef4444}
+.perf-msg{padding:18px;border-radius:12px;margin-bottom:22px;font-size:0.93rem;line-height:1.6}
+.perf-excellent{background:#dcfce7;color:#166534}
+.perf-good{background:#dbeafe;color:#1e40af}
+.perf-review{background:var(--warning-bg);color:#92400e}
+.sum-table{width:100%;border-collapse:collapse;font-size:0.8rem;margin:14px 0;text-align:left}
+.sum-table th{background:var(--primary);color:#fff;padding:8px 10px}
+.sum-table td{padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top}
+.sum-table tr:nth-child(even) td{background:#fff1f2}
+.kp-list{background:#fff1f2;border-radius:10px;padding:16px;margin-top:14px;text-align:left}
+.kp-list h4{color:var(--primary);margin-bottom:10px;font-size:0.92rem}
+.kp-list li{font-size:0.85rem;color:var(--text);line-height:1.6;margin-left:18px;margin-bottom:4px}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:998}
+.overlay.show{display:block}
+.popup{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border:3px solid var(--primary-light);border-radius:14px;padding:22px;width:90%;max-width:540px;max-height:80vh;overflow-y:auto;z-index:999;box-shadow:0 20px 60px rgba(0,0,0,0.25)}
+.popup.show{display:block;animation:popIn 0.25s ease}
+@keyframes popIn{from{opacity:0;transform:translate(-50%,-55%)}to{opacity:1;transform:translate(-50%,-50%)}}
+.popup-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:10px;border-bottom:2px solid #fecaca}
+.popup-head h3{color:var(--primary-dark);font-size:1rem}
+.popup-close{background:var(--primary-light);color:#fff;border:none;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:1.1rem;line-height:1}
+.popup-body{background:#fee2e2;padding:14px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.8rem;color:var(--primary-dark);line-height:1.65;white-space:pre-wrap}
+@media(max-width:600px){
+  .header h1{font-size:1.6rem}.q-card{padding:18px}.nav-row{flex-direction:column}.btn{width:100%}.results-counts{gap:24px}.ref-tabs{gap:4px}.ref-tab{padding:6px 10px;font-size:0.75rem}
+}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+  <h1>&#9889; Succinylcholine</h1>
+  <p class="subtitle">LFN Drug Formulary Section 12.78 &middot; Clinical Application Quiz</p>
+  <div class="drug-class-badge">Depolarizing Neuromuscular Blocker Agent</div>
+  <div class="badge-row">
+    <span class="badge badge-rsi">Paralysis for RSI</span>
+    <span class="badge badge-dep">Depolarizing</span>
+    <span class="badge badge-fast">Onset 30&ndash;60 sec</span>
+    <span class="badge badge-short">Duration 8 min</span>
+    <span class="badge badge-fasc">Fasciculations</span>
+  </div>
+</div>
+
+<div class="mode-tabs">
+  <button class="mode-tab active" onclick="switchMode('ref')">&#128203; Quick Reference</button>
+  <button class="mode-tab" onclick="switchMode('quiz')">&#127919; Quiz (10 Questions)</button>
+</div>
+
+<div class="ref-panel active" id="refPanel">
+  <div class="ref-tabs">
+    <button class="ref-tab active" onclick="switchRef(event,'dosing')">Dosing / Indications</button>
+    <button class="ref-tab" onclick="switchRef(event,'pharma')">Pharmacology</button>
+    <button class="ref-tab" onclick="switchRef(event,'considerations')">Considerations</button>
+    <button class="ref-tab" onclick="switchRef(event,'warnings')">Warnings</button>
+  </div>
+  <div class="ref-content">
+    <div class="ref-section active" id="ref-dosing">
+      <h3>Dosing &amp; Indications</h3>
+      <table class="dose-table">
+        <tr><th>Indication</th><th>Adult Dose</th><th>Pediatric Dose</th></tr>
+        <tr>
+          <td><strong>Paralysis for RSI</strong></td>
+          <td><strong>1&ndash;2 mg/kg IV</strong><br>&bull; Max <strong>200 mg</strong><br>&bull; <strong>Do not repeat dose</strong></td>
+          <td><strong>2 mg/kg IV</strong> (if &lt;10 years)<br>&bull; Max <strong>200 mg</strong><br>&bull; <strong>Do not repeat dose</strong></td>
+        </tr>
+      </table>
+      <div class="warn-card">
+        <h4>Do Not Repeat Dose</h4>
+        <p>LFN 12.78 explicitly states <strong>"Do not repeat dose"</strong> for both adult and pediatric. If ongoing paralysis is needed after the 8-minute duration, switch to <strong>rocuronium</strong> (0.5 mg/kg maintenance per LFN 12.74).</p>
+      </div>
+      <div class="note-card">
+        <h4>Pediatric Dose is a Flat 2 mg/kg &mdash; Not a Range</h4>
+        <p>For patients &lt;10 years old, the protocol specifies <strong>2 mg/kg IV</strong> as a fixed dose. The adult dose range (1&ndash;2 mg/kg) does not apply to this age group.</p>
+      </div>
+    </div>
+    <div class="ref-section" id="ref-pharma">
+      <h3>Pharmacology</h3>
+      <div class="info-grid">
+        <div class="info-card"><div class="lbl">Mechanism of Action</div><div class="val">Depolarizing NMB agent. Acts similar to ACh, produces depolarization of the motor endplate at the myoneural junction, causing sustained flaccid skeletal muscle paralysis via state of accommodation in adjacent excitable muscle membranes</div></div>
+        <div class="info-card"><div class="lbl">Pharmacologic Category</div><div class="val">Depolarizing neuromuscular blocker agent</div></div>
+        <div class="info-card"><div class="lbl">Onset / Peak / Duration</div><div class="val">30&ndash;60 seconds / 3 min / 8 min</div></div>
+        <div class="info-card"><div class="lbl">Trade Names</div><div class="val">Anectine; Quelicin</div></div>
+        <div class="info-card"><div class="lbl">Adverse Reactions</div><div class="val">Muscular fasciculations</div></div>
+        <div class="info-card"><div class="lbl">Warnings</div><div class="val">May cause hyperkalemia and/or malignant hyperthermia</div></div>
+      </div>
+      <div class="ok-card">
+        <h4>Pregnancy</h4>
+        <p>Succinylcholine crosses the placenta. An increased risk of major congenital anomalies has not been observed.</p>
+      </div>
+    </div>
+    <div class="ref-section" id="ref-considerations">
+      <h3>Special Considerations</h3>
+      <div class="sc-card">
+        <h4>SC 1 &mdash; Drug of Choice for RSI Unless Contraindicated</h4>
+        <p>Succinylcholine is the NMB of choice unless contraindications are present:</p>
+        <ul>
+          <li>Pediatric patient &lt;10 yo (rare risk of acute rhabdomyolysis and hyperkalemia)</li>
+          <li>Hyperkalemia</li>
+          <li>Renal failure or dialysis patient</li>
+          <li>Rhabdomyolysis</li>
+          <li>Crush injury (h/o crush injury &gt;24 hours old; scene call &mdash; persistent crush &gt;1 hr), severe hypothermia</li>
+          <li>Muscular dystrophy, myopathy</li>
+          <li>Previous recent history of burns</li>
+        </ul>
+      </div>
+      <div class="sc-card">
+        <h4>SC 2 &mdash; Rocuronium is Paralytic of Choice in Pedi &lt;10 yo</h4>
+        <p>Rocuronium is the paralytic agent of choice in pediatric patients &lt;10 yo &mdash; except for emergency intubation or instances where immediate securing of the airway is necessary (e.g., laryngospasm).<br><br>
+        If succinylcholine is utilized in patients &lt;10 years old: dose is <strong>2 mg/kg IV</strong>.</p>
+      </div>
+      <div class="sc-card">
+        <h4>SC 3 &mdash; Antidote for Malignant Hyperthermia</h4>
+        <p>Antidote for malignant hyperthermia is <strong>dantrolene</strong>.</p>
+      </div>
+    </div>
+    <div class="ref-section" id="ref-warnings">
+      <h3>Warnings, Contraindications &amp; Adverse Reactions</h3>
+      <div class="ci-card">
+        <h4>Contraindications</h4>
+        <ul>
+          <li>Hypersensitivity</li>
+          <li>History of malignant hyperthermia</li>
+          <li>Hyperkalemia</li>
+          <li>Subacute burns</li>
+          <li>Multiple sclerosis</li>
+          <li>ALS (amyotrophic lateral sclerosis)</li>
+          <li>Crush injury</li>
+          <li>Muscular dystrophy</li>
+          <li>Subacute spinal cord injury (less than 6 months)</li>
+          <li>Patient age &lt;10 years, unless emergent airway needed</li>
+        </ul>
+      </div>
+      <div class="warn-card">
+        <h4>Warnings / Precautions</h4>
+        <p>May cause <strong>hyperkalemia</strong> and/or <strong>malignant hyperthermia</strong>.</p>
+      </div>
+      <div class="warn-card">
+        <h4>Adverse Reactions</h4>
+        <p><strong>Muscular fasciculations</strong> &mdash; expected depolarizing response</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="quiz-panel" id="quizPanel">
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="pFill" style="width:10%"></div></div>
+    <div class="progress-text" id="pText">Question 1 of 10</div>
+  </div>
+  <div id="qContainer"></div>
+  <div class="results" id="resultsCard">
+    <h2 style="color:var(--primary);margin-bottom:8px">Quiz Complete!</h2>
+    <div class="results-score" id="rPct">&mdash;</div>
+    <div class="results-label">Final Score</div>
+    <div class="results-counts">
+      <div class="rc-item rc-correct"><div class="num" id="rCorrect">0</div><div class="lbl">Correct</div></div>
+      <div class="rc-item rc-incorrect"><div class="num" id="rIncorrect">0</div><div class="lbl">Incorrect</div></div>
+    </div>
+    <div class="perf-msg" id="rMsg"></div>
+    <table class="sum-table">
+      <tr><th>Parameter</th><th>LFN 12.78 Value</th></tr>
+      <tr><td>Indication</td><td>Paralysis for RSI (single indication)</td></tr>
+      <tr><td>Adult Dose</td><td>1&ndash;2 mg/kg IV &middot; Max 200 mg &middot; Do not repeat dose</td></tr>
+      <tr><td>Pediatric Dose (&lt;10 yr)</td><td>2 mg/kg IV flat &middot; Max 200 mg &middot; Do not repeat dose</td></tr>
+      <tr><td>Mechanism</td><td>Depolarizing NMB &mdash; acts like ACh, depolarizes motor endplate at myoneural junction &rarr; sustained flaccid paralysis via accommodation in adjacent excitable membranes</td></tr>
+      <tr><td>Category</td><td>Depolarizing neuromuscular blocker agent</td></tr>
+      <tr><td>Trade Names</td><td>Anectine; Quelicin</td></tr>
+      <tr><td>Onset / Peak / Duration</td><td>30&ndash;60 sec / 3 min / 8 min</td></tr>
+      <tr><td>Adverse Reactions</td><td>Muscular fasciculations</td></tr>
+      <tr><td>Warnings</td><td>May cause hyperkalemia and/or malignant hyperthermia</td></tr>
+      <tr><td>Contraindications</td><td>Hypersensitivity; MH history; hyperkalemia; subacute burns; MS; ALS; crush injury; muscular dystrophy; subacute SCI &lt;6 months; age &lt;10 unless emergent</td></tr>
+      <tr><td>Pregnancy</td><td>Crosses placenta. No increased risk of major congenital anomalies observed.</td></tr>
+      <tr><td>MH Antidote (SC 3)</td><td>Dantrolene</td></tr>
+    </table>
+    <div class="kp-list">
+      <h4>Key Points &mdash; LFN 12.78</h4>
+      <ul>
+        <li>Single indication: <strong>Paralysis for RSI</strong></li>
+        <li>Adult: <strong>1&ndash;2 mg/kg IV</strong> &middot; Max <strong>200 mg</strong> &middot; <strong>Do not repeat dose</strong></li>
+        <li>Pedi (&lt;10 yr): <strong>2 mg/kg IV</strong> flat (not a range) &middot; Max 200 mg &middot; Do not repeat</li>
+        <li>Onset: <strong>30&ndash;60 sec</strong> / Peak: <strong>3 min</strong> / Duration: <strong>8 min</strong></li>
+        <li>Depolarizing mechanism &rarr; <strong>muscular fasciculations</strong> before paralysis (only listed adverse reaction)</li>
+        <li>Trade names: <strong>Anectine; Quelicin</strong></li>
+        <li><strong>Drug of choice for RSI unless contraindications present</strong> (SC 1)</li>
+        <li><strong>Rocuronium preferred</strong> in pedi &lt;10 yo; exception: emergent airway / laryngospasm (SC 2)</li>
+        <li>10 contraindications &mdash; including <strong>MH history, hyperkalemia, subacute burns, ALS, MS, muscular dystrophy, SCI &lt;6 months</strong></li>
+        <li>Warning: may cause <strong>hyperkalemia</strong> and/or <strong>malignant hyperthermia</strong></li>
+        <li>MH antidote: <strong>dantrolene</strong> (SC 3)</li>
+        <li>Pregnancy: crosses placenta; <strong>no increased risk of congenital anomalies</strong> observed</li>
+      </ul>
+    </div>
+    <button class="btn btn-primary" onclick="restartQuiz()" style="margin-top:22px">Restart Quiz</button>
+  </div>
+</div>
+
+<div class="overlay" id="overlay" onclick="closePopup()"></div>
+<div class="popup" id="popup">
+  <div class="popup-head">
+    <h3>LFN Protocol &mdash; Exact Wording</h3>
+    <button class="popup-close" onclick="closePopup()">&times;</button>
+  </div>
+  <div class="popup-body" id="popupBody"></div>
+</div>
+
+<script>
+function switchMode(m){
+  document.getElementById('refPanel').classList.toggle('active',m==='ref');
+  document.getElementById('quizPanel').classList.toggle('active',m==='quiz');
+  document.querySelectorAll('.mode-tab').forEach((t,i)=>t.classList.toggle('active',(m==='ref'&&i===0)||(m==='quiz'&&i===1)));
+}
+function switchRef(e,id){
+  document.querySelectorAll('.ref-section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('ref-'+id).classList.add('active');
+  document.querySelectorAll('.ref-tab').forEach(t=>t.classList.remove('active'));
+  e.target.classList.add('active');
+}
+const PROTO={
+  indication:`INDICATION (LFN 12.78):
+"• Paralysis for RSI"
+
+Pharmacologic Category:
+"Depolarizing neuromuscular blocker agent"
+
+Trade Names: "Anectine; Quelicin"`,
+
+  dosing:`DOSING (LFN 12.78):
+
+ADULT:
+"1-2 mg/kg IV
+ • Max 200 mg
+ • Do not repeat dose"
+
+PEDIATRIC (if < 10 years):
+"2 mg/kg IV
+ • Max 200 mg
+ • Do not repeat dose"
+
+Key distinctions:
+• Adult = RANGE (1–2 mg/kg)
+• Pediatric = FLAT 2 mg/kg only
+• Max 200 mg for BOTH
+• DO NOT REPEAT in either group`,
+
+  moa:`MECHANISM OF ACTION (LFN 12.78):
+
+"Depolarizing neuromuscular blocking agent,
+skeletal muscle relaxant, paralytic. Acts similar
+to acetylcholine, produces depolarization of the
+motor endplate at the myoneural junction,
+causing sustained flaccid skeletal muscle
+paralysis produced by state of accommodation
+that develops in adjacent excitable muscle
+membranes."
+
+Pharmacologic Category:
+"Depolarizing neuromuscular blocker agent"`,
+
+  ci:`CONTRAINDICATIONS (LFN 12.78):
+
+"Hypersensitivity; history of malignant
+hyperthermia; hyperkalemia; subacute burns;
+multiple sclerosis; ALS; crush injury; muscular
+dystrophy; subacute (less than 6 months)
+spinal cord injury. Patient age <10 years,
+unless emergent airway needed."
+
+10 listed contraindications:
+1.  Hypersensitivity
+2.  History of malignant hyperthermia
+3.  Hyperkalemia
+4.  Subacute burns
+5.  Multiple sclerosis
+6.  ALS
+7.  Crush injury
+8.  Muscular dystrophy
+9.  Subacute SCI (less than 6 months)
+10. Age < 10 years (unless emergent)`,
+
+  warnings:`WARNINGS / PRECAUTIONS (LFN 12.78):
+
+"May cause hyperkalemia and/or
+malignant hyperthermia."
+
+ADVERSE REACTIONS (LFN 12.78):
+
+"Muscular fasciculations"
+
+Note: Only muscular fasciculations are
+listed in the LFN 12.78 adverse reaction
+field. Hyperkalemia and MH are in the
+Warnings field.`,
+
+  pregnancy:`PREGNANCY CONSIDERATIONS (LFN 12.78):
+
+"Succinylcholine crosses the placenta.
+An increased risk of major congenital
+anomalies has not been observed."
+
+Note: This wording differs from rocuronium's
+pregnancy statement ("may be used in
+pregnancy if indicated"). Succinylcholine's
+statement specifically addresses the absence
+of teratogenic risk.`,
+
+  onset:`ONSET / PEAK / DURATION (LFN 12.78):
+
+"30-60 seconds / 3 min / 8 min"
+
+Onset:    30-60 seconds
+Peak:     3 minutes (common error: "1 min")
+Duration: 8 minutes
+
+Clinical implications:
+• Do not repeat dose
+• If ongoing paralysis needed: rocuronium`,
+
+  sc:`SPECIAL CONSIDERATIONS (LFN 12.78):
+
+SC 1: Succinylcholine is the NMB of choice
+unless there are contraindications:
+ a. Pediatric < 10 yo
+    (rare risk of rhabdomyolysis/hyperkalemia)
+ b. Hyperkalemia
+ c. Renal failure or dialysis patient
+ d. Rhabdomyolysis
+ e. Crush injury (h/o >24 hr; persistent
+    crush >1 hr), severe hypothermia
+ f. Muscular dystrophy, myopathy
+ g. Previous recent history of burns
+
+SC 2: Rocuronium is the paralytic of choice
+in pediatric patients < 10 yo.
+ a. Except for emergency intubation or
+    immediate securing of the airway
+    (e.g., laryngospasm)
+ b. If succinylcholine used in < 10 yo:
+    dose is 2 mg/kg IV
+
+SC 3: Antidote for malignant hyperthermia
+is dantrolene`
+};
+function showPopup(k){
+  document.getElementById('popupBody').textContent=PROTO[k]||'See LFN 12.78.';
+  document.getElementById('popup').classList.add('show');
+  document.getElementById('overlay').classList.add('show');
+}
+function closePopup(){
+  document.getElementById('popup').classList.remove('show');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+const Qs=[
+  {n:1,type:'recall',
+   scenario:'You are preparing for RSI and selecting your paralytic agent.',
+   boxes:[],
+   q:'What is the indication for succinylcholine per LFN 12.78?',
+   opts:[
+     {t:'Ongoing paralysis for mechanically ventilated patients',c:false},
+     {t:'Paralysis for RSI',c:true},
+     {t:'Procedural sedation',c:false},
+     {t:'Seizure control',c:false}
+   ],
+   fb:'Per LFN 12.78, succinylcholine has a single indication: <strong>Paralysis for RSI.</strong>',
+   ins:'<strong>Single indication — Paralysis for RSI.</strong> Per LFN SC 1, succinylcholine is the NMB of choice for RSI unless contraindications are present. Its depolarizing mechanism produces the fastest onset of any available paralytic (30–60 sec). For ongoing post-intubation paralysis, use a different agent (rocuronium).',
+   proto:'indication'},
+
+  {n:2,type:'calculation',
+   scenario:'An 80 kg adult needs emergency RSI. There are no contraindications to succinylcholine.',
+   boxes:[{cls:'s-rsi',t:'RSI NEEDED | 80 kg adult | No contraindications | Succinylcholine dose and max?'}],
+   q:'What is the adult dose range and maximum per LFN 12.78?',
+   opts:[
+     {t:'1–2 mg/kg IV · Max 150 mg · May repeat once',c:false},
+     {t:'1.5 mg/kg IV only · Max 100 mg',c:false},
+     {t:'1–2 mg/kg IV · Max 200 mg · Do not repeat dose',c:true},
+     {t:'2 mg/kg IV flat · Max 200 mg',c:false}
+   ],
+   fb:'Per LFN 12.78 adult dosing: <strong>1–2 mg/kg IV · Max 200 mg · Do not repeat dose.</strong> For this 80 kg patient: 80–160 mg.',
+   ins:'<strong>Max is 200 mg (not 150) — and do not repeat.</strong> A common error is 150 mg. LFN 12.78 specifies 200 mg as the ceiling for both adults and pediatric patients. The explicit "do not repeat dose" instruction means if ongoing paralysis is needed after 8 minutes, you switch to rocuronium.',
+   proto:'dosing'},
+
+  {n:3,type:'calculation',
+   scenario:'A 15 kg child (7 years old) has acute laryngospasm after a procedure. The team cannot ventilate. Rocuronium is not available.',
+   boxes:[{cls:'s-pedi',t:'7-YEAR-OLD | 15 kg | Laryngospasm | Cannot ventilate | Succinylcholine dose?'}],
+   q:'What is the pediatric dose per LFN 12.78, and what would you give this 15 kg patient?',
+   opts:[
+     {t:'1–2 mg/kg IV — 15–30 mg (same weight-based range as adult)',c:false},
+     {t:'2 mg/kg IV — 30 mg for this patient · Max 200 mg · Do not repeat',c:true},
+     {t:'0.5 mg/kg IV — 7.5 mg',c:false},
+     {t:'30 mg fixed dose regardless of weight',c:false}
+   ],
+   fb:'Per LFN 12.78 pediatric dosing: <strong>2 mg/kg IV</strong> (flat, not a range) · Max 200 mg · Do not repeat. For this 15 kg child: 15 kg × 2 mg/kg = <strong>30 mg.</strong>',
+   ins:'<strong>Pedi dose is a flat 2 mg/kg — the adult 1–2 mg/kg range does not apply.</strong> Laryngospasm is one of the two exceptions in LFN SC 2 where succinylcholine may be used in patients &lt;10 yo (the other is emergent airway). In routine RSI, rocuronium is preferred for pedi &lt;10 yo per LFN SC 2.',
+   proto:'dosing'},
+
+  {n:4,type:'recall',
+   scenario:'A student asks why succinylcholine causes brief visible muscle twitching before the patient becomes paralyzed.',
+   boxes:[],
+   q:'What is the mechanism of action of succinylcholine per LFN 12.78?',
+   opts:[
+     {t:'Competitively blocks ACh receptors at the motor endplate, preventing depolarization',c:false},
+     {t:'Acts similar to ACh, produces depolarization of the motor endplate at the myoneural junction, causing sustained flaccid paralysis via state of accommodation in adjacent excitable muscle membranes',c:true},
+     {t:'Inhibits acetylcholinesterase, increasing ACh availability at the NMJ',c:false},
+     {t:'Directly inhibits voltage-gated sodium channels in skeletal muscle',c:false}
+   ],
+   fb:'Per LFN 12.78: <strong>"Depolarizing neuromuscular blocking agent...acts similar to acetylcholine, produces depolarization of the motor endplate at the myoneural junction, causing sustained flaccid skeletal muscle paralysis produced by state of accommodation that develops in adjacent excitable muscle membranes."</strong>',
+   ins:'<strong>Depolarizing = activates receptors first, then blocks further transmission.</strong> Unlike rocuronium (non-depolarizing — blocks without activating), succinylcholine mimics ACh and causes initial depolarization, producing the characteristic fasciculations. Sustained depolarization then creates a "state of accommodation" — adjacent membranes cannot repolarize, resulting in flaccid paralysis. Only adverse reaction listed in LFN 12.78: muscular fasciculations.',
+   proto:'moa'},
+
+  {n:5,type:'recall',
+   scenario:'After giving succinylcholine, you need to know when to attempt intubation and when to expect return of spontaneous breathing.',
+   boxes:[],
+   q:'What are the onset, peak, and duration of succinylcholine per LFN 12.78?',
+   opts:[
+     {t:'Onset 30–60 sec / Peak 1 min / Duration 8 min',c:false},
+     {t:'Onset 1 min / Peak 3 min / Duration 30 min',c:false},
+     {t:'Onset 30–60 sec / Peak 3 min / Duration 8 min',c:true},
+     {t:'Onset immediate / Peak 30 sec / Duration 5 min',c:false}
+   ],
+   fb:'Per LFN 12.78 Onset/Peak/Duration: <strong>30–60 seconds / 3 min / 8 min.</strong>',
+   ins:'<strong>Peak is 3 minutes — not 1 minute.</strong> This is among the most common errors on succinylcholine questions. Fasciculations begin at 10–20 seconds; intubation conditions develop by 60 seconds; maximal paralysis is at 3 minutes. If intubation cannot be completed, spontaneous breathing returns around 8 minutes.',
+   proto:'onset'},
+
+  {n:6,type:'critical',
+   scenario:'A patient with known ALS (diagnosed 2 years ago) requires RSI for respiratory failure. The team is preparing succinylcholine.',
+   boxes:[{cls:'s-hk',t:'RSI NEEDED | Known ALS | Is succinylcholine contraindicated?'}],
+   q:'Which of the following is NOT listed as a contraindication to succinylcholine per LFN 12.78?',
+   opts:[
+     {t:'Hyperkalemia',c:false},
+     {t:'Multiple sclerosis',c:false},
+     {t:'Penetrating eye injury',c:true},
+     {t:'Subacute spinal cord injury (less than 6 months)',c:false}
+   ],
+   fb:'Per LFN 12.78, the 10 contraindications are: hypersensitivity, MH history, hyperkalemia, subacute burns, MS, ALS, crush injury, muscular dystrophy, SCI &lt;6 months, and age &lt;10 unless emergent. <strong>Penetrating eye injury is NOT listed in LFN 12.78.</strong>',
+   ins:'<strong>Know the LFN-specific CI list — 10 categories.</strong> LFN 12.78 differs from some general references: penetrating eye injury appears in pharmacology textbooks but is absent from the LFN contraindication field. What IS listed that surprises many clinicians: MS, ALS, and hyperkalemia as formal contraindications. For this ALS patient: ALS is a contraindication — use rocuronium.',
+   proto:'ci'},
+
+  {n:7,type:'critical',
+   scenario:'A patient with burns covering 30% BSA sustained 4 days ago develops respiratory failure requiring RSI. A team member prepares succinylcholine.',
+   boxes:[{cls:'s-burn',t:'BURNS — 4 DAYS OLD | Respiratory failure | RSI needed | Succinylcholine safe?'}],
+   q:'What does LFN 12.78 specify regarding burns, and what does SC 1 add?',
+   opts:[
+     {t:'Safe in all burn patients regardless of timing',c:false},
+     {t:'Contraindicated: "subacute burns" in CI field; SC 1 lists "previous recent history of burns" as an avoidance criterion',c:true},
+     {t:'Only contraindicated in the first 24 hours post-burn',c:false},
+     {t:'Contraindicated only if burns are greater than 50% BSA',c:false}
+   ],
+   fb:'Per LFN 12.78 Contraindications: <strong>"subacute burns."</strong> Per LFN SC 1g: <strong>"Previous recent history of burns"</strong> is listed as a reason to avoid succinylcholine.',
+   ins:'<strong>Subacute burns = formal contraindication, not just a caution.</strong> After burn injury, extrajunctional ACh receptor upregulation occurs throughout muscle tissue. Succinylcholine activates these proliferated receptors, causing massive K+ efflux and life-threatening hyperkalemia. LFN SC 1e also lists crush injury older than 24 hours and severe hypothermia as avoidance criteria. For this 4-day burn patient: use rocuronium 1 mg/kg IV.',
+   proto:'ci'},
+
+  {n:8,type:'critical',
+   scenario:'A patient with a family history of malignant hyperthermia needs emergency RSI. As the team prepares, you recognize the contraindication.',
+   boxes:[{cls:'s-mh',t:'MALIGNANT HYPERTHERMIA | Family history | Emergency RSI | Succinylcholine?'}],
+   q:'What does LFN 12.78 state about malignant hyperthermia, and what is the antidote per Special Considerations?',
+   opts:[
+     {t:'MH is a warning (caution) only, not a contraindication; antidote is neostigmine',c:false},
+     {t:'History of MH is a contraindication; warning states may cause MH; antidote is dantrolene (SC 3)',c:true},
+     {t:'Only relevant if personal MH history — family history is not listed',c:false},
+     {t:'MH requires dose reduction to 0.5 mg/kg',c:false}
+   ],
+   fb:'Per LFN 12.78 Contraindications: <strong>"history of malignant hyperthermia."</strong> Warnings: <strong>"May cause hyperkalemia and/or malignant hyperthermia."</strong> Per LFN SC 3: <strong>"Antidote for malignant hyperthermia is dantrolene."</strong>',
+   ins:'<strong>Three MH entries in LFN 12.78: CI, warning, and antidote.</strong> MH history is an absolute contraindication regardless of whether it is personal or family history — LFN 12.78 simply states "history of malignant hyperthermia." The warning field notes succinylcholine can trigger MH. SC 3 names dantrolene as the antidote. For this patient: use rocuronium for RSI.',
+   proto:'sc'},
+
+  {n:9,type:'clinical',
+   scenario:'After a successful RSI with succinylcholine, 8 minutes have elapsed. The patient is fighting the ventilator. The team considers redosing succinylcholine for transport.',
+   boxes:[{cls:'s-apnea',t:'8 MIN POST-RSI | Patient dyssynchronous | Team considers repeat succinylcholine'}],
+   q:'Can succinylcholine be repeated per LFN 12.78, and what should be used instead?',
+   opts:[
+     {t:'Yes, may repeat succinylcholine 1–2 mg/kg IV once more',c:false},
+     {t:'No — LFN 12.78 explicitly states "Do not repeat dose"; use rocuronium for ongoing paralysis',c:true},
+     {t:'Yes, may repeat at half the original dose',c:false},
+     {t:'Yes, may repeat after a 10-minute waiting period',c:false}
+   ],
+   fb:'Per LFN 12.78: <strong>"Do not repeat dose"</strong> is explicitly stated. For ongoing paralysis, transition to <strong>rocuronium</strong> (maintenance dose 0.5 mg/kg IV per LFN 12.74).',
+   ins:'<strong>"Do not repeat dose" is an explicit LFN protocol instruction.</strong> Repeating succinylcholine can induce phase II block (qualitatively different prolonged paralysis) and increases bradycardia risk. The correct action is rocuronium for continued paralysis. Also confirm post-intubation sedation and analgesia are in place — a paralyzed patient is conscious and aware without adequate sedation.',
+   proto:'dosing'},
+
+  {n:10,type:'clinical',
+   scenario:'A 34-week pregnant patient in a high-speed MVC has a GCS of 6 and requires RSI. No contraindications are identified.',
+   boxes:[{cls:'s-preg',t:'PREGNANCY | 34 weeks | GCS 6 | MVC | RSI with succinylcholine — safe?'}],
+   q:'What does LFN 12.78 state about succinylcholine use in pregnancy?',
+   opts:[
+     {t:'Contraindicated — teratogenic risk too high',c:false},
+     {t:'Succinylcholine crosses the placenta; an increased risk of major congenital anomalies has not been observed',c:true},
+     {t:'Safe only after 28 weeks gestation',c:false},
+     {t:'Requires 50% dose reduction in pregnancy',c:false}
+   ],
+   fb:'Per LFN 12.78 Pregnancy Considerations: <strong>"Succinylcholine crosses the placenta. An increased risk of major congenital anomalies has not been observed."</strong>',
+   ins:'<strong>The LFN pregnancy statement specifically addresses teratogenicity — reassurance, not restriction.</strong> This differs from rocuronium\'s pregnancy text ("may be used if indicated") but conveys the same clinical conclusion: use it when RSI is indicated. For an unconscious pregnant trauma patient, securing the airway is the priority. Use standard succinylcholine dosing (1–2 mg/kg IV, max 200 mg, do not repeat).',
+   proto:'pregnancy'}
+];
+
+let cur=1,score=0,answered=[];
+const total=Qs.length;
+
+function buildQuiz(){
+  const c=document.getElementById('qContainer');
+  Qs.forEach((q,i)=>{
+    const num=i+1;
+    const bHTML=q.boxes.map(b=>`<div class="s-box ${b.cls}">${b.t}</div>`).join('');
+    const oHTML=q.opts.map((o,j)=>`<div class="option" data-correct="${o.c}"><span class="opt-letter">${String.fromCharCode(65+j)}</span>${o.t}</div>`).join('');
+    c.innerHTML+=`<div class="q-card ${num===1?'active':''}" data-q="${num}">
+      <div class="q-header"><span class="q-num">Question ${num}</span><span class="q-type type-${q.type}">${q.type}</span></div>
+      <div class="scenario"><h3>Clinical Scenario</h3><p>${q.scenario}</p>${bHTML}</div>
+      <p class="q-text">${q.q}</p>
+      <div class="options">${oHTML}</div>
+      <div class="feedback">
+        <h4><span class="fb-icon"></span> <span class="fb-title"></span></h4>
+        <p>${q.fb}</p>
+        <div class="insight-box"><h5>Clinical Insight</h5><p>${q.ins}</p></div>
+        <div class="proto-ref">Protocol Reference: <span class="proto-link" onclick="showPopup('${q.proto}')">View exact LFN wording</span></div>
+      </div>
+      <div class="nav-row">
+        <button class="btn btn-secondary" ${num===1?'disabled':''} onclick="goQ(${num-1})">&#8592; Previous</button>
+        <button class="btn btn-primary" id="next${num}" disabled onclick="${num===total?'showResults()':'goQ('+(num+1)+')'}">
+          ${num===total?'View Results &#8594;':'Next Question &#8594;'}
+        </button>
+      </div>
+    </div>`;
+  });
+  document.querySelectorAll('.option').forEach(opt=>{
+    opt.addEventListener('click',function(){
+      if(this.classList.contains('disabled'))return;
+      const card=this.closest('.q-card');
+      const num=parseInt(card.dataset.q);
+      card.querySelectorAll('.option').forEach(o=>{o.classList.add('disabled');if(o.dataset.correct==='true')o.classList.add('correct');});
+      const ok=this.dataset.correct==='true';
+      if(!ok)this.classList.add('incorrect');
+      if(ok)score++;
+      answered[num]=ok;
+      const fb=card.querySelector('.feedback');
+      fb.classList.add('show',ok?'correct-fb':'incorrect-fb');
+      fb.querySelector('.fb-icon').textContent=ok?'&#10003;':'&#10007;';
+      fb.querySelector('.fb-title').textContent=ok?'Correct!':'Incorrect';
+      document.getElementById('next'+num).disabled=false;
+    });
+  });
+}
+
+function goQ(n){
+  document.querySelectorAll('.q-card').forEach(c=>c.classList.remove('active'));
+  document.querySelector('[data-q="'+n+'"]').classList.add('active');
+  cur=n;
+  document.getElementById('pFill').style.width=((n/total)*100)+'%';
+  document.getElementById('pText').textContent='Question '+n+' of '+total;
+}
+
+function showResults(){
+  document.getElementById('qContainer').style.display='none';
+  document.querySelector('.progress-wrap').style.display='none';
+  document.getElementById('resultsCard').classList.add('active');
+  const pct=Math.round((score/total)*100);
+  document.getElementById('rPct').textContent=pct+'%';
+  document.getElementById('rCorrect').textContent=score;
+  document.getElementById('rIncorrect').textContent=total-score;
+  const m=document.getElementById('rMsg');
+  if(pct>=90){m.className='perf-msg perf-excellent';m.innerHTML='<strong>Excellent!</strong> Outstanding command of LFN 12.78. You correctly identified: RSI sole indication; 1–2 mg/kg adult / 2 mg/kg pedi flat; max 200 mg; do not repeat; onset 30–60 sec / peak 3 min / duration 8 min; depolarizing mechanism with fasciculations; 10 CIs including ALS, MS, hyperkalemia, SCI &lt;6 months; dantrolene antidote for MH; pregnancy — no increased congenital anomaly risk.';}
+  else if(pct>=70){m.className='perf-msg perf-good';m.innerHTML='<strong>Good Performance!</strong> Review: RSI only; adult 1–2 mg/kg / pedi 2 mg/kg flat; MAX 200 mg; DO NOT REPEAT; peak = 3 min (not 1 min); only LFN adverse reaction = muscular fasciculations; 10 CIs — notably hyperkalemia, ALS, MS, SCI &lt;6 months, subacute burns; MH antidote = dantrolene (SC 3); pregnancy = crosses placenta but no increased congenital anomaly risk.';}
+  else{m.className='perf-msg perf-review';m.innerHTML='<strong>Keep Studying!</strong> Focus: RSI only; adult 1–2 mg/kg / pedi 2 mg/kg (flat); max 200 mg; DO NOT REPEAT; 30–60 sec onset / 3 min peak / 8 min duration; depolarizing causes fasciculations; 10 CIs — hyperkalemia, subacute burns, ALS, MS, muscular dystrophy, SCI &lt;6 months; dantrolene for MH; drug of choice for RSI unless CIs present; rocuronium for pedi &lt;10 yo.';}
+}
+
+function restartQuiz(){
+  score=0;cur=1;answered=[];
+  document.querySelectorAll('.option').forEach(o=>o.classList.remove('disabled','correct','incorrect'));
+  document.querySelectorAll('.feedback').forEach(f=>f.classList.remove('show','correct-fb','incorrect-fb'));
+  Qs.forEach((_,i)=>{const b=document.getElementById('next'+(i+1));if(b)b.disabled=true;});
+  document.getElementById('qContainer').style.display='block';
+  document.querySelector('.progress-wrap').style.display='block';
+  document.getElementById('resultsCard').classList.remove('active');
+  goQ(1);
+}
+
+buildQuiz();
+</script>
+</body>
+</html>

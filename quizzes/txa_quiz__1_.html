@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LFN Drug Quiz | Tranexamic Acid – TXA (Section 12.82)</title>
+    <style>
+        :root {
+            --primary: #991b1b;
+            --primary-light: #dc2626;
+            --accent: #ef4444;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --bg-light: #fef2f2;
+            --bg-card: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #fecaca 0%, #dc2626 50%, #991b1b 100%); min-height: 100vh; color: var(--text-primary); line-height: 1.6; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+
+        .header { background: linear-gradient(135deg, #7f1d1d 0%, #dc2626 100%); color: white; padding: 30px; border-radius: 16px; margin-bottom: 25px; text-align: center; box-shadow: var(--shadow-lg); }
+        .header h1 { font-size: 1.8rem; margin-bottom: 8px; }
+        .header .subtitle { opacity: 0.9; font-size: 1rem; }
+        .header .drug-class { display: inline-block; background: rgba(255,255,255,0.2); padding: 5px 15px; border-radius: 20px; margin-top: 10px; font-size: 0.85rem; }
+        .badge-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 12px; }
+        .indication-badge { padding: 5px 12px; border-radius: 15px; font-size: 0.75rem; font-weight: 600; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); }
+
+        /* ── Top-Level Mode Tabs ── */
+        .mode-tabs { display: flex; gap: 0; margin-bottom: 25px; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+        .mode-tab { flex: 1; padding: 16px 20px; background: white; border: none; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; color: var(--text-secondary); text-align: center; }
+        .mode-tab:first-child { border-radius: 12px 0 0 12px; }
+        .mode-tab:last-child { border-radius: 0 12px 12px 0; }
+        .mode-tab:hover { background: #fef2f2; color: var(--primary); }
+        .mode-tab.active { background: linear-gradient(135deg, #7f1d1d 0%, #dc2626 100%); color: white; }
+        .mode-panel { display: none; }
+        .mode-panel.active { display: block; }
+
+        /* ── Quick Reference (Four-Tab) ── */
+        .quick-reference { background: var(--bg-card); border-radius: 12px; margin-bottom: 25px; box-shadow: var(--shadow); overflow: hidden; }
+        .qr-header { background: linear-gradient(135deg, #7f1d1d 0%, #dc2626 100%); color: white; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; }
+        .qr-header h3 { font-size: 1rem; margin: 0; }
+        .qr-toggle { font-size: 1.2rem; transition: transform 0.3s ease; }
+        .qr-toggle.collapsed { transform: rotate(-90deg); }
+        .qr-body { padding: 0; max-height: 5000px; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s ease; }
+        .qr-body.collapsed { max-height: 0; padding: 0; }
+        .qr-body-inner { padding: 20px; }
+        .qr-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 2px solid var(--border); }
+        .qr-tab { padding: 8px 16px; border-radius: 8px; border: 2px solid var(--border); background: white; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; color: var(--text-secondary); white-space: nowrap; }
+        .qr-tab:hover { border-color: var(--primary-light); color: var(--primary); }
+        .qr-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .qr-panel { display: none; }
+        .qr-panel.active { display: block; }
+
+        .dose-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-bottom: 10px; }
+        .dose-table th { background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%); color: white; padding: 10px 12px; text-align: left; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .dose-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+        .dose-table tr:last-child td { border-bottom: none; }
+        .dose-table tr:nth-child(even) td { background: #fef2f2; }
+        .dose-table .indication-cell { font-weight: 600; color: var(--primary); min-width: 110px; }
+        .dose-table .dose-cell { font-family: 'Courier New', monospace; font-size: 0.82rem; line-height: 1.6; }
+        .dose-detail { color: var(--text-secondary); font-size: 0.78rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+
+        .ref-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .ref-item { background: var(--bg-light); padding: 12px; border-radius: 8px; }
+        .ref-label { font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; font-weight: 600; }
+        .ref-value { font-weight: 600; color: var(--text-primary); font-size: 0.88rem; }
+        .ref-item.warning { background: #fef3c7; border: 1px solid #fde047; }
+        .ref-item.warning .ref-label { color: #92400e; }
+        .ref-item.warning .ref-value { color: #78350f; font-size: 0.84rem; }
+        .ref-item.critical { background: #fee2e2; border: 2px solid #fecaca; }
+        .ref-item.critical .ref-label { color: #991b1b; }
+        .ref-item.critical .ref-value { color: #7f1d1d; }
+        .ref-item.info { background: #eff6ff; border: 1px solid #bfdbfe; }
+        .ref-item.info .ref-label { color: #1e40af; }
+        .ref-item.info .ref-value { color: #1e3a8a; }
+        .ref-item.success { background: #f0fdf4; border: 1px solid #bbf7d0; }
+        .ref-item.success .ref-label { color: #166534; }
+        .ref-item.success .ref-value { color: #14532d; }
+        .ref-item.red { background: #fef2f2; border: 1px solid #fecaca; }
+        .ref-item.red .ref-label { color: #991b1b; }
+        .ref-item.red .ref-value { color: #7f1d1d; }
+
+        .consideration-list { list-style: none; padding: 0; }
+        .consideration-list li { padding: 10px 12px 10px 36px; position: relative; border-bottom: 1px solid #f1f5f9; font-size: 0.88rem; line-height: 1.6; }
+        .consideration-list li:last-child { border-bottom: none; }
+        .consideration-list li::before { content: attr(data-num); position: absolute; left: 6px; top: 10px; width: 22px; height: 22px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; }
+
+        .warning-box { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border: 2px solid #f59e0b; border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+        .warning-box .warn-title { font-weight: 700; color: #92400e; font-size: 0.85rem; margin-bottom: 8px; }
+        .warning-box p { color: #78350f; font-size: 0.85rem; line-height: 1.7; }
+        .danger-box { background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); border: 2px solid #ef4444; border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+        .danger-box .warn-title { font-weight: 700; color: #991b1b; font-size: 0.85rem; margin-bottom: 8px; }
+        .danger-box p { color: #7f1d1d; font-size: 0.85rem; line-height: 1.7; }
+        .info-box { background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 2px solid #3b82f6; border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+        .info-box .warn-title { font-weight: 700; color: #1e40af; font-size: 0.85rem; margin-bottom: 8px; }
+        .info-box p { color: #1e3a8a; font-size: 0.85rem; line-height: 1.7; }
+        .success-box { background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); border: 2px solid #22c55e; border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+        .success-box .warn-title { font-weight: 700; color: #166534; font-size: 0.85rem; margin-bottom: 8px; }
+        .success-box p { color: #14532d; font-size: 0.85rem; line-height: 1.7; }
+
+        .compare-strip { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+        .compare-card { padding: 12px 14px; border-radius: 10px; }
+        .compare-card.left { background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%); border: 2px solid #f87171; }
+        .compare-card.right { background: linear-gradient(135deg, #eff6ff 0%, #bfdbfe 100%); border: 2px solid #60a5fa; }
+        .compare-label { font-size: 0.7rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .compare-card.left .compare-label { color: #991b1b; }
+        .compare-card.right .compare-label { color: #1e40af; }
+        .compare-dose { font-size: 1rem; font-weight: 800; color: var(--text-primary); margin-bottom: 4px; }
+        .compare-detail { font-size: 0.78rem; line-height: 1.5; }
+        .compare-card.left .compare-detail { color: #7f1d1d; }
+        .compare-card.right .compare-detail { color: #1e3a8a; }
+
+        /* ── Quiz Styles ── */
+        .progress-section { background: var(--bg-card); border-radius: 12px; padding: 20px 25px; margin-bottom: 25px; box-shadow: var(--shadow); }
+        .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px; }
+        .progress-title { font-weight: 600; color: var(--primary); }
+        .progress-stats { display: flex; gap: 20px; font-size: 0.9rem; color: var(--text-secondary); }
+        .progress-bar-container { height: 10px; background: var(--border); border-radius: 5px; overflow: hidden; }
+        .progress-bar { height: 100%; background: linear-gradient(90deg, #f87171 0%, #dc2626 100%); border-radius: 5px; transition: width 0.4s ease; }
+
+        .question-card { background: var(--bg-card); border-radius: 16px; box-shadow: var(--shadow-lg); overflow: hidden; margin-bottom: 25px; }
+        .question-header { background: linear-gradient(135deg, #7f1d1d 0%, #dc2626 100%); color: white; padding: 20px 25px; display: flex; justify-content: space-between; align-items: center; }
+        .question-number { font-size: 1.1rem; font-weight: 600; }
+        .question-type { padding: 5px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; }
+        .question-type.clinical { background: #22c55e; }
+        .question-type.critical { background: #7c3aed; }
+        .question-type.recall { background: #3b82f6; }
+        .question-type.calculation { background: #f59e0b; }
+        .question-body { padding: 30px; }
+
+        .scenario-box { background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #dc2626; padding: 20px; border-radius: 0 10px 10px 0; margin-bottom: 20px; }
+        .scenario-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--primary); font-weight: 700; margin-bottom: 10px; }
+        .scenario-text { font-size: 1rem; color: var(--text-primary); line-height: 1.7; }
+        .vital-signs { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 10px; margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border); }
+        .vital-item { text-align: center; padding: 8px; background: white; border-radius: 8px; }
+        .vital-label { font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; }
+        .vital-value { font-size: 0.95rem; font-weight: 700; color: var(--primary); }
+
+        .question-text { font-size: 1.15rem; font-weight: 500; color: var(--text-primary); margin-bottom: 25px; line-height: 1.7; }
+        .options-list { display: flex; flex-direction: column; gap: 12px; }
+        .option-btn { display: flex; align-items: flex-start; padding: 16px 20px; background: var(--bg-light); border: 2px solid var(--border); border-radius: 10px; cursor: pointer; transition: all 0.2s ease; text-align: left; }
+        .option-btn:hover:not(.disabled) { border-color: var(--primary-light); background: white; transform: translateX(5px); }
+        .option-btn.correct { border-color: var(--success); background: rgba(22, 163, 74, 0.1); }
+        .option-btn.incorrect { border-color: var(--danger); background: rgba(220, 38, 38, 0.1); }
+        .option-btn.disabled { cursor: default; }
+        .option-letter { width: 32px; height: 32px; min-width: 32px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; margin-right: 15px; font-size: 0.9rem; }
+        .option-btn.correct .option-letter { background: var(--success); }
+        .option-btn.incorrect .option-letter { background: var(--danger); }
+        .option-text { flex: 1; font-size: 1rem; line-height: 1.5; }
+
+        .rationale-box { margin-top: 25px; padding: 25px; border-radius: 12px; background: #f8fafc; display: none; }
+        .rationale-box.show { display: block; }
+        .mechanism-section { background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-radius: 12px; padding: 20px; margin-bottom: 15px; }
+        .mechanism-section h4 { color: #1e40af; margin-bottom: 12px; font-size: 1rem; }
+        .mechanism-section p { color: #1e3a8a; font-size: 0.95rem; line-height: 1.8; }
+        .clinical-pearl-box { background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); border-radius: 12px; padding: 20px; margin-bottom: 15px; }
+        .clinical-pearl-box h4 { color: #166534; margin-bottom: 12px; font-size: 1rem; }
+        .clinical-pearl-box p { color: #14532d; font-size: 0.95rem; line-height: 1.8; }
+        .protocol-box { background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%); border-radius: 12px; padding: 20px; }
+        .protocol-box h4 { color: #991b1b; margin-bottom: 12px; font-size: 1rem; }
+        .protocol-box p { color: #7f1d1d; font-size: 0.95rem; line-height: 1.8; font-family: 'Courier New', monospace; }
+
+        .nav-buttons { display: flex; justify-content: space-between; gap: 15px; padding: 0 30px 30px; }
+        .nav-btn { padding: 14px 28px; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+        .nav-btn.primary { background: var(--primary); color: white; }
+        .nav-btn.primary:hover { background: var(--primary-light); }
+        .nav-btn.secondary { background: var(--border); color: var(--text-secondary); }
+        .nav-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .results-card { background: var(--bg-card); border-radius: 16px; box-shadow: var(--shadow-lg); padding: 40px; text-align: center; display: none; }
+        .results-card.show { display: block; }
+        .results-icon { width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 2.5rem; }
+        .results-icon.excellent { background: rgba(22, 163, 74, 0.15); }
+        .results-icon.good { background: rgba(220, 38, 38, 0.15); }
+        .results-icon.needs-work { background: rgba(220, 38, 38, 0.15); }
+        .results-title { font-size: 1.8rem; font-weight: 700; color: var(--primary); }
+        .results-score { font-size: 3rem; font-weight: 800; margin: 20px 0; }
+        .results-score.excellent { color: var(--success); }
+        .results-score.good { color: var(--primary); }
+        .results-score.needs-work { color: var(--danger); }
+        .results-message { color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 30px; }
+        .results-breakdown { display: flex; justify-content: center; gap: 40px; margin-bottom: 30px; }
+        .breakdown-item { text-align: center; }
+        .breakdown-value { font-size: 1.5rem; font-weight: 700; }
+        .breakdown-label { font-size: 0.85rem; color: var(--text-secondary); }
+
+        .results-qr { background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-radius: 12px; padding: 25px; margin-top: 25px; text-align: left; }
+        .results-qr h3 { color: #7f1d1d; margin-bottom: 15px; text-align: center; font-size: 1.1rem; }
+        .results-dose-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.8rem; }
+        .results-dose-table th { background: #7f1d1d; color: white; padding: 8px 10px; text-align: left; }
+        .results-dose-table td { padding: 8px 10px; border-bottom: 1px solid #fecaca; }
+        .results-warning-list { background: #fee2e2; border: 2px solid #dc2626; border-radius: 10px; padding: 15px; margin-top: 15px; }
+        .results-warning-list h4 { color: #7f1d1d; margin-bottom: 10px; font-size: 0.9rem; }
+        .results-warning-list ul { color: #991b1b; margin-left: 20px; font-size: 0.82rem; }
+        .results-warning-list li { margin-bottom: 5px; }
+
+        .disclaimer { text-align: center; font-size: 0.72rem; color: var(--text-secondary); margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.6); border-radius: 8px; line-height: 1.5; }
+
+        @media (max-width: 600px) {
+            body { padding: 10px; }
+            .header { padding: 20px 15px; border-radius: 12px; }
+            .header h1 { font-size: 1.5rem; }
+            .mode-tab { padding: 12px 10px; font-size: 0.85rem; }
+            .qr-header { padding: 14px 16px; }
+            .qr-body-inner { padding: 15px; }
+            .qr-tabs { gap: 4px; }
+            .qr-tab { padding: 6px 10px; font-size: 0.72rem; }
+            .dose-table { font-size: 0.78rem; }
+            .dose-table th, .dose-table td { padding: 8px 6px; }
+            .ref-grid { grid-template-columns: 1fr; }
+            .compare-strip { grid-template-columns: 1fr; }
+            .question-body { padding: 20px; }
+            .nav-buttons { flex-direction: column; padding: 0 20px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🩸 Tranexamic Acid (TXA)</h1>
+            <p class="subtitle">LFN Protocol Section 12.82 | Clinical Application Quiz</p>
+            <span class="drug-class">Antifibrinolytic | Hemostatic Agent (Cyklokapron / Lysteda)</span>
+            <div class="badge-container">
+                <span class="indication-badge">🩸 Severe Trauma</span>
+                <span class="indication-badge">⏱️ ≤ 2 Hours from Injury</span>
+                <span class="indication-badge">🔬 Antifibrinolytic</span>
+            </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════ -->
+        <!-- TOP-LEVEL MODE TABS                        -->
+        <!-- ══════════════════════════════════════════ -->
+        <div class="mode-tabs">
+            <button class="mode-tab active" data-mode="reference" onclick="switchMode('reference')">📋 Quick Reference</button>
+            <button class="mode-tab" data-mode="quiz" onclick="switchMode('quiz')">📝 Quiz</button>
+        </div>
+
+        <!-- ══════════════════════════════════════════ -->
+        <!-- QUICK REFERENCE PANEL                      -->
+        <!-- ══════════════════════════════════════════ -->
+        <div class="mode-panel active" id="panel-reference">
+            <div class="quick-reference" id="quickRef">
+                <div class="qr-header" onclick="toggleQuickRef()">
+                    <h3>📋 Quick Reference — Key Doses for TXA 12.82</h3>
+                    <span class="qr-toggle" id="qrToggle">▼</span>
+                </div>
+                <div class="qr-body" id="qrBody">
+                    <div class="qr-body-inner">
+                        <div class="qr-tabs" id="qrTabs">
+                            <button class="qr-tab active" data-tab="dosing">Dosing & Indications</button>
+                            <button class="qr-tab" data-tab="pharmacology">Pharmacology</button>
+                            <button class="qr-tab" data-tab="considerations">Considerations</button>
+                            <button class="qr-tab" data-tab="warnings">Warnings & Precautions</button>
+                        </div>
+
+                        <!-- ── TAB 1: DOSING & INDICATIONS ── -->
+                        <div class="qr-panel active" id="panel-dosing">
+                            <div style="overflow-x: auto;">
+                                <table class="dose-table">
+                                    <thead><tr><th>Indication</th><th>Adult Dose</th><th>Pediatric Dose</th></tr></thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="indication-cell">Severe Trauma<br><span class="dose-detail">Likely to require massive transfusions<br>Time of injury ≤ 2 hours</span></td>
+                                            <td class="dose-cell">2 grams<br><span class="dose-detail">Mix with 100 mL NS<br>Infuse over 10 minutes<br>Max 2 grams</span></td>
+                                            <td class="dose-cell">15 mg/kg<br><span class="dose-detail">Mix with 100 mL NS<br>Infuse over 10 minutes<br>Max 1 gram</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Key dose strip -->
+                            <div class="ref-grid" style="margin-top: 18px;">
+                                <div class="ref-item red">
+                                    <div class="ref-label">Adult Dose</div>
+                                    <div class="ref-value">2 grams IV</div>
+                                </div>
+                                <div class="ref-item info">
+                                    <div class="ref-label">Pediatric Dose</div>
+                                    <div class="ref-value">15 mg/kg (Max 1 g)</div>
+                                </div>
+                                <div class="ref-item warning">
+                                    <div class="ref-label">Recommended Mixture</div>
+                                    <div class="ref-value">In 100 mL NS</div>
+                                </div>
+                                <div class="ref-item critical">
+                                    <div class="ref-label">Infusion Time</div>
+                                    <div class="ref-value">Over 10 minutes</div>
+                                </div>
+                            </div>
+
+                            <!-- Adult vs Pediatric Comparison -->
+                            <div style="margin-top: 18px;">
+                                <div class="ref-label" style="margin-bottom: 8px; font-size: 0.75rem; font-weight: 700;">⚖️ ADULT vs PEDIATRIC DOSING COMPARISON</div>
+                                <div class="compare-strip">
+                                    <div class="compare-card left">
+                                        <div class="compare-label">Adult (age &gt;10 or &gt;40 kg)</div>
+                                        <div class="compare-dose">2 grams</div>
+                                        <div class="compare-detail">Mix with 100 mL NS<br>Infuse over 10 minutes<br>Max dose: 2 grams<br>Single bolus — no infusion per LFN</div>
+                                    </div>
+                                    <div class="compare-card right">
+                                        <div class="compare-label">Pediatric (age ≤10 or ≤40 kg)</div>
+                                        <div class="compare-dose">15 mg/kg</div>
+                                        <div class="compare-detail">Mix with 100 mL NS<br>Infuse over 10 minutes<br>Max dose: 1 gram<br>Not approved for neonates</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Time Window -->
+                            <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-radius: 10px; padding: 16px; margin-top: 14px;">
+                                <div class="ref-label" style="color: #991b1b; margin-bottom: 8px;">⏱️ Critical Time Window</div>
+                                <p style="font-size: 0.85rem; color: #7f1d1d; line-height: 1.8;">
+                                    <strong>Injury must have occurred ≤ 2 hours prior to TXA administration.</strong><br>
+                                    Administration outside that timeframe requires <strong>medical consult</strong> or orders from the <strong>sending provider</strong>.<br>
+                                    Blood administration and treatment of other life threats <strong>take priority</strong> over TXA.
+                                </p>
+                            </div>
+
+                            <div class="ref-grid" style="margin-top: 14px;">
+                                <div class="ref-item critical">
+                                    <div class="ref-label">⚠️ Priority Rule</div>
+                                    <div class="ref-value">Blood products & life threats take priority over TXA</div>
+                                </div>
+                                <div class="ref-item warning">
+                                    <div class="ref-label">⏱️ Time Limit</div>
+                                    <div class="ref-value">≤ 2 hours from injury</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ── TAB 2: PHARMACOLOGY ── -->
+                        <div class="qr-panel" id="panel-pharmacology">
+                            <div class="ref-grid" style="margin-bottom: 18px;">
+                                <div class="ref-item red">
+                                    <div class="ref-label">Pharmacologic Category</div>
+                                    <div class="ref-value">Antifibrinolytic, Hemostatic Agent</div>
+                                </div>
+                                <div class="ref-item info">
+                                    <div class="ref-label">Trade Names</div>
+                                    <div class="ref-value">Cyklokapron; Lysteda</div>
+                                </div>
+                                <div class="ref-item red">
+                                    <div class="ref-label">Onset</div>
+                                    <div class="ref-value">5–15 minutes</div>
+                                </div>
+                                <div class="ref-item warning">
+                                    <div class="ref-label">Duration</div>
+                                    <div class="ref-value">3 hours</div>
+                                </div>
+                                <div class="ref-item info">
+                                    <div class="ref-label">Peak</div>
+                                    <div class="ref-value">Not specified in LFN formulary</div>
+                                </div>
+                                <div class="ref-item red">
+                                    <div class="ref-label">Route / Mixture</div>
+                                    <div class="ref-value">IV Infusion in 100 mL NS</div>
+                                </div>
+                            </div>
+
+                            <!-- Onset / Peak / Duration -->
+                            <div class="info-box">
+                                <div class="warn-title">📊 Onset / Peak / Duration</div>
+                                <p><strong>Onset:</strong> 5–15 min &nbsp;|&nbsp; <strong>Peak:</strong> Not specified &nbsp;|&nbsp; <strong>Duration:</strong> 3 hours<br>The 3-hour duration supports LFN's single-dose strategy — no follow-up infusion needed. A single 2 g dose provides antifibrinolytic coverage through transport to the trauma center.</p>
+                            </div>
+
+                            <!-- Mechanism box -->
+                            <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-radius: 12px; padding: 20px; margin-bottom: 18px;">
+                                <h4 style="color: #1e40af; margin-bottom: 10px; font-size: 0.95rem;">🔬 Mechanism of Action</h4>
+                                <p style="color: #1e3a8a; font-size: 0.9rem; line-height: 1.8;">TXA is a synthetic amino acid that <strong>competitively inhibits plasminogen activation</strong>. It forms a reversible complex that <strong>displaces plasminogen from fibrin</strong>, resulting in <strong>inhibition of fibrinolysis</strong> — preventing breakdown of blood clots that have already formed.</p>
+                            </div>
+
+                            <!-- Fibrinolysis comparison -->
+                            <div style="margin-bottom: 18px;">
+                                <div class="ref-label" style="margin-bottom: 8px; font-size: 0.75rem; font-weight: 700;">🧬 HOW TXA WORKS — Fibrinolysis Inhibition</div>
+                                <div class="compare-strip">
+                                    <div class="compare-card left">
+                                        <div class="compare-label">Without TXA (Normal Fibrinolysis)</div>
+                                        <div class="compare-dose">Clot Breakdown</div>
+                                        <div class="compare-detail">Plasminogen → Plasmin<br>Plasmin breaks down fibrin<br>Clots dissolve (fibrinolysis)<br>→ Continued bleeding in trauma</div>
+                                    </div>
+                                    <div class="compare-card right">
+                                        <div class="compare-label">With TXA (Antifibrinolytic)</div>
+                                        <div class="compare-dose">Clot Preserved</div>
+                                        <div class="compare-detail">TXA blocks plasminogen activation<br>Displaces plasminogen from fibrin<br>Fibrinolysis inhibited<br>→ Existing clots stabilized</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Adverse reactions -->
+                            <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-radius: 12px; padding: 20px; margin-bottom: 18px;">
+                                <h4 style="color: #92400e; margin-bottom: 10px; font-size: 0.95rem;">⚠️ Adverse Reactions</h4>
+                                <p style="color: #78350f; font-size: 0.9rem; line-height: 1.8;">Nausea/vomiting; headache; visual disturbances</p>
+                            </div>
+
+                            <!-- Pregnancy -->
+                            <div style="background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%); border-radius: 12px; padding: 20px;">
+                                <h4 style="color: #9d174d; margin-bottom: 10px; font-size: 0.95rem;">🤰 Pregnancy Considerations</h4>
+                                <p style="color: #831843; font-size: 0.9rem; line-height: 1.8;">TXA crosses the placenta; concentrations within cord blood are similar to maternal serum. A significant reduction in risk of death due to <strong>postpartum hemorrhage (PPH)</strong> was observed when treatment was started within <strong>3 hours</strong> of vaginal birth or cesarean section.</p>
+                            </div>
+                        </div>
+
+                        <!-- ── TAB 3: CONSIDERATIONS ── -->
+                        <div class="qr-panel" id="panel-considerations">
+                            <ul class="consideration-list">
+                                <li data-num="1"><strong>Blood products & life threats take priority:</strong> Blood administration and the treatment of other life threats must take priority over TXA administration. TXA should be given <em>after</em> blood is initiated (when available) and after all other life threats have been addressed.</li>
+                                <li data-num="2"><strong>≤ 2-hour time window:</strong> The injury must have occurred ≤ 2 hours prior to administration. Outside that timeframe requires <strong>medical consult</strong> or orders from the <strong>sending provider</strong>.</li>
+                                <li data-num="3"><strong>Separate IV line from blood products:</strong> TXA may be given concurrently with blood products but must use a <strong>separate IV line</strong>. Do not administer in the same line as blood products (per 12.82 Warnings and 8.02 Pearl #6).</li>
+                                <li data-num="4"><strong>Other agencies may use different dosing:</strong> Hospitals and EMS agencies may use a different strategy (e.g., 1 g bolus + 1 g infusion over 8 hours). If that infusion was initiated prior to your arrival, <strong>continue it</strong>.</li>
+                                <li data-num="5"><strong>Inform receiving team:</strong> Advise the receiving physician and RN that a total of 2 grams was given. Also advise that no TXA infusion was initiated (total dose given via one-time bolus per LFN protocol).</li>
+                                <li data-num="6"><strong>Not approved for neonates:</strong> Per 8.02 Blood Product Administration, pediatric TXA (15 mg/kg, max 1 g) is <strong>not approved for neonates</strong>.</li>
+                            </ul>
+
+                            <!-- Administration workflow visual -->
+                            <div style="margin-top: 18px;">
+                                <div class="ref-label" style="margin-bottom: 8px; font-size: 0.75rem; font-weight: 700;">🔄 TXA ADMINISTRATION WORKFLOW — Trauma</div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+                                    <div style="background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); border: 2px solid #ef4444; border-radius: 10px; padding: 12px; text-align: center;">
+                                        <div style="font-size: 0.7rem; font-weight: 700; color: #991b1b; text-transform: uppercase; margin-bottom: 4px;">Step 1</div>
+                                        <div style="font-size: 0.85rem; font-weight: 700; color: #7f1d1d;">Address Life Threats</div>
+                                        <div style="font-size: 0.75rem; color: #991b1b; margin-top: 4px;">Airway, breathing, hemorrhage control</div>
+                                    </div>
+                                    <div style="background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%); border: 2px solid #f87171; border-radius: 10px; padding: 12px; text-align: center;">
+                                        <div style="font-size: 0.7rem; font-weight: 700; color: #991b1b; text-transform: uppercase; margin-bottom: 4px;">Step 2</div>
+                                        <div style="font-size: 0.85rem; font-weight: 700; color: #7f1d1d;">Blood Products</div>
+                                        <div style="font-size: 0.75rem; color: #991b1b; margin-top: 4px;">Administer blood if indicated</div>
+                                    </div>
+                                    <div style="background: linear-gradient(135deg, #eff6ff 0%, #bfdbfe 100%); border: 2px solid #3b82f6; border-radius: 10px; padding: 12px; text-align: center;">
+                                        <div style="font-size: 0.7rem; font-weight: 700; color: #1e40af; text-transform: uppercase; margin-bottom: 4px;">Step 3</div>
+                                        <div style="font-size: 0.85rem; font-weight: 700; color: #1e3a8a;">TXA via Separate Line</div>
+                                        <div style="font-size: 0.75rem; color: #1e40af; margin-top: 4px;">2 g in 100 mL NS over 10 min</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Clinical context -->
+                            <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-radius: 10px; padding: 16px; margin-top: 14px;">
+                                <div class="ref-label" style="color: #991b1b; margin-bottom: 8px;">💡 Clinical Context — Why TXA in Trauma?</div>
+                                <p style="font-size: 0.85rem; color: #7f1d1d; line-height: 1.8;">Severe trauma triggers a hyperfibrinolytic state where clots break down faster than they form, contributing to coagulopathy and uncontrolled hemorrhage. TXA stabilizes existing clots by blocking plasminogen activation. The CRASH-2 trial demonstrated mortality reduction when TXA was given within 3 hours of injury, with the greatest benefit within the first hour. LFN's ≤ 2-hour window aligns with this evidence.</p>
+                            </div>
+                        </div>
+
+                        <!-- ── TAB 4: WARNINGS & PRECAUTIONS ── -->
+                        <div class="qr-panel" id="panel-warnings">
+                            <div class="danger-box">
+                                <div class="warn-title">🚫 CONTRAINDICATIONS</div>
+                                <p><strong>Thromboembolic disease</strong> (active DVT, PE, or arterial thrombosis); <strong>subarachnoid hemorrhage</strong>.</p>
+                            </div>
+
+                            <div class="danger-box">
+                                <div class="warn-title">🚫 DO NOT Administer in Same Line as Blood Products</div>
+                                <p>TXA <strong>should not be administered in the same line as blood products</strong>. If giving TXA concurrently with blood, use a <strong>separate IV line</strong>. This is reinforced in both 12.82 Warnings and 8.02 Blood Product Administration Pearl #6.</p>
+                            </div>
+
+                            <div class="warning-box">
+                                <div class="warn-title">⚠️ Hypotension with Rapid Infusion</div>
+                                <p>TXA may cause <strong>hypotension with rapid infusion</strong>. Must be infused over <strong>10 minutes</strong> — do not push rapidly. In already-hypotensive trauma patients, rapid administration could worsen hemodynamic instability.</p>
+                            </div>
+
+                            <div class="warning-box">
+                                <div class="warn-title">⚠️ ≤ 2-Hour Time Window</div>
+                                <p>Per LFN guidelines, injury must have occurred <strong>≤ 2 hours</strong> prior to administration. Outside that timeframe requires <strong>medical consult</strong> or sending provider orders. Evidence suggests TXA given &gt; 3 hours after injury may increase mortality risk.</p>
+                            </div>
+
+                            <div class="warning-box">
+                                <div class="warn-title">⚠️ Adverse Reactions</div>
+                                <p><strong>Nausea/vomiting; headache; visual disturbances.</strong> Monitor for visual changes — retinal changes reported with prolonged use. In acute trauma, these effects are generally mild and self-limiting.</p>
+                            </div>
+
+                            <!-- Pregnancy -->
+                            <div style="background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%); border: 2px solid #ec4899; border-radius: 10px; padding: 16px; margin-bottom: 12px;">
+                                <div style="font-weight: 700; color: #9d174d; font-size: 0.85rem; margin-bottom: 8px;">🤰 Pregnancy Considerations</div>
+                                <p style="color: #831843; font-size: 0.85rem; line-height: 1.7;">TXA crosses the placenta; cord blood concentrations similar to maternal serum. Significant reduction in PPH death risk when started within <strong>3 hours</strong> of vaginal birth or cesarean section. Favorable risk-benefit in obstetric hemorrhage.</p>
+                            </div>
+
+                            <!-- Neonatal -->
+                            <div class="info-box">
+                                <div class="warn-title">👶 Neonatal Restriction</div>
+                                <p>Per 8.02 Blood Product Administration: pediatric TXA is <strong>not approved for neonates</strong>.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════ -->
+        <!-- QUIZ PANEL                                 -->
+        <!-- ══════════════════════════════════════════ -->
+        <div class="mode-panel" id="panel-quiz">
+            <div class="progress-section" id="progressSection">
+                <div class="progress-header">
+                    <span class="progress-title" id="progressTitle">Question 1 of 10</span>
+                    <div class="progress-stats">
+                        <span>✅ <span id="correctCount">0</span></span>
+                        <span>❌ <span id="incorrectCount">0</span></span>
+                    </div>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div id="quizContainer"></div>
+
+            <div class="results-card" id="resultsCard">
+                <div class="results-icon" id="resultsIcon">🏆</div>
+                <div class="results-title">Quiz Complete!</div>
+                <div class="results-score" id="resultsScore">0%</div>
+                <div class="results-message" id="resultsMessage"></div>
+                <div class="results-breakdown">
+                    <div class="breakdown-item"><div class="breakdown-value" id="finalCorrect" style="color: #16a34a;">0</div><div class="breakdown-label">Correct</div></div>
+                    <div class="breakdown-item"><div class="breakdown-value" id="finalIncorrect" style="color: #dc2626;">0</div><div class="breakdown-label">Incorrect</div></div>
+                </div>
+
+                <div class="results-qr">
+                    <h3>🩸 TXA 12.82 — Quick Reference</h3>
+                    <div class="ref-grid" style="margin-bottom: 15px;">
+                        <div class="ref-item red"><div class="ref-label">Class</div><div class="ref-value">Antifibrinolytic, Hemostatic Agent</div></div>
+                        <div class="ref-item info"><div class="ref-label">Trade Names</div><div class="ref-value">Cyklokapron; Lysteda</div></div>
+                        <div class="ref-item red"><div class="ref-label">Onset / Duration</div><div class="ref-value">5–15 min / 3 hours</div></div>
+                        <div class="ref-item warning"><div class="ref-label">Time Window</div><div class="ref-value">≤ 2 hours from injury</div></div>
+                    </div>
+                    <table class="results-dose-table">
+                        <tr><th>Indication</th><th>Adult Dose</th><th>Pediatric Dose</th></tr>
+                        <tr><td><strong>Severe Trauma</strong><br>Likely massive transfusion<br>Injury ≤ 2 hours</td><td>2 grams in 100 mL NS<br>over 10 min (max 2 g)</td><td>15 mg/kg in 100 mL NS<br>over 10 min (max 1 g)</td></tr>
+                    </table>
+                    <div class="results-warning-list">
+                        <h4>⚠️ Warnings, Contraindications &amp; Precautions</h4>
+                        <ul>
+                            <li><strong>CI:</strong> Thromboembolic disease; subarachnoid hemorrhage</li>
+                            <li><strong>Adverse:</strong> Nausea/vomiting; headache; visual disturbances</li>
+                            <li><strong>Warning:</strong> Do NOT administer in same line as blood products — use separate IV line</li>
+                            <li><strong>Warning:</strong> May cause hypotension with rapid infusion — infuse over 10 min</li>
+                            <li><strong>Priority:</strong> Blood products & life threats take priority over TXA</li>
+                            <li><strong>Pregnancy:</strong> Crosses placenta; reduces PPH death risk within 3 hrs of delivery</li>
+                            <li><strong>Neonates:</strong> Not approved for neonates (per 8.02)</li>
+                            <li><strong>Mechanism:</strong> Inhibits plasminogen activation → displaces plasminogen from fibrin → inhibits fibrinolysis</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <button class="nav-btn primary" onclick="restartQuiz()" style="margin-top: 25px;">Restart Quiz</button>
+            </div>
+        </div>
+
+        <div class="disclaimer">⚕️ This quiz is designed for educational purposes for LFN flight nurses and is based on LFN's Drug Formulary Section 12.82 and Blood Product Administration 8.02. Always refer to current PCGs and medical direction for clinical decisions.</div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                type: 'recall',
+                scenario: 'You\'re reviewing the indications for TXA during a trauma resuscitation review.',
+                vitals: null,
+                question: 'What is the indication for TXA per LFN protocol 12.82?',
+                options: [
+                    { letter: 'A', text: 'Any bleeding requiring sutures or wound closure', correct: false },
+                    { letter: 'B', text: 'Severe trauma likely to require massive transfusions with time of injury ≤ 2 hours', correct: true },
+                    { letter: 'C', text: 'Postoperative bleeding prophylaxis in all surgical patients', correct: false },
+                    { letter: 'D', text: 'GI hemorrhage of any etiology', correct: false }
+                ],
+                rationale: 'Per LFN formulary 12.82, TXA is indicated for <strong>severe trauma that is likely to require massive transfusions with time of injury ≤ 2 hours</strong>.',
+                mechanism: '<strong>TXA indication — key qualifiers:</strong><br>• <strong>Severe trauma</strong> — not minor injuries<br>• <strong>Likely to require massive transfusions</strong> — suggests Class III/IV hemorrhage (&gt;30% blood loss)<br>• <strong>Time of injury ≤ 2 hours</strong> — critical time window for standing order<br>• Beyond 2 hours: requires medical consult or sending provider orders<br>• All three criteria must be met for standing order TXA',
+                pearl: 'All three qualifiers must be present: severe trauma + likely massive transfusion + ≤ 2 hours from injury. The time window reflects evidence that early TXA reduces mortality, while late administration (&gt;3 hours) may increase mortality risk.',
+                protocol: 'LFN 12.82 TXA\nIndication: Severe trauma likely to require\nmassive transfusions with time of injury\n≤ 2 hours'
+            },
+            {
+                type: 'clinical',
+                scenario: 'A 68-year-old male involved in a high-speed MVC presents with obvious femur fracture, pelvic instability, and signs of Class III hemorrhagic shock. Injury occurred 45 minutes ago. Blood products have been initiated.',
+                vitals: { HR: '128', BP: '78/42', SpO2: '94%', RR: '28', GCS: '13' },
+                question: 'What is the adult TXA dose per LFN protocol?',
+                options: [
+                    { letter: 'A', text: '1 gram IV bolus followed by 1 gram over 8 hours', correct: false },
+                    { letter: 'B', text: '2 grams mixed with 100 mL NS infused over 10 minutes', correct: true },
+                    { letter: 'C', text: '15 mg/kg mixed with 100 mL NS over 10 minutes', correct: false },
+                    { letter: 'D', text: '500 mg IV push over 2 minutes', correct: false }
+                ],
+                rationale: 'Per LFN formulary 12.82: Adult dose is <strong>2 grams mixed with 100 mL of NS and infused over 10 minutes. Max 2 grams.</strong>',
+                mechanism: '<strong>LFN TXA dosing — Adult:</strong><br>• <strong>Dose:</strong> 2 grams (single dose)<br>• <strong>Mix:</strong> 100 mL Normal Saline<br>• <strong>Infuse:</strong> Over 10 minutes (NOT rapid bolus)<br>• <strong>Max:</strong> 2 grams total<br>• <strong>No follow-up infusion per LFN protocol</strong><br><br>Note: Option A (1g + 1g/8hrs) is a common hospital protocol but is NOT the LFN dosing strategy. If a sending facility started that infusion, continue it.',
+                pearl: 'This patient meets all criteria: severe trauma (MVC with femur/pelvis fractures), likely massive transfusion (Class III shock, blood started), and ≤ 2 hours (45 min). TXA goes via a separate IV line from the blood products.',
+                protocol: 'LFN 12.82 TXA\nAdult Dose: 2 grams\nMix with 100 mL NS\nInfuse over 10 minutes\nMax 2 grams'
+            },
+            {
+                type: 'calculation',
+                scenario: 'A 7-year-old (25 kg) pedestrian struck by a vehicle has an open femur fracture with significant hemorrhage. Injury occurred 30 minutes ago.',
+                vitals: { HR: '150', BP: '72/40', SpO2: '95%', RR: '32', GCS: '14' },
+                question: 'What is the correct pediatric TXA dose for this 25 kg patient?',
+                options: [
+                    { letter: 'A', text: '2 grams in 100 mL NS over 10 minutes', correct: false },
+                    { letter: 'B', text: '375 mg (15 mg/kg × 25 kg) in 100 mL NS over 10 minutes', correct: true },
+                    { letter: 'C', text: '750 mg (30 mg/kg × 25 kg) IV bolus over 5 minutes', correct: false },
+                    { letter: 'D', text: '500 mg in 50 mL NS over 30 minutes', correct: false }
+                ],
+                rationale: 'Per LFN formulary 12.82: Pediatric dose is <strong>15 mg/kg mixed with 100 mL NS infused over 10 minutes. Max 1 gram.</strong> For this 25 kg child: 15 × 25 = <strong>375 mg</strong> (well under the 1 g max).',
+                mechanism: '<strong>Pediatric TXA calculation:</strong><br>• <strong>Weight:</strong> 25 kg<br>• <strong>Formula:</strong> 15 mg/kg × 25 kg = <strong>375 mg</strong><br>• <strong>Max check:</strong> 375 mg &lt; 1,000 mg (max) ✓<br>• <strong>Mix:</strong> 375 mg in 100 mL NS<br>• <strong>Infuse:</strong> Over 10 minutes<br>• <strong>Note:</strong> Not approved for neonates (per 8.02)<br><br>At 15 mg/kg, a child would need to weigh ~67 kg to reach the 1 g cap.',
+                pearl: 'Always calculate weight-based dose first, then verify it doesn\'t exceed the 1-gram max. The pediatric max is half the adult max (1 g vs 2 g). Remember: mix in 100 mL NS regardless of dose size, and infuse over the full 10 minutes.',
+                protocol: 'LFN 12.82 TXA\nPediatric Dose: 15 mg/kg\nMix with 100 mL NS\nInfuse over 10 minutes\nMax 1 gram\n8.02: Not approved for neonates'
+            },
+            {
+                type: 'recall',
+                scenario: 'A medical student asks you to explain how TXA helps control bleeding in trauma patients.',
+                vitals: null,
+                question: 'What is the mechanism of action of TXA per LFN protocol?',
+                options: [
+                    { letter: 'A', text: 'Activates clotting factors to create new fibrin clots', correct: false },
+                    { letter: 'B', text: 'Competitively inhibits plasminogen activation, displaces plasminogen from fibrin, inhibiting fibrinolysis', correct: true },
+                    { letter: 'C', text: 'Promotes platelet aggregation by stimulating thromboxane A2', correct: false },
+                    { letter: 'D', text: 'Inhibits vitamin K-dependent clotting factors', correct: false }
+                ],
+                rationale: 'Per LFN formulary 12.82: TXA is a synthetic amino acid that <strong>competitively inhibits plasminogen activation. Forms a reversible complex that displaces plasminogen from fibrin resulting in inhibition of fibrinolysis.</strong>',
+                mechanism: '<strong>TXA mechanism — step by step:</strong><br><br><strong>Normal fibrinolysis (without TXA):</strong><br>1. Plasminogen binds to fibrin in clots<br>2. Plasminogen is activated → becomes plasmin<br>3. Plasmin breaks down fibrin → clot dissolves<br><br><strong>With TXA:</strong><br>1. TXA competitively inhibits plasminogen activation<br>2. TXA displaces plasminogen from fibrin surface<br>3. Plasmin cannot form → fibrinolysis blocked<br>4. <strong>Result:</strong> Existing clots are preserved and stabilized<br><br><strong>Key:</strong> TXA does NOT create new clots — it preserves existing ones.',
+                pearl: 'TXA is an ANTIfibrinolytic — it prevents clot breakdown, not clot formation. This is why thromboembolic disease is a contraindication: in patients with pathologic clots (DVT, PE), preventing fibrinolysis could allow those clots to enlarge or propagate.',
+                protocol: 'LFN 12.82 TXA\nMechanism: Synthetic amino acid\nCompetitively inhibits plasminogen activation\nDisplaces plasminogen from fibrin\n→ inhibition of fibrinolysis\nCategory: Antifibrinolytic, hemostatic agent'
+            },
+            {
+                type: 'critical',
+                scenario: 'A trauma patient with severe hemorrhage has a known history of a recent DVT in the left leg. The team considers TXA.',
+                vitals: { HR: '120', BP: '82/50', SpO2: '96%', RR: '24', GCS: '15' },
+                question: 'What are the contraindications for TXA per LFN protocol?',
+                options: [
+                    { letter: 'A', text: 'Hypersensitivity and chronic kidney disease', correct: false },
+                    { letter: 'B', text: 'Thromboembolic disease; subarachnoid hemorrhage', correct: true },
+                    { letter: 'C', text: 'Pregnancy and renal failure', correct: false },
+                    { letter: 'D', text: 'No contraindications — can be given to any bleeding patient', correct: false }
+                ],
+                rationale: 'Per LFN formulary 12.82 Contraindications: <strong>Thromboembolic disease, subarachnoid hemorrhage.</strong> This patient\'s active DVT is a contraindication.',
+                mechanism: '<strong>Why these are contraindicated:</strong><br><br><strong>Thromboembolic disease (DVT, PE, arterial thrombosis):</strong><br>• TXA prevents clot breakdown (inhibits fibrinolysis)<br>• In patients with pathologic clots, blocking fibrinolysis could:<br>&nbsp;&nbsp;→ Enlarge existing DVT<br>&nbsp;&nbsp;→ Promote PE or stroke<br>&nbsp;&nbsp;→ Worsen organ ischemia<br><br><strong>Subarachnoid hemorrhage:</strong><br>• Preserved clots in subarachnoid space worsen vasospasm<br>• Risk of hydrocephalus from clot-obstructed CSF drainage<br>• Vasospasm already a major cause of SAH morbidity',
+                pearl: 'This is a challenging scenario: the patient is bleeding severely but has an active DVT. Thromboembolic disease is an absolute contraindication per LFN. Communicate with medical control and continue aggressive blood product resuscitation without TXA.',
+                protocol: 'LFN 12.82 TXA\nContraindications: Thromboembolic disease,\nsubarachnoid hemorrhage'
+            },
+            {
+                type: 'critical',
+                scenario: 'You arrive on scene to a severe trauma 2.5 hours after the injury occurred. The patient has signs of hemorrhagic shock and is receiving blood products.',
+                vitals: { HR: '134', BP: '74/38', SpO2: '92%', RR: '30', GCS: '12' },
+                question: 'Per LFN protocol, can you administer TXA under standing orders?',
+                options: [
+                    { letter: 'A', text: 'Yes — there is no time restriction on TXA', correct: false },
+                    { letter: 'B', text: 'No — injury occurred > 2 hours ago; requires medical consult or sending provider orders', correct: true },
+                    { letter: 'C', text: 'Yes — up to 4 hours from injury is acceptable', correct: false },
+                    { letter: 'D', text: 'No — TXA is never given in the prehospital setting', correct: false }
+                ],
+                rationale: 'Per LFN 12.82 Special Consideration #2: <strong>The injury must have occurred ≤ 2 hours prior. Administration outside of that timeframe requires medical consult or orders from the sending provider.</strong>',
+                mechanism: '<strong>TXA time window — LFN protocol:</strong><br>• <strong>≤ 2 hours from injury:</strong> TXA per standing order ✓<br>• <strong>&gt; 2 hours from injury:</strong> Requires medical consult OR sending provider orders<br>• TXA is NOT absolutely prohibited after 2 hours — it just cannot be given under standing orders alone<br><br><strong>Evidence basis:</strong><br>• CRASH-2 trial: Greatest benefit within 1 hour<br>• Benefit still present at 1–3 hours<br>• Beyond 3 hours: potential increase in mortality<br>• LFN\'s 2-hour window provides a conservative safety margin',
+                pearl: 'Key distinction: TXA is not absolutely contraindicated after 2 hours — it requires medical consult or sending provider orders. Contact medical control, communicate the time of injury, and follow their guidance. The 2-hour limit is a standing-order boundary, not an absolute prohibition.',
+                protocol: 'LFN 12.82 Special Consideration #2:\nInjury must have occurred ≤ 2 hours prior.\nOutside that timeframe requires medical\nconsult or orders from sending provider.'
+            },
+            {
+                type: 'critical',
+                scenario: 'You are administering TXA to a major trauma patient who is also receiving LTOWB via a blood warmer on one IV line.',
+                vitals: { HR: '118', BP: '80/48', SpO2: '95%', RR: '26', Temp: '35.8°C' },
+                question: 'What must you ensure regarding TXA and blood product administration?',
+                options: [
+                    { letter: 'A', text: 'TXA must be mixed directly into the blood product bag', correct: false },
+                    { letter: 'B', text: 'TXA and blood products can run through the same IV line', correct: false },
+                    { letter: 'C', text: 'Blood products & life threats take priority; TXA must be given through a separate IV line', correct: true },
+                    { letter: 'D', text: 'TXA must be given before any blood products are started', correct: false }
+                ],
+                rationale: 'Per LFN 12.82 Warnings: TXA <strong>should not be administered in the same line as blood products</strong>. Per 8.02 Pearl #6: TXA may be given concurrently but <strong>must be given through a separate line</strong>. Per Special Consideration #1: <strong>Blood administration and treatment of other life threats must take priority.</strong>',
+                mechanism: '<strong>TXA + Blood Products — Key Rules:</strong><br>• <strong>Priority:</strong> Blood products & life threats FIRST, then TXA<br>• <strong>Separate line:</strong> MUST use a different IV line<br>• <strong>Concurrent OK:</strong> Can run at the same time, just different lines<br>• <strong>No mixing:</strong> Never add TXA to blood product bags<br><br><strong>Practical implication:</strong><br>• Need at least TWO IV access points<br>• If only one IV, blood takes priority over TXA<br>• Consider second IV or IO for TXA',
+                pearl: 'This means you need at least two IV access points. If the patient only has one line, blood products take priority per Special Consideration #1. Establish a second IV or IO for TXA. Also per 8.02 Pearl #6: advise the receiving facility that no TXA infusion was initiated (total dose given as one-time bolus).',
+                protocol: 'LFN 12.82 Warnings: Should NOT be administered\nin same line as blood products.\n8.02 Pearl #6: TXA may be given concurrently\nwith blood but through a separate line.\nSC #1: Blood & life threats take priority.'
+            },
+            {
+                type: 'recall',
+                scenario: 'You\'ve administered TXA to a trauma patient and the receiving team asks about the drug\'s pharmacokinetics.',
+                vitals: null,
+                question: 'What is the onset and duration of TXA per LFN protocol?',
+                options: [
+                    { letter: 'A', text: 'Onset: 1–2 minutes / Duration: 10–20 minutes', correct: false },
+                    { letter: 'B', text: 'Onset: 5–15 minutes / Duration: 3 hours', correct: true },
+                    { letter: 'C', text: 'Onset: Immediate / Duration: 8 hours', correct: false },
+                    { letter: 'D', text: 'Onset: 30 minutes / Duration: 24 hours', correct: false }
+                ],
+                rationale: 'Per LFN formulary 12.82: <strong>Onset: 5–15 min / Duration: 3 hours.</strong> Peak is not specified in the LFN formulary.',
+                mechanism: '<strong>TXA Pharmacokinetics:</strong><br>• <strong>Onset:</strong> 5–15 minutes<br>• <strong>Peak:</strong> Not specified in LFN formulary<br>• <strong>Duration:</strong> 3 hours<br><br><strong>Clinical implications:</strong><br>• 3-hour duration supports LFN\'s single-dose strategy<br>• No infusion needed — full 2 g provides ~3 hrs coverage<br>• This differs from hospital strategy (1 g bolus + 1 g/8 hrs)<br>• Patient arrives at trauma center with TXA still active<br>• Onset 5–15 min means effects are not immediate',
+                pearl: 'The 3-hour duration is clinically significant — a single 2 g dose in the field will still be active when the patient arrives at the trauma center. Inform the receiving team: "2 grams TXA given, no infusion initiated" so they can plan their continued resuscitation accordingly.',
+                protocol: 'LFN 12.82 TXA\nOnset / Duration: 5–15 min / 3 hours\nPeak: Not specified in LFN formulary\nRecommended Mixture: 100 mL NS'
+            },
+            {
+                type: 'clinical',
+                scenario: 'You arrive at a sending facility to transport a trauma patient. The sending team has a TXA infusion running — 1 gram over 8 hours — which they started after an initial 1-gram bolus.',
+                vitals: { HR: '104', BP: '92/58', SpO2: '97%', RR: '20', GCS: '15' },
+                question: 'What should you do with the TXA infusion per LFN protocol?',
+                options: [
+                    { letter: 'A', text: 'Discontinue it and give 2 grams per LFN dosing protocol', correct: false },
+                    { letter: 'B', text: 'Discontinue it — LFN does not use TXA infusions', correct: false },
+                    { letter: 'C', text: 'Continue the infusion if it was initiated prior to your arrival', correct: true },
+                    { letter: 'D', text: 'Increase the infusion rate to deliver the remaining dose faster', correct: false }
+                ],
+                rationale: 'Per LFN 12.82 Special Consideration #3: Hospitals and EMS agencies may use a different strategy (e.g., 1 g bolus + 1 g over 8 hours). <strong>Continue the infusion if it was initiated prior to your arrival.</strong>',
+                mechanism: '<strong>Different TXA dosing strategies:</strong><br><br><strong>LFN protocol:</strong><br>• 2 grams total, single dose over 10 minutes<br>• No follow-up infusion<br><br><strong>Hospital/EMS protocol (common):</strong><br>• 1 gram bolus over 10 minutes<br>• + 1 gram infusion over 8 hours<br>• Total: 2 grams (same total, different delivery)<br><br><strong>Key rule:</strong> If a sending facility started an infusion → <strong>continue it</strong>.<br>Do not discontinue, do not alter the rate, and do not add additional TXA.',
+                pearl: 'Both strategies deliver 2 grams total. When transferring care at the receiving facility, inform them of the exact dosing: what the sending facility gave AND that an infusion is in progress. Do not give your own 2 g dose on top of what was already started.',
+                protocol: 'LFN 12.82 Special Consideration #3:\nHospitals/EMS may use different dosing\n(e.g., 1 g bolus + 1 g over 8 hrs).\nContinue infusion if initiated prior\nto your arrival.'
+            },
+            {
+                type: 'clinical',
+                scenario: 'A pregnant patient at 34 weeks involved in a motor vehicle collision has significant vaginal bleeding and hemodynamic instability consistent with placental abruption. Injury occurred 40 minutes ago.',
+                vitals: { HR: '126', BP: '84/50', SpO2: '96%', RR: '24', FHR: '160' },
+                question: 'What does LFN protocol say about TXA in pregnancy?',
+                options: [
+                    { letter: 'A', text: 'Absolutely contraindicated in pregnancy', correct: false },
+                    { letter: 'B', text: 'Crosses placenta; cord blood concentrations similar to maternal serum; reduces PPH death risk when given within 3 hours of delivery', correct: true },
+                    { letter: 'C', text: 'Safe in pregnancy with no fetal exposure', correct: false },
+                    { letter: 'D', text: 'No pregnancy considerations listed in LFN formulary', correct: false }
+                ],
+                rationale: 'Per LFN formulary 12.82 Pregnancy Considerations: <strong>TXA crosses the placenta; concentrations within cord blood are similar to maternal serum. A significant reduction in risk of death due to PPH was observed when treatment was started within 3 hours of vaginal birth or cesarean section.</strong>',
+                mechanism: '<strong>TXA in pregnancy — LFN formulary data:</strong><br>• <strong>Crosses placenta:</strong> Yes — cord blood = maternal serum levels<br>• <strong>PPH evidence:</strong> Significant mortality reduction within 3 hrs of delivery<br>• <strong>Not contraindicated:</strong> Pregnancy is NOT listed under contraindications<br>• <strong>Favorable risk-benefit</strong> in obstetric hemorrhage<br><br><strong>This patient:</strong><br>• Meets TXA criteria: severe trauma, likely massive transfusion, ≤ 2 hours (40 min)<br>• Placental abruption with hemorrhagic shock = life-threatening<br>• TXA may be given alongside blood products via separate line',
+                pearl: 'Pregnancy is NOT a contraindication to TXA. The formulary specifically includes favorable pregnancy data (PPH mortality reduction). This traumatic abruption at 34 weeks with hemorrhagic shock meets all three TXA criteria. Maternal resuscitation is critical for both maternal and fetal survival.',
+                protocol: 'LFN 12.82 TXA Pregnancy:\nCrosses placenta; cord blood concentrations\nsimilar to maternal serum.\nSignificant reduction in PPH death risk\nwithin 3 hours of delivery.'
+            }
+        ];
+
+        let currentQuestion = 0, correctAnswers = 0, incorrectAnswers = 0, answered = [];
+
+        // ── Mode Tab Switching ──
+        function switchMode(mode) {
+            document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.mode-panel').forEach(p => p.classList.remove('active'));
+            document.querySelector(`.mode-tab[data-mode="${mode}"]`).classList.add('active');
+            document.getElementById('panel-' + mode).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ── Quick Reference Toggle & Tabs ──
+        function toggleQuickRef() {
+            const body = document.getElementById('qrBody');
+            const toggle = document.getElementById('qrToggle');
+            body.classList.toggle('collapsed');
+            toggle.classList.toggle('collapsed');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.qr-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.qr-tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('#panel-reference .qr-panel').forEach(p => p.classList.remove('active'));
+                    tab.classList.add('active');
+                    document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+                });
+            });
+            renderQuiz();
+        });
+
+        // ── Quiz Rendering ──
+        function renderQuiz() {
+            const container = document.getElementById('quizContainer');
+            questions.forEach((q, i) => {
+                const vitalsHTML = q.vitals ? `<div class="vital-signs">${Object.entries(q.vitals).map(([k,v]) => `<div class="vital-item"><div class="vital-label">${k}</div><div class="vital-value">${v}</div></div>`).join('')}</div>` : '';
+                const optionsHTML = q.options.map(o => `<div class="option-btn" data-correct="${o.correct}"><span class="option-letter">${o.letter}</span><span class="option-text">${o.text}</span></div>`).join('');
+                container.innerHTML += `
+                    <div class="question-card" id="q${i}" style="display: ${i === 0 ? 'block' : 'none'};">
+                        <div class="question-header">
+                            <span class="question-number">Question ${i + 1} of ${questions.length}</span>
+                            <span class="question-type ${q.type}">${q.type}</span>
+                        </div>
+                        <div class="question-body">
+                            <div class="scenario-box">
+                                <div class="scenario-label">📋 Clinical Scenario</div>
+                                <div class="scenario-text">${q.scenario}</div>
+                                ${vitalsHTML}
+                            </div>
+                            <div class="question-text">${q.question}</div>
+                            <div class="options-list">${optionsHTML}</div>
+                            <div class="rationale-box" id="rat${i}">
+                                <div class="mechanism-section"><h4>🔬 Mechanism & Key Concepts</h4><p>${q.mechanism}</p></div>
+                                <div class="clinical-pearl-box"><h4>💡 Clinical Pearl</h4><p>${q.pearl}</p></div>
+                                <div class="protocol-box"><h4>📖 Protocol Reference</h4><p>${q.protocol}</p></div>
+                            </div>
+                        </div>
+                        <div class="nav-buttons">
+                            <button class="nav-btn secondary" onclick="navigate(${i}, -1)" ${i === 0 ? 'disabled' : ''}>Previous</button>
+                            <button class="nav-btn primary" id="next${i}" onclick="navigate(${i}, 1)" disabled>${i === questions.length - 1 ? 'View Results' : 'Next Question'}</button>
+                        </div>
+                    </div>`;
+            });
+
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (this.classList.contains('disabled')) return;
+                    const card = this.closest('.question-card');
+                    const idx = parseInt(card.id.replace('q', ''));
+                    if (answered[idx]) return;
+                    answered[idx] = true;
+                    const options = card.querySelectorAll('.option-btn');
+                    options.forEach(o => {
+                        o.classList.add('disabled');
+                        if (o.dataset.correct === 'true') o.classList.add('correct');
+                    });
+                    const isCorrect = this.dataset.correct === 'true';
+                    if (!isCorrect) this.classList.add('incorrect');
+                    if (isCorrect) correctAnswers++; else incorrectAnswers++;
+                    document.getElementById('correctCount').textContent = correctAnswers;
+                    document.getElementById('incorrectCount').textContent = incorrectAnswers;
+                    document.getElementById(`rat${idx}`).classList.add('show');
+                    document.getElementById(`next${idx}`).disabled = false;
+                });
+            });
+        }
+
+        function navigate(current, dir) {
+            const next = current + dir;
+            if (next >= questions.length) { showResults(); return; }
+            if (next < 0) return;
+            document.getElementById(`q${current}`).style.display = 'none';
+            document.getElementById(`q${next}`).style.display = 'block';
+            currentQuestion = next;
+            updateProgress();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateProgress() {
+            const pct = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressBar').style.width = pct + '%';
+            document.getElementById('progressTitle').textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+        }
+
+        function showResults() {
+            document.getElementById('quizContainer').style.display = 'none';
+            document.getElementById('progressSection').style.display = 'none';
+            const card = document.getElementById('resultsCard');
+            card.classList.add('show');
+            const pct = Math.round((correctAnswers / questions.length) * 100);
+            const scoreEl = document.getElementById('resultsScore');
+            const iconEl = document.getElementById('resultsIcon');
+            const msgEl = document.getElementById('resultsMessage');
+            scoreEl.textContent = pct + '%';
+            document.getElementById('finalCorrect').textContent = correctAnswers;
+            document.getElementById('finalIncorrect').textContent = incorrectAnswers;
+            if (pct >= 90) {
+                scoreEl.className = 'results-score excellent'; iconEl.className = 'results-icon excellent'; iconEl.textContent = '🌟';
+                msgEl.textContent = 'Excellent! Outstanding TXA knowledge — indication (severe trauma ≤ 2 hrs, likely massive transfusion), dosing (adult 2 g / peds 15 mg/kg in 100 mL NS over 10 min), mechanism (inhibits plasminogen → inhibits fibrinolysis), CI (thromboembolic disease, SAH), warnings (separate line from blood, hypotension with rapid infusion), and priority rules (blood/life threats first).';
+            } else if (pct >= 70) {
+                scoreEl.className = 'results-score good'; iconEl.className = 'results-icon good'; iconEl.textContent = '👍';
+                msgEl.textContent = 'Good work! Review: severe trauma ≤ 2 hrs, adult 2 g / peds 15 mg/kg (max 1 g) in 100 mL NS over 10 min, onset 5–15 min / duration 3 hrs, CI: thromboembolic disease & SAH, separate line from blood, blood/life threats take priority, continue sending facility infusions, pregnancy: crosses placenta but not contraindicated.';
+            } else {
+                scoreEl.className = 'results-score needs-work'; iconEl.className = 'results-icon needs-work'; iconEl.textContent = '📚';
+                msgEl.textContent = 'Keep studying! Focus on: indication (severe trauma ≤ 2 hrs requiring massive transfusion), adult 2 g / peds 15 mg/kg (max 1 g), mix 100 mL NS over 10 min, onset 5–15 min / duration 3 hrs, mechanism (inhibits plasminogen activation → prevents clot breakdown), CI: thromboembolic disease & SAH, separate IV line from blood products, blood/life threats take priority, not approved for neonates, pregnancy crosses placenta with favorable PPH data.';
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0; correctAnswers = 0; incorrectAnswers = 0; answered = [];
+            document.getElementById('correctCount').textContent = '0';
+            document.getElementById('incorrectCount').textContent = '0';
+            document.querySelectorAll('.option-btn').forEach(o => o.classList.remove('disabled', 'correct', 'incorrect'));
+            document.querySelectorAll('.rationale-box').forEach(r => r.classList.remove('show'));
+            questions.forEach((_, i) => { document.getElementById(`next${i}`).disabled = true; document.getElementById(`q${i}`).style.display = i === 0 ? 'block' : 'none'; });
+            document.getElementById('resultsCard').classList.remove('show');
+            document.getElementById('quizContainer').style.display = 'block';
+            document.getElementById('progressSection').style.display = 'block';
+            updateProgress();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

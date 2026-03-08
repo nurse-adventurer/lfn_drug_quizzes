@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LFN Drug Quiz | Sodium Chloride (12.76)</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --primary:#1e40af;
+  --primary-light:#3b82f6;
+  --primary-dark:#1e3a8a;
+  --accent:#dc2626;
+  --success:#166534;
+  --success-bg:#dcfce7;
+  --error:#991b1b;
+  --error-bg:#fee2e2;
+  --warning-bg:#fef3c7;
+  --warning-border:#f59e0b;
+  --bg:#f0f4ff;
+  --card:#ffffff;
+  --text:#1f2937;
+  --text-secondary:#4b5563;
+  --border:#e5e7eb;
+  --shadow:0 2px 8px rgba(0,0,0,0.10);
+  --shadow-lg:0 8px 24px rgba(30,64,175,0.15);
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#eff6ff 0%,#dbeafe 50%,#bfdbfe 100%);min-height:100vh;padding:16px}
+.container{max-width:820px;margin:0 auto}
+.header{background:var(--card);border-radius:16px;padding:28px 24px 20px;margin-bottom:20px;box-shadow:var(--shadow-lg);text-align:center}
+.header h1{font-size:2rem;color:var(--primary);margin-bottom:6px;letter-spacing:-0.5px}
+.header .subtitle{color:var(--primary-light);font-size:1rem;margin-bottom:12px}
+.drug-class-badge{display:inline-block;background:linear-gradient(135deg,var(--primary-light),var(--primary));color:#fff;padding:7px 20px;border-radius:20px;font-size:0.85rem;font-weight:700;margin-bottom:12px}
+.badge-row{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;margin-top:4px}
+.badge{display:inline-block;padding:5px 11px;border-radius:14px;font-size:0.7rem;font-weight:700;border:2px solid}
+.badge-fluid{background:#dbeafe;color:#1e40af;border-color:#3b82f6}
+.badge-normal{background:#e0e7ff;color:#3730a3;border-color:#6366f1}
+.badge-hypertonic{background:#fef3c7;color:#92400e;border-color:#f59e0b}
+.badge-sc{background:#dcfce7;color:#166534;border-color:#22c55e}
+.mode-tabs{display:flex;background:var(--card);border-radius:12px;padding:6px;margin-bottom:18px;box-shadow:var(--shadow);gap:6px}
+.mode-tab{flex:1;padding:11px;text-align:center;border-radius:8px;cursor:pointer;font-weight:700;font-size:0.92rem;transition:all 0.2s;border:none;background:transparent;color:var(--text-secondary)}
+.mode-tab.active{background:linear-gradient(135deg,var(--primary-light),var(--primary));color:#fff;box-shadow:0 2px 8px rgba(30,64,175,0.3)}
+.ref-panel{display:none}
+.ref-panel.active{display:block}
+.ref-tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.ref-tab{padding:7px 14px;border-radius:8px;border:2px solid var(--border);background:var(--card);color:var(--text-secondary);font-size:0.8rem;font-weight:600;cursor:pointer;transition:all 0.2s}
+.ref-tab.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.ref-content{background:var(--card);border-radius:12px;padding:22px;box-shadow:var(--shadow)}
+.ref-section{display:none}
+.ref-section.active{display:block}
+.ref-section h3{color:var(--primary);font-size:1rem;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #dbeafe}
+.dose-table{width:100%;border-collapse:collapse;font-size:0.83rem;margin-bottom:12px}
+.dose-table th{background:var(--primary);color:#fff;padding:9px 10px;text-align:left;font-size:0.78rem}
+.dose-table td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5}
+.dose-table tr:nth-child(even) td{background:#f8faff}
+.dose-table td strong{color:var(--primary-dark)}
+.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:12px}
+.info-card{background:#f8faff;border-radius:8px;padding:12px;border-left:3px solid var(--primary-light)}
+.info-card .lbl{font-size:0.7rem;color:var(--text-secondary);text-transform:uppercase;font-weight:700;margin-bottom:4px}
+.info-card .val{font-size:0.88rem;color:var(--text);font-weight:600;line-height:1.4}
+.warn-card{background:var(--error-bg);border:2px solid var(--accent);border-radius:8px;padding:14px;margin-bottom:10px}
+.warn-card h4{color:#7f1d1d;font-size:0.85rem;margin-bottom:7px}
+.warn-card p,.warn-card li{font-size:0.83rem;color:#991b1b;line-height:1.5}
+.warn-card ul{margin-left:16px}
+.note-card{background:var(--warning-bg);border:2px solid var(--warning-border);border-radius:8px;padding:14px;margin-bottom:10px}
+.note-card h4{color:#92400e;font-size:0.85rem;margin-bottom:6px}
+.note-card p,.note-card li{font-size:0.83rem;color:#78350f;line-height:1.5}
+.note-card ul{margin-left:16px}
+.ok-card{background:var(--success-bg);border:2px solid #22c55e;border-radius:8px;padding:14px;margin-bottom:10px}
+.ok-card h4{color:#166534;font-size:0.85rem;margin-bottom:6px}
+.ok-card p{font-size:0.83rem;color:#166534;line-height:1.5}
+.ci-card{background:#fff1f2;border:2px solid #fb7185;border-radius:8px;padding:14px;margin-bottom:10px}
+.ci-card h4{color:#9f1239;font-size:0.85rem;margin-bottom:6px}
+.ci-card p,.ci-card li{font-size:0.83rem;color:#9f1239;line-height:1.5}
+.ci-card ul{margin-left:16px}
+.quiz-panel{display:none}
+.quiz-panel.active{display:block}
+.progress-wrap{background:var(--card);border-radius:12px;padding:16px 20px;margin-bottom:16px;box-shadow:var(--shadow)}
+.progress-bar{height:10px;background:var(--border);border-radius:8px;overflow:hidden;margin-bottom:7px}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--primary-light),var(--primary));border-radius:8px;transition:width 0.4s ease}
+.progress-text{text-align:center;color:var(--primary);font-weight:700;font-size:0.88rem}
+.q-card{background:var(--card);border-radius:16px;padding:26px;margin-bottom:18px;box-shadow:var(--shadow-lg);display:none}
+.q-card.active{display:block;animation:fadeUp 0.4s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.q-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.q-num{background:linear-gradient(135deg,var(--primary-light),var(--primary));color:#fff;padding:6px 14px;border-radius:14px;font-size:0.85rem;font-weight:700}
+.q-type{padding:5px 11px;border-radius:12px;font-size:0.72rem;font-weight:700;text-transform:uppercase}
+.type-recall{background:#dbeafe;color:#1e40af}
+.type-clinical{background:#dcfce7;color:#166534}
+.type-critical{background:#fce7f3;color:#be185d}
+.scenario{background:linear-gradient(135deg,#dbeafe,#bfdbfe);border-left:4px solid var(--primary-light);padding:16px;border-radius:0 10px 10px 0;margin-bottom:16px}
+.scenario h3{color:var(--primary-dark);font-size:0.9rem;margin-bottom:6px}
+.scenario p{color:var(--primary-dark);font-size:0.93rem;line-height:1.6}
+.s-box{padding:10px 13px;border-radius:8px;margin-top:10px;font-size:0.87rem;font-weight:600;line-height:1.4}
+.s-shock{background:#fee2e2;border:2px solid #ef4444;color:#991b1b}
+.s-pedi{background:#dbeafe;border:2px solid #3b82f6;color:#1e3a8a}
+.s-tbi{background:#fef3c7;border:2px solid #f59e0b;color:#92400e}
+.s-iv{background:#f3e8ff;border:2px solid #a855f7;color:#6b21a8}
+.s-adverse{background:#fee2e2;border:2px solid #dc2626;color:#7f1d1d}
+.s-preg{background:#fce7f3;border:2px solid #ec4899;color:#9d174d}
+.q-text{font-size:1.1rem;color:var(--text);margin-bottom:20px;line-height:1.6;font-weight:500}
+.options{display:flex;flex-direction:column;gap:10px}
+.option{padding:15px 18px;background:#f9fafb;border:2px solid var(--border);border-radius:10px;cursor:pointer;transition:all 0.2s;font-size:0.95rem;color:var(--text);display:flex;align-items:flex-start;gap:10px}
+.option:hover:not(.disabled){border-color:var(--primary-light);background:#dbeafe;transform:translateX(4px)}
+.opt-letter{min-width:28px;height:28px;line-height:28px;text-align:center;background:var(--primary);color:#fff;border-radius:50%;font-weight:700;font-size:0.82rem;flex-shrink:0}
+.option.correct{border-color:#22c55e;background:var(--success-bg);color:#166534}
+.option.incorrect{border-color:#ef4444;background:var(--error-bg);color:#991b1b}
+.option.disabled{cursor:not-allowed;opacity:0.75}
+.feedback{margin-top:20px;padding:20px;border-radius:12px;display:none}
+.feedback.show{display:block;animation:fadeUp 0.3s ease}
+.feedback.correct-fb{background:linear-gradient(135deg,#dcfce7,#bbf7d0);border:2px solid #22c55e}
+.feedback.incorrect-fb{background:linear-gradient(135deg,#fee2e2,#fecaca);border:2px solid #ef4444}
+.feedback h4{font-size:1.05rem;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.feedback.correct-fb h4{color:#166534}
+.feedback.incorrect-fb h4{color:#991b1b}
+.feedback p{color:var(--text);font-size:0.93rem;line-height:1.6;margin-bottom:10px}
+.insight-box{background:rgba(255,255,255,0.75);border-left:4px solid var(--primary-light);padding:13px;border-radius:0 8px 8px 0;margin-top:12px}
+.insight-box h5{color:var(--primary);font-size:0.88rem;margin-bottom:6px}
+.insight-box p{font-size:0.88rem;color:var(--text);margin-bottom:0}
+.proto-ref{background:rgba(255,255,255,0.8);padding:10px 13px;border-radius:7px;margin-top:12px;font-size:0.85rem;color:var(--primary)}
+.proto-link{color:var(--primary-dark);text-decoration:underline;cursor:pointer;font-weight:700}
+.proto-link:hover{color:var(--primary-light)}
+.nav-row{display:flex;justify-content:space-between;margin-top:20px;gap:10px}
+.btn{padding:12px 26px;border:none;border-radius:9px;font-size:0.95rem;font-weight:700;cursor:pointer;transition:all 0.2s}
+.btn-primary{background:linear-gradient(135deg,var(--primary-light),var(--primary));color:#fff}
+.btn-primary:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 4px 14px rgba(30,64,175,0.35)}
+.btn-secondary{background:var(--border);color:var(--text)}
+.btn:disabled{opacity:0.45;cursor:not-allowed;transform:none}
+.results{background:var(--card);border-radius:16px;padding:36px;text-align:center;box-shadow:var(--shadow-lg);display:none}
+.results.active{display:block;animation:fadeUp 0.4s ease}
+.results-score{font-size:4.5rem;font-weight:800;color:var(--primary);line-height:1}
+.results-label{font-size:1.3rem;color:var(--text-secondary);margin:8px 0 24px}
+.results-counts{display:flex;justify-content:center;gap:40px;margin-bottom:24px}
+.rc-item .num{font-size:2.2rem;font-weight:800}
+.rc-item .lbl{color:var(--text-secondary);font-size:0.85rem}
+.rc-correct .num{color:#22c55e}
+.rc-incorrect .num{color:#ef4444}
+.perf-msg{padding:18px;border-radius:12px;margin-bottom:22px;font-size:0.93rem;line-height:1.6}
+.perf-excellent{background:#dcfce7;color:#166534}
+.perf-good{background:#dbeafe;color:#1e40af}
+.perf-review{background:var(--warning-bg);color:#92400e}
+.sum-table{width:100%;border-collapse:collapse;font-size:0.8rem;margin:14px 0;text-align:left}
+.sum-table th{background:var(--primary);color:#fff;padding:8px 10px}
+.sum-table td{padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top}
+.sum-table tr:nth-child(even) td{background:#f8faff}
+.kp-list{background:#f8faff;border-radius:10px;padding:16px;margin-top:14px;text-align:left}
+.kp-list h4{color:var(--primary);margin-bottom:10px;font-size:0.92rem}
+.kp-list li{font-size:0.85rem;color:var(--text);line-height:1.6;margin-left:18px;margin-bottom:4px}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:998}
+.overlay.show{display:block}
+.popup{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border:3px solid var(--primary-light);border-radius:14px;padding:22px;width:90%;max-width:540px;max-height:80vh;overflow-y:auto;z-index:999;box-shadow:0 20px 60px rgba(0,0,0,0.25)}
+.popup.show{display:block;animation:popIn 0.25s ease}
+@keyframes popIn{from{opacity:0;transform:translate(-50%,-55%)}to{opacity:1;transform:translate(-50%,-50%)}}
+.popup-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:10px;border-bottom:2px solid #bfdbfe}
+.popup-head h3{color:var(--primary-dark);font-size:1rem}
+.popup-close{background:var(--primary-light);color:#fff;border:none;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:1.1rem;line-height:1}
+.popup-body{background:#dbeafe;padding:14px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.8rem;color:var(--primary-dark);line-height:1.65;white-space:pre-wrap}
+@media(max-width:600px){
+  .header h1{font-size:1.6rem}
+  .q-card{padding:18px}
+  .nav-row{flex-direction:column}
+  .btn{width:100%}
+  .results-counts{gap:24px}
+  .ref-tabs{gap:4px}
+  .ref-tab{padding:6px 10px;font-size:0.75rem}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <h1>💧 Sodium Chloride</h1>
+  <p class="subtitle">LFN Drug Formulary Section 12.76 · Clinical Application Quiz</p>
+  <div class="drug-class-badge">Electrolyte Supplement, Parenteral</div>
+  <div class="badge-row">
+    <span class="badge badge-fluid">💧 Fluid Resuscitation</span>
+    <span class="badge badge-normal">0.9% Normal Saline</span>
+    <span class="badge badge-hypertonic">⚠️ 3% Hypertonic</span>
+    <span class="badge badge-sc">4 Special Considerations</span>
+  </div>
+</div>
+
+<div class="mode-tabs">
+  <button class="mode-tab active" onclick="switchMode('ref')">📋 Quick Reference</button>
+  <button class="mode-tab" onclick="switchMode('quiz')">🎯 Quiz (10 Questions)</button>
+</div>
+
+<!-- REFERENCE PANEL -->
+<div class="ref-panel active" id="refPanel">
+  <div class="ref-tabs">
+    <button class="ref-tab active" onclick="switchRef(event,'dosing')">💊 Dosing / Indications</button>
+    <button class="ref-tab" onclick="switchRef(event,'pharma')">🔬 Pharmacology</button>
+    <button class="ref-tab" onclick="switchRef(event,'considerations')">📝 Considerations</button>
+    <button class="ref-tab" onclick="switchRef(event,'warnings')">⚠️ Warnings</button>
+  </div>
+  <div class="ref-content">
+
+    <div class="ref-section active" id="ref-dosing">
+      <h3>💊 Dosing &amp; Indications</h3>
+      <table class="dose-table">
+        <tr><th>Indication</th><th>Adult Dose</th><th>Pediatric Dose</th></tr>
+        <tr>
+          <td><strong>Fluid Resuscitation</strong></td>
+          <td>Titrate to desired effect per patient presentation.<br>• Typical bolus doses range from <strong>250–500 mL</strong></td>
+          <td>Titrate to desired effect per patient presentation.<br>• Typical bolus doses range from <strong>10–20 mL</strong></td>
+        </tr>
+      </table>
+      <div class="note-card">
+        <h4>⚠️ Pediatric Dose — Per LFN 12.76</h4>
+        <p>LFN 12.76 states the pediatric typical bolus range as <strong>10–20 mL</strong> (a flat volume, not a weight-based mL/kg dose). This is the exact protocol wording. Titrate to desired effect per patient presentation.</p>
+      </div>
+    </div>
+
+    <div class="ref-section" id="ref-pharma">
+      <h3>🔬 Pharmacology</h3>
+      <div class="info-grid">
+        <div class="info-card"><div class="lbl">Mechanism of Action</div><div class="val">Principal extracellular cation; functions in fluid and electrolyte balance, osmotic pressure control, and water distribution</div></div>
+        <div class="info-card"><div class="lbl">Pharmacologic Category</div><div class="val">Electrolyte Supplement, Parenteral</div></div>
+        <div class="info-card"><div class="lbl">Onset / Peak / Duration</div><div class="val">Not listed in LFN 12.76</div></div>
+        <div class="info-card"><div class="lbl">Trade Name</div><div class="val">Not listed in LFN 12.76</div></div>
+        <div class="info-card"><div class="lbl">Pregnancy</div><div class="val">May be used in pregnancy</div></div>
+        <div class="info-card"><div class="lbl">Indication</div><div class="val">Fluid Resuscitation (single listed indication)</div></div>
+      </div>
+      <div class="info-grid" style="margin-top:10px">
+        <div class="info-card">
+          <div class="lbl">Normal Saline (0.9%)</div>
+          <div class="val">• 9 g/L · 154 mEq/L Na⁺<br>• pH 5.5<br>• Most commonly administered<br>• Isotonic</div>
+        </div>
+        <div class="info-card" style="border-left-color:#f59e0b">
+          <div class="lbl">Hypertonic Saline (3%)</div>
+          <div class="val">• 30 g/L · 513 mEq/L Na⁺<br>• pH 5<br>• Hyperosmolar<br>• Head injuries / cerebral edema</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ref-section" id="ref-considerations">
+      <h3>📝 Special Considerations</h3>
+      <div class="note-card">
+        <h4>SC 1 — Multiple Concentrations Exist</h4>
+        <p>There are multiple concentrations and preparations of sodium chloride. Verify the correct preparation before administration.</p>
+      </div>
+      <div class="note-card">
+        <h4>SC 2 — Central vs Peripheral for Solutions &gt;2%</h4>
+        <p>Solutions that are &gt;2% should <strong>ideally be administered via central line</strong>; however, in emergency situations, you may utilize a peripheral venous line.</p>
+      </div>
+      <div class="note-card">
+        <h4>SC 3 — Normal Saline (0.9%)</h4>
+        <p>Most commonly administered sodium chloride preparation.<br>
+        a. Each liter contains 9 grams (154 mEq) of sodium<br>
+        b. pH of 5.5</p>
+      </div>
+      <div class="note-card">
+        <h4>SC 4 — Hypertonic Saline (3%)</h4>
+        <p>Hyperosmolar; typically used to treat head injuries and cerebral edema.<br>
+        a. Each liter contains 30 grams (513 mEq) of sodium<br>
+        b. pH of 5</p>
+      </div>
+    </div>
+
+    <div class="ref-section" id="ref-warnings">
+      <h3>⚠️ Warnings, Contraindications &amp; Adverse Reactions</h3>
+      <div class="ci-card">
+        <h4>🚫 Contraindication (1)</h4>
+        <ul><li>Hypersensitivity to sodium chloride or any component of the formulation</li></ul>
+      </div>
+      <div class="warn-card">
+        <h4>⚠️ Warning / Precaution — Extravasation Risk</h4>
+        <p>Concentrated solutions of IV sodium chloride (&gt;1%) are irritants (with vesicant-like properties at higher osmolarities); depends on osmolarity; higher osmolarity is associated with a higher risk. Ensure proper needle or catheter placement prior to and during infusion. <strong>Avoid extravasation.</strong></p>
+      </div>
+      <div class="warn-card">
+        <h4>⚠️ Adverse Reactions</h4>
+        <ul>
+          <li>Acid-base imbalance (including hyperchloremic metabolic acidosis, metabolic acidosis)</li>
+          <li>Electrolyte disorder (including hyperchloremia, hyperkalemia)</li>
+          <li>Hypernatremia</li>
+          <li>Hyponatremia</li>
+        </ul>
+      </div>
+      <div class="ok-card">
+        <h4>🤰 Pregnancy Considerations</h4>
+        <p>May be used in pregnancy.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- QUIZ PANEL -->
+<div class="quiz-panel" id="quizPanel">
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="pFill" style="width:10%"></div></div>
+    <div class="progress-text" id="pText">Question 1 of 10</div>
+  </div>
+  <div id="qContainer"></div>
+  <div class="results" id="resultsCard">
+    <h2 style="color:var(--primary);margin-bottom:8px">Quiz Complete!</h2>
+    <div class="results-score" id="rPct">—</div>
+    <div class="results-label">Final Score</div>
+    <div class="results-counts">
+      <div class="rc-item rc-correct"><div class="num" id="rCorrect">0</div><div class="lbl">Correct</div></div>
+      <div class="rc-item rc-incorrect"><div class="num" id="rIncorrect">0</div><div class="lbl">Incorrect</div></div>
+    </div>
+    <div class="perf-msg" id="rMsg"></div>
+    <table class="sum-table">
+      <tr><th>Parameter</th><th>LFN 12.76 Value</th></tr>
+      <tr><td>Indication</td><td>Fluid Resuscitation (only indication)</td></tr>
+      <tr><td>Adult Dose</td><td>Titrate to desired effect · typical 250–500 mL boluses</td></tr>
+      <tr><td>Pediatric Dose</td><td>Titrate to desired effect · typical 10–20 mL boluses (per LFN 12.76)</td></tr>
+      <tr><td>Mechanism</td><td>Principal extracellular cation; fluid/electrolyte balance, osmotic pressure control, water distribution</td></tr>
+      <tr><td>Category</td><td>Electrolyte Supplement, Parenteral</td></tr>
+      <tr><td>Contraindication</td><td>Hypersensitivity only</td></tr>
+      <tr><td>Warning</td><td>&gt;1% solutions irritants with vesicant-like properties — avoid extravasation</td></tr>
+      <tr><td>Adverse Reactions</td><td>Hyperchloremic metabolic acidosis; hyperchloremia; hyperkalemia; hypernatremia; hyponatremia</td></tr>
+      <tr><td>Pregnancy</td><td>May be used in pregnancy</td></tr>
+      <tr><td>Normal Saline (0.9%)</td><td>154 mEq/L Na · 9 g/L · pH 5.5 · most common preparation (SC 3)</td></tr>
+      <tr><td>Hypertonic (3%)</td><td>513 mEq/L Na · 30 g/L · pH 5 · head injury / cerebral edema (SC 4)</td></tr>
+      <tr><td>&gt;2% Solutions</td><td>Central line preferred; peripheral acceptable in emergencies (SC 2)</td></tr>
+    </table>
+    <div class="kp-list">
+      <h4>🔑 Key Points — LFN 12.76</h4>
+      <ul>
+        <li>Single indication: <strong>Fluid Resuscitation</strong> — dose titrates to desired effect per patient presentation</li>
+        <li>Adult typical bolus: <strong>250–500 mL</strong></li>
+        <li>Pediatric typical bolus: <strong>10–20 mL</strong> (flat volume per LFN 12.76 wording — not mL/kg)</li>
+        <li>Normal Saline 0.9%: <strong>154 mEq/L Na · pH 5.5</strong> — most commonly administered preparation (SC 3)</li>
+        <li>Hypertonic 3%: <strong>513 mEq/L Na · pH 5</strong> — head injuries / cerebral edema (SC 4)</li>
+        <li>Solutions &gt;2%: <strong>central line preferred</strong>; peripheral acceptable in emergency (SC 2)</li>
+        <li>Concentrated solutions &gt;1%: <strong>irritants with vesicant-like properties</strong> — avoid extravasation</li>
+        <li>Adverse effect risk: <strong>hyperchloremic metabolic acidosis</strong> with large NS volumes (high Cl⁻ load)</li>
+        <li>Contraindication: <strong>hypersensitivity</strong> (single CI)</li>
+        <li>Pregnancy: <strong>may be used</strong></li>
+      </ul>
+    </div>
+    <button class="btn btn-primary" onclick="restartQuiz()" style="margin-top:22px">🔄 Restart Quiz</button>
+  </div>
+</div>
+
+<!-- POPUP -->
+<div class="overlay" id="overlay" onclick="closePopup()"></div>
+<div class="popup" id="popup">
+  <div class="popup-head">
+    <h3>📖 LFN Protocol — Exact Wording</h3>
+    <button class="popup-close" onclick="closePopup()">×</button>
+  </div>
+  <div class="popup-body" id="popupBody"></div>
+</div>
+
+<script>
+function switchMode(m){
+  document.getElementById('refPanel').classList.toggle('active',m==='ref');
+  document.getElementById('quizPanel').classList.toggle('active',m==='quiz');
+  document.querySelectorAll('.mode-tab').forEach((t,i)=>t.classList.toggle('active',(m==='ref'&&i===0)||(m==='quiz'&&i===1)));
+}
+function switchRef(e,id){
+  document.querySelectorAll('.ref-section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('ref-'+id).classList.add('active');
+  document.querySelectorAll('.ref-tab').forEach(t=>t.classList.remove('active'));
+  e.target.classList.add('active');
+}
+const PROTO={
+  indication:`INDICATION (LFN 12.76):
+
+"• Fluid Resuscitation"
+
+Pharmacologic Category:
+"Electrolyte Supplement, Parenteral"
+
+Note: Fluid Resuscitation is the only
+listed indication in Section 12.76.
+Multiple concentrations exist (SC 1).`,
+
+  dosing:`DOSING (LFN 12.76):
+
+ADULT — Fluid Resuscitation:
+"Titrate to desired effect per patient
+presentation.
+• Typical bolus doses range from
+  250 – 500 mL"
+
+PEDIATRIC — Fluid Resuscitation:
+"Titrate to desired effect per patient
+presentation.
+• Typical bolus doses range from
+  10 – 20 mL"
+
+NOTE: LFN 12.76 states the pediatric
+typical bolus as 10–20 mL (flat volume,
+not mL/kg). Titrate to desired effect
+per patient presentation.`,
+
+  moa:`MECHANISM OF ACTION (LFN 12.76):
+
+"Principal extracellular cation; functions
+in fluid and electrolyte balance, osmotic
+pressure control, and water distribution"
+
+Pharmacologic Category:
+"Electrolyte Supplement, Parenteral"`,
+
+  normal:`NORMAL SALINE 0.9% — SC 3 (LFN 12.76):
+
+"Normal Saline (0.9%) is the most commonly
+administered sodium chloride preparation.
+  a. Each liter contains 9 grams (154 mEq)
+     of sodium
+  b. pH of 5.5"`,
+
+  hypertonic:`HYPERTONIC SALINE 3% — SC 4 (LFN 12.76):
+
+"Hypertonic saline (3%) is hyperosmolar,
+typically used to treat head injuries
+and cerebral edema.
+  a. Each liter contains 30 grams (513 mEq)
+     of sodium
+  b. pH of 5"`,
+
+  central:`CENTRAL VS PERIPHERAL — SC 2 (LFN 12.76):
+
+"Solutions that are >2% should ideally be
+administered via central line; however,
+in emergency situations, you may utilize
+a peripheral venous line."`,
+
+  extravasation:`WARNINGS/PRECAUTIONS (LFN 12.76):
+
+"Concentrated solutions of IV sodium
+chloride (>1%) are irritants (with
+vesicant-like properties at higher
+osmolarities); depends on osmolarity;
+higher osmolarity is associated with a
+higher risk. Ensure proper needle or
+catheter placement prior to and during
+infusion. Avoid extravasation."`,
+
+  adverse:`ADVERSE REACTIONS (LFN 12.76):
+
+"Acid-base imbalance (including
+hyperchloremic metabolic acidosis,
+metabolic acidosis); electrolyte disorder
+(including hyperchloremia, hyperkalemia);
+hypernatremia; hyponatremia"`,
+
+  ci:`CONTRAINDICATIONS (LFN 12.76):
+
+"Hypersensitivity to sodium chloride or
+any component of the formulation"`,
+
+  pregnancy:`PREGNANCY CONSIDERATIONS (LFN 12.76):
+
+"May be used in pregnancy"`
+};
+function showPopup(k){
+  document.getElementById('popupBody').textContent=PROTO[k]||'See LFN 12.76.';
+  document.getElementById('popup').classList.add('show');
+  document.getElementById('overlay').classList.add('show');
+}
+function closePopup(){
+  document.getElementById('popup').classList.remove('show');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+const Qs=[
+  {n:1,type:'recall',
+   scenario:'You are reviewing the LFN drug formulary and turn to Section 12.76.',
+   boxes:[],
+   q:'What is the listed indication for sodium chloride per LFN 12.76?',
+   opts:[
+     {t:'Hyponatremia correction',c:false},
+     {t:'Fluid Resuscitation',c:true},
+     {t:'Hypertonic saline infusion for TBI only',c:false},
+     {t:'Cardiac arrest resuscitation',c:false}
+   ],
+   fb:'Per LFN 12.76, the indication is: <strong>Fluid Resuscitation.</strong> This is the single indication listed in section 12.76. Hypertonic saline dosing for TBI/ICP is covered under a separate formulary entry (LFN 12.39).',
+   ins:'<strong>12.76 has one indication:</strong> Fluid Resuscitation. Both 0.9% NS and 3% hypertonic saline are preparations under this section, but the shared indication remains fluid resuscitation. Specific ICP/TBI dosing (250 mL over 15 min, etc.) is addressed in 12.39 Hypertonic Saline.',
+   proto:'indication'},
+
+  {n:2,type:'clinical',
+   scenario:'An adult male is in hemorrhagic shock following a motor vehicle collision. You have 0.9% NS available and prepare to bolus.',
+   boxes:[{cls:'s-shock',t:'🚨 HEMORRHAGIC SHOCK | Adult | BP 76/50 mmHg | HR 138 | GCS 12 | Needs volume resuscitation'}],
+   q:'Per LFN 12.76, what is the appropriate adult dosing approach for fluid resuscitation?',
+   opts:[
+     {t:'1,000 mL fixed bolus — repeat once if needed',c:false},
+     {t:'Titrate to desired effect; typical bolus doses range from 250–500 mL',c:true},
+     {t:'20 mL/kg per bolus — weight-based only',c:false},
+     {t:'50 mL/hr continuous infusion only',c:false}
+   ],
+   fb:'Per LFN 12.76 adult dosing: <strong>"Titrate to desired effect per patient presentation. Typical bolus doses range from 250–500 mL."</strong> There is no fixed dose — titration to patient response is the guiding principle.',
+   ins:'<strong>Titration is key:</strong> NS for fluid resuscitation is not a fixed-dose drug. Reassess after each bolus — BP, HR, skin perfusion, mentation, urine output. In hemorrhagic shock, consider permissive hypotension goals and early blood products alongside crystalloid.',
+   proto:'dosing'},
+
+  {n:3,type:'clinical',
+   scenario:'A 12 kg pediatric patient presents with severe dehydration and hypovolemic shock. You are preparing NS boluses per LFN protocol.',
+   boxes:[{cls:'s-pedi',t:'👶 PEDIATRIC | 12 kg | Hypovolemic shock | Severe dehydration | NS bolus — what dose per LFN 12.76?'}],
+   q:'Per LFN 12.76, what is the typical pediatric bolus dose for fluid resuscitation?',
+   opts:[
+     {t:'10–20 mL/kg per bolus (weight-based)',c:false},
+     {t:'Titrate to desired effect; typical bolus doses range from 10–20 mL',c:true},
+     {t:'500 mL fixed bolus — same as adult',c:false},
+     {t:'5 mL/kg per bolus, max 60 mL',c:false}
+   ],
+   fb:'Per LFN 12.76 pediatric dosing: <strong>"Titrate to desired effect per patient presentation. Typical bolus doses range from 10–20 mL."</strong> Note: LFN 12.76 lists this as a flat volume — not weight-based mL/kg.',
+   ins:'<strong>Protocol fidelity point:</strong> LFN 12.76 lists the pediatric typical bolus as <strong>10–20 mL</strong> (flat volume). This is the exact protocol wording. The overarching principle remains titration to desired effect per patient presentation — give and reassess.',
+   proto:'dosing'},
+
+  {n:4,type:'recall',
+   scenario:'During a ground-to-air transport handoff, you explain to a new nurse why sodium chloride expands intravascular volume.',
+   boxes:[],
+   q:'What is the mechanism of action of sodium chloride per LFN 12.76?',
+   opts:[
+     {t:'Increases myocardial contractility and ventricular automaticity',c:false},
+     {t:'Stimulates aldosterone release to retain sodium and water',c:false},
+     {t:'Principal extracellular cation; functions in fluid and electrolyte balance, osmotic pressure control, and water distribution',c:true},
+     {t:'Blocks sodium channels to reduce membrane potential',c:false}
+   ],
+   fb:'Per LFN 12.76: <strong>"Principal extracellular cation; functions in fluid and electrolyte balance, osmotic pressure control, and water distribution."</strong>',
+   ins:'<strong>Sodium is the dominant extracellular cation.</strong> When infused, NS expands primarily the extracellular (intravascular + interstitial) space. It does not directly increase contractility (that is calcium) and does not activate aldosterone directly (that is RAAS). Volume expansion occurs through osmotic and hydrostatic effects.',
+   proto:'moa'},
+
+  {n:5,type:'recall',
+   scenario:'You are teaching a scenario review and ask the team about Normal Saline composition.',
+   boxes:[],
+   q:'Per LFN 12.76 SC 3, what are the sodium content and pH of Normal Saline (0.9%)?',
+   opts:[
+     {t:'77 mEq/L sodium, pH 7.4',c:false},
+     {t:'154 mEq/L sodium (9 grams/liter), pH 5.5',c:true},
+     {t:'308 mEq/L sodium, pH 6.0',c:false},
+     {t:'513 mEq/L sodium, pH 5.0',c:false}
+   ],
+   fb:'Per LFN 12.76 SC 3: <strong>"Each liter contains 9 grams (154 mEq) of sodium. pH of 5.5."</strong> This is the most commonly administered sodium chloride preparation.',
+   ins:'<strong>0.9% NS composition:</strong> 154 mEq/L Na, 154 mEq/L Cl, pH 5.5, isotonic (~308 mOsm/L). The 513 mEq/L figure belongs to 3% hypertonic saline (SC 4). The slightly acidic pH contributes to hyperchloremic metabolic acidosis risk with large-volume infusion.',
+   proto:'normal'},
+
+  {n:6,type:'clinical',
+   scenario:'A patient with severe TBI shows signs of cerebral herniation. You are preparing hypertonic saline and need to confirm its composition.',
+   boxes:[{cls:'s-tbi',t:'🧠 SEVERE TBI | Signs of herniation | Cerebral edema | Preparing 3% NaCl — composition per LFN 12.76?'}],
+   q:'Per LFN 12.76 SC 4, what are the sodium content and pH of Hypertonic Saline (3%)?',
+   opts:[
+     {t:'154 mEq/L sodium, pH 5.5',c:false},
+     {t:'308 mEq/L sodium, pH 7.0',c:false},
+     {t:'513 mEq/L sodium (30 grams/liter), pH 5',c:true},
+     {t:'250 mEq/L sodium, pH 6.0',c:false}
+   ],
+   fb:'Per LFN 12.76 SC 4: <strong>"Each liter contains 30 grams (513 mEq) of sodium. pH of 5."</strong> Hypertonic saline (3%) is hyperosmolar and is typically used to treat head injuries and cerebral edema.',
+   ins:'<strong>3% vs 0.9%:</strong> Hypertonic saline contains 3.3× the sodium of normal saline (513 vs 154 mEq/L), creating an osmotic gradient that draws water from brain tissue and reduces ICP. For specific ICP dosing protocol (250 mL over 15 min, repeat ×1), refer to LFN 12.39 Hypertonic Saline.',
+   proto:'hypertonic'},
+
+  {n:7,type:'critical',
+   scenario:'A TBI patient urgently needs 3% hypertonic saline. You have only a peripheral 20g IV established — no central access yet.',
+   boxes:[{cls:'s-iv',t:'⚠️ 3% HYPERTONIC SALINE NEEDED | Only peripheral 20g IV | No central line | What does LFN SC 2 say?'}],
+   q:'Per LFN 12.76 SC 2, what is the guidance on administering solutions >2% without central venous access?',
+   opts:[
+     {t:'Solutions >2% can never be given peripherally under any circumstances',c:false},
+     {t:'Solutions >2% should ideally be via central line; however, in emergency situations a peripheral venous line may be used',c:true},
+     {t:'Any concentration may be given peripherally without restriction',c:false},
+     {t:'Withhold administration entirely until central line is established',c:false}
+   ],
+   fb:'Per LFN 12.76 SC 2: <strong>"Solutions that are &gt;2% should ideally be administered via central line; however, in emergency situations, you may utilize a peripheral venous line."</strong>',
+   ins:'<strong>Central preferred, peripheral permitted in emergency:</strong> Central line is preferred due to vesicant-like properties of concentrated saline and lower extravasation risk. In a TBI with herniation signs, withholding treatment to establish central access is not appropriate — use the peripheral IV and pursue central access concurrently.',
+   proto:'central'},
+
+  {n:8,type:'critical',
+   scenario:'While infusing concentrated saline, you notice swelling at the IV site and the patient reports pain at the insertion point.',
+   boxes:[{cls:'s-adverse',t:'⚠️ IV SITE SWELLING | Concentrated saline infusing | Pain at insertion site | Suspected extravasation'}],
+   q:'What warning does LFN 12.76 provide about concentrated sodium chloride solutions?',
+   opts:[
+     {t:'No tissue risk exists with sodium chloride solutions at any concentration',c:false},
+     {t:'Concentrated solutions (>1%) are irritants with vesicant-like properties at higher osmolarities; avoid extravasation',c:true},
+     {t:'Only solutions >5% pose any tissue risk; lower concentrations are safe peripherally',c:false},
+     {t:'Extravasation of NS causes only mild irritation with no intervention required',c:false}
+   ],
+   fb:'Per LFN 12.76 Warnings: <strong>"Concentrated solutions of IV sodium chloride (&gt;1%) are irritants (with vesicant-like properties at higher osmolarities); depends on osmolarity; higher osmolarity is associated with a higher risk. Ensure proper needle or catheter placement prior to and during infusion. Avoid extravasation."</strong>',
+   ins:'<strong>Vesicant-like risk scales with osmolarity:</strong> Higher osmolarity = greater tissue injury potential. Threshold is &gt;1% solutions. Stop infusion immediately if extravasation is suspected, remove the IV, and treat the site. This reinforces the SC 2 recommendation for central line use with &gt;2% solutions when feasible.',
+   proto:'extravasation'},
+
+  {n:9,type:'clinical',
+   scenario:'Following large-volume resuscitation with 0.9% NS, a patient develops worsening acidosis. ABG shows low bicarbonate, elevated chloride, and no anion gap elevation.',
+   boxes:[{cls:'s-adverse',t:'⚠️ LARGE-VOLUME NS | Non-anion gap metabolic acidosis | ↑ Cl⁻ | No ↑ lactate or AG | What LFN adverse effect?'}],
+   q:'Which adverse reaction listed in LFN 12.76 best explains this clinical picture?',
+   opts:[
+     {t:'Hyperkalemia from sodium-potassium pump disruption',c:false},
+     {t:'Respiratory alkalosis from rapid volume expansion',c:false},
+     {t:'Hyperchloremic metabolic acidosis',c:true},
+     {t:'Hyponatremia from excessive free water loading',c:false}
+   ],
+   fb:'Per LFN 12.76 Adverse Reactions: <strong>"Acid-base imbalance (including hyperchloremic metabolic acidosis, metabolic acidosis); electrolyte disorder (including hyperchloremia, hyperkalemia); hypernatremia; hyponatremia."</strong> Non-anion gap metabolic acidosis with elevated chloride is the hallmark of hyperchloremic metabolic acidosis from large-volume NS.',
+   ins:'<strong>Mechanism:</strong> NS contains 154 mEq/L Cl⁻ — far above normal plasma chloride (~100 mEq/L). This excess chloride load drives bicarbonate down to maintain electroneutrality, producing a non-anion gap (hyperchloremic) metabolic acidosis. This is distinct from lactic or ketoacidosis, which elevate the anion gap.',
+   proto:'adverse'},
+
+  {n:10,type:'recall',
+   scenario:'A patient at 26 weeks gestation presents in hypovolemic shock. You ask your partner whether NS can be administered.',
+   boxes:[{cls:'s-preg',t:'🤰 PREGNANCY | 26 weeks | Hypovolemic shock | NS indicated | Safe to give?'}],
+   q:'What does LFN 12.76 state about sodium chloride use in pregnancy?',
+   opts:[
+     {t:'Contraindicated in pregnancy due to fetal sodium loading risk',c:false},
+     {t:'May be used in pregnancy',c:true},
+     {t:'Requires 50% dose reduction in pregnancy',c:false},
+     {t:'Permitted in third trimester only',c:false}
+   ],
+   fb:'Per LFN 12.76 Pregnancy Considerations: <strong>"May be used in pregnancy."</strong> Standard fluid resuscitation dosing and titration applies.',
+   ins:'<strong>NS in pregnancy:</strong> Fluid resuscitation is standard of care in obstetric shock — NS is appropriate. Consider left lateral tilt or manual uterine displacement to relieve aortocaval compression. Maintaining maternal hemodynamic stability is the primary goal, as maternal perfusion directly supports fetal perfusion.',
+   proto:'pregnancy'}
+];
+
+let cur=1,score=0,answered=[];
+const total=Qs.length;
+
+function buildQuiz(){
+  const c=document.getElementById('qContainer');
+  Qs.forEach((q,i)=>{
+    const num=i+1;
+    const bHTML=q.boxes.map(b=>`<div class="s-box ${b.cls}">${b.t}</div>`).join('');
+    const oHTML=q.opts.map((o,j)=>`
+      <div class="option" data-correct="${o.c}">
+        <span class="opt-letter">${String.fromCharCode(65+j)}</span>${o.t}
+      </div>`).join('');
+    c.innerHTML+=`
+    <div class="q-card ${num===1?'active':''}" data-q="${num}">
+      <div class="q-header">
+        <span class="q-num">Question ${num}</span>
+        <span class="q-type type-${q.type}">${q.type}</span>
+      </div>
+      <div class="scenario">
+        <h3>📋 Clinical Scenario</h3>
+        <p>${q.scenario}</p>
+        ${bHTML}
+      </div>
+      <p class="q-text">${q.q}</p>
+      <div class="options">${oHTML}</div>
+      <div class="feedback">
+        <h4><span class="fb-icon"></span> <span class="fb-title"></span></h4>
+        <p>${q.fb}</p>
+        <div class="insight-box"><h5>🔬 Clinical Insight</h5><p>${q.ins}</p></div>
+        <div class="proto-ref">📖 Protocol Reference: <span class="proto-link" onclick="showPopup('${q.proto}')">View exact LFN wording</span></div>
+      </div>
+      <div class="nav-row">
+        <button class="btn btn-secondary" ${num===1?'disabled':''} onclick="goQ(${num-1})">← Previous</button>
+        <button class="btn btn-primary" id="next${num}" disabled onclick="${num===total?'showResults()':'goQ('+(num+1)+')'}">
+          ${num===total?'View Results →':'Next Question →'}
+        </button>
+      </div>
+    </div>`;
+  });
+  document.querySelectorAll('.option').forEach(opt=>{
+    opt.addEventListener('click',function(){
+      if(this.classList.contains('disabled'))return;
+      const card=this.closest('.q-card');
+      const num=parseInt(card.dataset.q);
+      card.querySelectorAll('.option').forEach(o=>{
+        o.classList.add('disabled');
+        if(o.dataset.correct==='true')o.classList.add('correct');
+      });
+      const ok=this.dataset.correct==='true';
+      if(!ok)this.classList.add('incorrect');
+      if(ok)score++;
+      answered[num]=ok;
+      const fb=card.querySelector('.feedback');
+      fb.classList.add('show',ok?'correct-fb':'incorrect-fb');
+      fb.querySelector('.fb-icon').textContent=ok?'✓':'✗';
+      fb.querySelector('.fb-title').textContent=ok?'Correct!':'Incorrect';
+      document.getElementById('next'+num).disabled=false;
+    });
+  });
+}
+
+function goQ(n){
+  document.querySelectorAll('.q-card').forEach(c=>c.classList.remove('active'));
+  document.querySelector('[data-q="'+n+'"]').classList.add('active');
+  cur=n;
+  document.getElementById('pFill').style.width=((n/total)*100)+'%';
+  document.getElementById('pText').textContent='Question '+n+' of '+total;
+}
+
+function showResults(){
+  document.getElementById('qContainer').style.display='none';
+  document.querySelector('.progress-wrap').style.display='none';
+  const r=document.getElementById('resultsCard');
+  r.classList.add('active');
+  const pct=Math.round((score/total)*100);
+  document.getElementById('rPct').textContent=pct+'%';
+  document.getElementById('rCorrect').textContent=score;
+  document.getElementById('rIncorrect').textContent=total-score;
+  const m=document.getElementById('rMsg');
+  if(pct>=90){
+    m.className='perf-msg perf-excellent';
+    m.innerHTML='<strong>🌟 Excellent!</strong> Outstanding command of LFN 12.76. You correctly identified fluid resuscitation as the sole indication, titrated dosing (250–500 mL adult; 10–20 mL pediatric per protocol), NS composition (154 mEq/L, pH 5.5), hypertonic saline (513 mEq/L, pH 5), central line guidance for &gt;2%, extravasation risk with concentrated solutions, and hyperchloremic metabolic acidosis adverse effect.';
+  } else if(pct>=70){
+    m.className='perf-msg perf-good';
+    m.innerHTML='<strong>👍 Good Performance!</strong> Review: fluid resuscitation as sole indication; titrate to effect (adult 250–500 mL, peds 10–20 mL per LFN 12.76); 0.9% NS (154 mEq/L, pH 5.5); 3% hypertonic (513 mEq/L, pH 5, for TBI/cerebral edema); &gt;2% prefer central (peripheral OK in emergency per SC 2); &gt;1% solutions are irritants — avoid extravasation; hyperchloremic acidosis risk with large NS volumes.';
+  } else {
+    m.className='perf-msg perf-review';
+    m.innerHTML='<strong>📚 Keep Studying!</strong> Focus areas: fluid resuscitation as the only indication; titrated not fixed dosing; adult 250–500 mL typical bolus; pediatric 10–20 mL per LFN 12.76; NS 0.9% composition (154 mEq/L Na, pH 5.5); hypertonic 3% (513 mEq/L Na, pH 5, head injury/cerebral edema); SC 2 central preferred for &gt;2% (peripheral OK in emergency); &gt;1% solutions irritants — avoid extravasation; hyperchloremic metabolic acidosis with large volumes.';
+  }
+}
+
+function restartQuiz(){
+  score=0; cur=1; answered=[];
+  document.querySelectorAll('.option').forEach(o=>o.classList.remove('disabled','correct','incorrect'));
+  document.querySelectorAll('.feedback').forEach(f=>f.classList.remove('show','correct-fb','incorrect-fb'));
+  Qs.forEach((_,i)=>{const b=document.getElementById('next'+(i+1));if(b)b.disabled=true;});
+  document.getElementById('qContainer').style.display='block';
+  document.querySelector('.progress-wrap').style.display='block';
+  document.getElementById('resultsCard').classList.remove('active');
+  goQ(1);
+}
+
+buildQuiz();
+</script>
+</body>
+</html>

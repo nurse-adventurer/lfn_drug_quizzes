@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LFN Drug Quiz | Terbutaline (12.80)</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --primary:#1e40af;
+  --primary-light:#2563eb;
+  --primary-dark:#1e3a8a;
+  --success-bg:#dcfce7;
+  --error-bg:#fee2e2;
+  --warning-bg:#fef3c7;
+  --warning-border:#f59e0b;
+  --card:#ffffff;
+  --text:#1f2937;
+  --text-secondary:#4b5563;
+  --border:#e5e7eb;
+  --shadow:0 2px 8px rgba(0,0,0,0.10);
+  --shadow-lg:0 8px 24px rgba(30,64,175,0.18);
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#eff6ff 0%,#bfdbfe 50%,#93c5fd 100%);min-height:100vh;padding:16px}
+.container{max-width:820px;margin:0 auto}
+.header{background:var(--card);border-radius:16px;padding:28px 24px 20px;margin-bottom:20px;box-shadow:var(--shadow-lg);text-align:center}
+.header h1{font-size:2rem;color:var(--primary);margin-bottom:6px}
+.header .subtitle{color:var(--primary-light);font-size:1rem;margin-bottom:12px}
+.drug-class-badge{display:inline-block;background:linear-gradient(135deg,var(--primary-light),var(--primary));color:#fff;padding:7px 20px;border-radius:20px;font-size:0.85rem;font-weight:700;margin-bottom:12px}
+.badge-row{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;margin-top:4px}
+.badge{display:inline-block;padding:5px 11px;border-radius:14px;font-size:0.7rem;font-weight:700;border:2px solid}
+.badge-preterm{background:#fce7f3;color:#9d174d;border-color:#ec4899}
+.badge-asthma{background:#dbeafe;color:#1e40af;border-color:#3b82f6}
+.badge-peds{background:#dcfce7;color:#166534;border-color:#22c55e}
+.badge-toco{background:#f3e8ff;color:#6b21a8;border-color:#a855f7}
+.badge-mix{background:#fef3c7;color:#92400e;border-color:#f59e0b}
+.mode-tabs{display:flex;background:var(--card);border-radius:12px;padding:6px;margin-bottom:18px;box-shadow:var(--shadow);gap:6px}
+.mode-tab{flex:1;padding:11px;text-align:center;border-radius:8px;cursor:pointer;font-weight:700;font-size:0.92rem;transition:all 0.2s;border:none;background:transparent;color:var(--text-secondary)}
+.mode-tab.active{background:linear-gradient(135deg,var(--primary-light),var(--primary));color:#fff;box-shadow:0 2px 8px rgba(30,64,175,0.3)}
+.ref-panel,.quiz-panel{display:none}
+.ref-panel.active,.quiz-panel.active{display:block}
+.ref-tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.ref-tab{padding:7px 14px;border-radius:8px;border:2px solid var(--border);background:var(--card);color:var(--text-secondary);font-size:0.8rem;font-weight:600;cursor:pointer;transition:all 0.2s}
+.ref-tab.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.ref-content{background:var(--card);border-radius:12px;padding:22px;box-shadow:var(--shadow)}
+.ref-section{display:none}
+.ref-section.active{display:block}
+.ref-section h3{color:var(--primary);font-size:1rem;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #bfdbfe}
+.dose-table{width:100%;border-collapse:collapse;font-size:0.83rem;margin-bottom:12px}
+.dose-table th{background:var(--primary);color:#fff;padding:9px 10px;text-align:left;font-size:0.78rem}
+.dose-table td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5}
+.dose-table tr:nth-child(even) td{background:#eff6ff}
+.dose-table td strong{color:var(--primary-dark)}
+.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:12px}
+.info-card{background:#eff6ff;border-radius:8px;padding:12px;border-left:3px solid var(--primary-light)}
+.info-card .lbl{font-size:0.7rem;color:var(--text-secondary);text-transform:uppercase;font-weight:700;margin-bottom:4px}
+.info-card .val{font-size:0.88rem;color:var(--text);font-weight:600;line-height:1.4}
+.warn-card{background:var(--error-bg);border:2px solid #ef4444;border-radius:8px;padding:14px;margin-bottom:10px}
+.warn-card h4{color:#7f1d1d;font-size:0.85rem;margin-bottom:7px}
+.warn-card p,.warn-card li{font-size:0.83rem;color:#991b1b;line-height:1.5}
+.warn-card ul{margin-left:16px;margin-top:4px}
+.note-card{background:var(--warning-bg);border:2px solid var(--warning-border);border-radius:8px;padding:14px;margin-bottom:10px}
+.note-card h4{color:#92400e;font-size:0.85rem;margin-bottom:6px}
+.note-card p,.note-card li{font-size:0.83rem;color:#78350f;line-height:1.5}
+.note-card ul{margin-left:16px;margin-top:4px}
+.ok-card{background:var(--success-bg);border:2px solid #22c55e;border-radius:8px;padding:14px;margin-bottom:10px}
+.ok-card h4{color:#166534;font-size:0.85rem;margin-bottom:6px}
+.ok-card p{font-size:0.83rem;color:#166534;line-height:1.5}
+.ci-card{background:#fff1f2;border:2px solid #fb7185;border-radius:8px;padding:14px;margin-bottom:10px}
+.ci-card h4{color:#9f1239;font-size:0.85rem;margin-bottom:6px}
+.ci-card p,.ci-card li{font-size:0.83rem;color:#9f1239;line-height:1.5;margin-left:16px;margin-bottom:2px}
+.sc-card{background:#f5f3ff;border:2px solid #a78bfa;border-radius:8px;padding:14px;margin-bottom:10px}
+.sc-card h4{color:#5b21b6;font-size:0.85rem;margin-bottom:6px}
+.sc-card p,.sc-card li{font-size:0.83rem;color:#4c1d95;line-height:1.5}
+.sc-card ul{margin-left:16px;margin-top:4px}
+.preg-card{background:#fce7f3;border:2px solid #ec4899;border-radius:8px;padding:14px;margin-bottom:10px}
+.preg-card h4{color:#9d174d;font-size:0.85rem;margin-bottom:6px}
+.preg-card p{font-size:0.83rem;color:#831843;line-height:1.5}
+.progress-wrap{background:var(--card);border-radius:12px;padding:16px 20px;margin-bottom:16px;box-shadow:var(--shadow)}
+.progress-bar{height:10px;background:var(--border);border-radius:8px;overflow:hidden;margin-bottom:7px}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--primary-light),var(--primary));border-radius:8px;transition:width 0.4s ease}
+.progress-text{text-align:center;color:var(--primary);font-weight:700;font-size:0.88rem}
+.q-card{background:var(--card);border-radius:16px;padding:26px;margin-bottom:18px;box-shadow:var(--shadow-lg);display:none}
+.q-card.active{display:block;animation:fadeUp 0.4s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.q-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.q-num{background:linear-gradient(135deg,var(--primary-light),var(--primary));color:#fff;padding:6px 14px;border-radius:14px;font-size:0.85rem;font-weight:700}
+.q-type{padding:5px 11px;border-radius:12px;font-size:0.72rem;font-weight:700;text-transform:uppercase}
+.type-recall{background:#dbeafe;color:#1e40af}
+.type-clinical{background:#dcfce7;color:#166534}
+.type-critical{background:#fce7f3;color:#be185d}
+.type-calculation{background:#f3e8ff;color:#7c3aed}
+.scenario{background:linear-gradient(135deg,#eff6ff,#dbeafe);border-left:4px solid var(--primary-light);padding:16px;border-radius:0 10px 10px 0;margin-bottom:16px}
+.scenario h3{color:var(--primary-dark);font-size:0.9rem;margin-bottom:6px}
+.scenario p{color:var(--primary-dark);font-size:0.93rem;line-height:1.6}
+.s-box{padding:10px 13px;border-radius:8px;margin-top:10px;font-size:0.87rem;font-weight:600;line-height:1.4}
+.s-preterm{background:#fce7f3;border:2px solid #ec4899;color:#9d174d}
+.s-asthma{background:#dbeafe;border:2px solid #3b82f6;color:#1e40af}
+.s-peds{background:#dcfce7;border:2px solid #22c55e;color:#166534}
+.s-hr{background:#fee2e2;border:2px solid #dc2626;color:#7f1d1d}
+.s-ci{background:#fee2e2;border:2px solid #dc2626;color:#7f1d1d}
+.s-preg{background:#fce7f3;border:2px solid #ec4899;color:#9d174d}
+.q-text{font-size:1.1rem;color:var(--text);margin-bottom:20px;line-height:1.6;font-weight:500}
+.options{display:flex;flex-direction:column;gap:10px}
+.option{padding:15px 18px;background:#f9fafb;border:2px solid var(--border);border-radius:10px;cursor:pointer;transition:all 0.2s;font-size:0.95rem;color:var(--text);display:flex;align-items:flex-start;gap:10px}
+.option:hover:not(.disabled){border-color:var(--primary-light);background:#eff6ff;transform:translateX(4px)}
+.opt-letter{min-width:28px;height:28px;line-height:28px;text-align:center;background:var(--primary);color:#fff;border-radius:50%;font-weight:700;font-size:0.82rem;flex-shrink:0}
+.option.correct{border-color:#22c55e;background:var(--success-bg);color:#166534}
+.option.incorrect{border-color:#ef4444;background:var(--error-bg);color:#991b1b}
+.option.disabled{cursor:not-allowed;opacity:0.75}
+.feedback{margin-top:20px;padding:20px;border-radius:12px;display:none}
+.feedback.show{display:block;animation:fadeUp 0.3s ease}
+.feedback.correct-fb{background:linear-gradient(135deg,#dcfce7,#bbf7d0);border:2px solid #22c55e}
+.feedback.incorrect-fb{background:linear-gradient(135deg,#fee2e2,#fecaca);border:2px solid #ef4444}
+.feedback h4{font-size:1.05rem;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.feedback.correct-fb h4{color:#166534}
+.feedback.incorrect-fb h4{color:#991b1b}
+.feedback p{color:var(--text);font-size:0.93rem;line-height:1.6;margin-bottom:10px}
+.insight-box{background:rgba(255,255,255,0.75);border-left:4px solid var(--primary-light);padding:13px;border-radius:0 8px 8px 0;margin-top:12px}
+.insight-box h5{color:var(--primary);font-size:0.88rem;margin-bottom:6px}
+.insight-box p{font-size:0.88rem;color:var(--text);margin-bottom:0}
+.proto-ref{background:rgba(255,255,255,0.8);padding:10px 13px;border-radius:7px;margin-top:12px;font-size:0.85rem;color:var(--primary)}
+.proto-link{color:var(--primary-dark);text-decoration:underline;cursor:pointer;font-weight:700}
+.nav-row{display:flex;justify-content:space-between;margin-top:20px;gap:10px}
+.btn{padding:12px 26px;border:none;border-radius:9px;font-size:0.95rem;font-weight:700;cursor:pointer;transition:all 0.2s}
+.btn-primary{background:linear-gradient(135deg,var(--primary-light),var(--primary));color:#fff}
+.btn-primary:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 4px 14px rgba(30,64,175,0.35)}
+.btn-secondary{background:var(--border);color:var(--text)}
+.btn:disabled{opacity:0.45;cursor:not-allowed;transform:none}
+.results{background:var(--card);border-radius:16px;padding:36px;text-align:center;box-shadow:var(--shadow-lg);display:none}
+.results.active{display:block;animation:fadeUp 0.4s ease}
+.results-score{font-size:4.5rem;font-weight:800;color:var(--primary);line-height:1}
+.results-label{font-size:1.3rem;color:var(--text-secondary);margin:8px 0 24px}
+.results-counts{display:flex;justify-content:center;gap:40px;margin-bottom:24px}
+.rc-item .num{font-size:2.2rem;font-weight:800}
+.rc-item .lbl{color:var(--text-secondary);font-size:0.85rem}
+.rc-correct .num{color:#22c55e}
+.rc-incorrect .num{color:#ef4444}
+.perf-msg{padding:18px;border-radius:12px;margin-bottom:22px;font-size:0.93rem;line-height:1.6}
+.perf-excellent{background:#dcfce7;color:#166534}
+.perf-good{background:#dbeafe;color:#1e40af}
+.perf-review{background:var(--warning-bg);color:#92400e}
+.sum-table{width:100%;border-collapse:collapse;font-size:0.8rem;margin:14px 0;text-align:left}
+.sum-table th{background:var(--primary);color:#fff;padding:8px 10px}
+.sum-table td{padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top}
+.sum-table tr:nth-child(even) td{background:#eff6ff}
+.kp-list{background:#eff6ff;border-radius:10px;padding:16px;margin-top:14px;text-align:left}
+.kp-list h4{color:var(--primary);margin-bottom:10px;font-size:0.92rem}
+.kp-list li{font-size:0.85rem;color:var(--text);line-height:1.6;margin-left:18px;margin-bottom:4px}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:998}
+.overlay.show{display:block}
+.popup{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border:3px solid var(--primary-light);border-radius:14px;padding:22px;width:90%;max-width:540px;max-height:80vh;overflow-y:auto;z-index:999;box-shadow:0 20px 60px rgba(0,0,0,0.25)}
+.popup.show{display:block;animation:popIn 0.25s ease}
+@keyframes popIn{from{opacity:0;transform:translate(-50%,-55%)}to{opacity:1;transform:translate(-50%,-50%)}}
+.popup-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:10px;border-bottom:2px solid #bfdbfe}
+.popup-head h3{color:var(--primary-dark);font-size:1rem}
+.popup-close{background:var(--primary-light);color:#fff;border:none;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:1.1rem;line-height:1}
+.popup-body{background:#eff6ff;padding:14px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.8rem;color:var(--primary-dark);line-height:1.65;white-space:pre-wrap}
+@media(max-width:600px){
+  .header h1{font-size:1.6rem}.q-card{padding:18px}.nav-row{flex-direction:column}.btn{width:100%}.results-counts{gap:24px}.ref-tabs{gap:4px}.ref-tab{padding:6px 10px;font-size:0.75rem}
+}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+  <h1>&#129431; Terbutaline</h1>
+  <p class="subtitle">LFN Drug Formulary Section 12.80 &middot; Clinical Application Quiz</p>
+  <div class="drug-class-badge">Beta-2 Agonist / Bronchodilator / Sympathomimetic</div>
+  <div class="badge-row">
+    <span class="badge badge-preterm">Preterm Labor (Adult)</span>
+    <span class="badge badge-asthma">Asthma in Extremis (Peds)</span>
+    <span class="badge badge-peds">Peds: SQ/IM/IV</span>
+    <span class="badge badge-toco">Tocolytic</span>
+    <span class="badge badge-mix">Mixture: 1 mg/100 mL</span>
+  </div>
+</div>
+
+<div class="mode-tabs">
+  <button class="mode-tab active" onclick="switchMode('ref')">&#128203; Quick Reference</button>
+  <button class="mode-tab" onclick="switchMode('quiz')">&#127919; Quiz (10 Questions)</button>
+</div>
+
+<div class="ref-panel active" id="refPanel">
+  <div class="ref-tabs">
+    <button class="ref-tab active" onclick="switchRef(event,'dosing')">Dosing / Indications</button>
+    <button class="ref-tab" onclick="switchRef(event,'pharma')">Pharmacology</button>
+    <button class="ref-tab" onclick="switchRef(event,'considerations')">Considerations</button>
+    <button class="ref-tab" onclick="switchRef(event,'warnings')">Warnings</button>
+  </div>
+  <div class="ref-content">
+
+    <div class="ref-section active" id="ref-dosing">
+      <h3>Dosing &amp; Indications</h3>
+      <table class="dose-table">
+        <tr><th>Indication</th><th>Adult Dose</th><th>Pediatric Dose</th></tr>
+        <tr>
+          <td><strong>Preterm Labor</strong></td>
+          <td>
+            <strong>0.25 mg SQ</strong><br>
+            &bull; Repeat q <strong>30 min</strong> until tocolysis achieved or max of 3 doses<br>
+            &bull; <strong>Hold if HR &gt;120</strong>
+          </td>
+          <td>No LFN Standing Order</td>
+        </tr>
+        <tr>
+          <td><strong>Asthma in Extremis</strong></td>
+          <td><em>No LFN Standing Order</em></td>
+          <td>
+            <strong>10 mcg/kg SQ/IM</strong> OR <strong>10 mcg/kg IV over 10 min</strong><br>
+            &bull; Maximum <strong>400 mcg/dose</strong> SC/IM/IV<br>
+            &bull; May repeat q 20 min PRN, max <strong>3 total doses</strong><br><br>
+            <strong>Infusion</strong> (after initial bolus):<br>
+            &bull; Start at <strong>0.4 mcg/kg/min</strong><br>
+            &bull; Titrate by 0.1&ndash;0.5 mcg/kg/min q 30 min<br>
+            &bull; Max <strong>5 mcg/kg/min</strong><br>
+            &bull; Requires consult with sending/receiving provider
+          </td>
+        </tr>
+      </table>
+      <div class="note-card">
+        <h4>LFN Standing Order Structure &mdash; Critical Distinction</h4>
+        <ul>
+          <li><strong>Adult:</strong> Preterm labor only &mdash; NO adult standing order for asthma</li>
+          <li><strong>Pediatric:</strong> Asthma in extremis only &mdash; NO pedi standing order for preterm labor</li>
+          <li>Preterm labor repeat interval is <strong>q30 min</strong> (not q20 min)</li>
+          <li>Recommended mixture: <strong>1 mg / 100 mL</strong></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="ref-section" id="ref-pharma">
+      <h3>Pharmacology</h3>
+      <div class="info-grid">
+        <div class="info-card"><div class="lbl">Mechanism of Action</div><div class="val">Stimulates adenyl cyclase resulting in increased levels of intracellular AMP. Elevated cAMP triggers relaxation of bronchial smooth muscle and inhibition of release of inflammatory mediators</div></div>
+        <div class="info-card"><div class="lbl">Pharmacologic Category</div><div class="val">Beta-2 agonist, bronchodilator, sympathomimetic</div></div>
+        <div class="info-card"><div class="lbl">Onset / Peak / Duration</div><div class="val">15&ndash;30 min / variable / 2&ndash;5 hours</div></div>
+        <div class="info-card"><div class="lbl">Trade Name</div><div class="val">Brethine</div></div>
+        <div class="info-card"><div class="lbl">Recommended Mixture</div><div class="val">1 mg / 100 mL</div></div>
+        <div class="info-card"><div class="lbl">Adverse Reactions</div><div class="val">Palpitations, tachyarrhythmias, hyperglycemia, hypokalemia, headache, seizure, tremor, nervous-feeling, muscle cramps, weakness, paradoxical bronchospasm, pulmonary edema</div></div>
+      </div>
+      <div class="preg-card">
+        <h4>Pregnancy</h4>
+        <p>Terbutaline crosses the placenta. Terbutaline may affect uterine contractility; use caution if needed to control bronchospasm in pregnant patients. Terbutaline has been used in the management of preterm labor.</p>
+      </div>
+    </div>
+
+    <div class="ref-section" id="ref-considerations">
+      <h3>Special Considerations</h3>
+      <div class="note-card">
+        <h4>Preterm Labor &mdash; Hold Parameter</h4>
+        <p>LFN 12.80 lists <strong>"Hold if HR &gt;120"</strong> directly in the dosing table for preterm labor. This is a built-in protocol instruction, not a separate special consideration section.</p>
+      </div>
+      <div class="sc-card">
+        <h4>Pediatric Infusion (Asthma in Extremis)</h4>
+        <p>After initial bolus dose, a continuous infusion may be initiated:</p>
+        <ul>
+          <li>Start at <strong>0.4 mcg/kg/min</strong></li>
+          <li>Titrate by 0.1&ndash;0.5 mcg/kg/min q 30 min PRN</li>
+          <li>Max dose: <strong>5 mcg/kg/min</strong></li>
+          <li><strong>Requires consult with sending/receiving provider</strong></li>
+          <li>Mixture: 1 mg / 100 mL NS (10 mcg/mL)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="ref-section" id="ref-warnings">
+      <h3>Warnings, Contraindications &amp; Adverse Reactions</h3>
+      <div class="ci-card">
+        <h4>Contraindications (per LFN 12.80)</h4>
+        <p>Hypersensitivity</p>
+      </div>
+      <div class="warn-card">
+        <h4>Warnings / Precautions</h4>
+        <p>Caution in <strong>cardiovascular disease</strong>; <strong>uncontrolled HTN</strong>; <strong>hypokalemia</strong>; <strong>diabetes</strong>.</p>
+        <p style="margin-top:8px;font-size:0.83rem">Note: Cardiovascular disease is a <em>caution</em> in LFN 12.80, not a contraindication. The only listed contraindication is hypersensitivity.</p>
+      </div>
+      <div class="warn-card">
+        <h4>Adverse Reactions</h4>
+        <p>Palpitations, tachyarrhythmias, hyperglycemia, hypokalemia, headache, <strong>seizure</strong>, tremor, nervous-feeling, muscle cramps, weakness, <strong>paradoxical bronchospasm</strong>, <strong>pulmonary edema</strong></p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="quiz-panel" id="quizPanel">
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="pFill" style="width:10%"></div></div>
+    <div class="progress-text" id="pText">Question 1 of 10</div>
+  </div>
+  <div id="qContainer"></div>
+  <div class="results" id="resultsCard">
+    <h2 style="color:var(--primary);margin-bottom:8px">Quiz Complete!</h2>
+    <div class="results-score" id="rPct">&mdash;</div>
+    <div class="results-label">Final Score</div>
+    <div class="results-counts">
+      <div class="rc-item rc-correct"><div class="num" id="rCorrect">0</div><div class="lbl">Correct</div></div>
+      <div class="rc-item rc-incorrect"><div class="num" id="rIncorrect">0</div><div class="lbl">Incorrect</div></div>
+    </div>
+    <div class="perf-msg" id="rMsg"></div>
+    <table class="sum-table">
+      <tr><th>Parameter</th><th>LFN 12.80 Value</th></tr>
+      <tr><td>Adult Indication</td><td>Preterm labor only (no adult asthma standing order)</td></tr>
+      <tr><td>Pediatric Indication</td><td>Asthma in extremis only (no pedi preterm labor standing order)</td></tr>
+      <tr><td>Preterm Labor Dose</td><td>0.25 mg SQ &middot; Repeat q 30 min until tocolysis achieved or max 3 doses &middot; Hold if HR &gt;120</td></tr>
+      <tr><td>Pedi Asthma Dose</td><td>10 mcg/kg SQ/IM OR IV over 10 min &middot; Max 400 mcg/dose &middot; Repeat q 20 min PRN &middot; Max 3 doses</td></tr>
+      <tr><td>Pedi Infusion</td><td>0.4 mcg/kg/min after bolus &middot; Titrate 0.1&ndash;0.5 mcg/kg/min q 30 min &middot; Max 5 mcg/kg/min &middot; Requires provider consult</td></tr>
+      <tr><td>Mechanism</td><td>Stimulates adenyl cyclase &rarr; increased intracellular AMP &rarr; relaxation of bronchial smooth muscle and inhibition of inflammatory mediators</td></tr>
+      <tr><td>Category</td><td>Beta-2 agonist, bronchodilator, sympathomimetic</td></tr>
+      <tr><td>Trade Name</td><td>Brethine</td></tr>
+      <tr><td>Recommended Mixture</td><td>1 mg / 100 mL</td></tr>
+      <tr><td>Onset / Peak / Duration</td><td>15&ndash;30 min / variable / 2&ndash;5 hours</td></tr>
+      <tr><td>Contraindications</td><td>Hypersensitivity (only)</td></tr>
+      <tr><td>Warnings</td><td>Caution in cardiovascular disease; uncontrolled HTN; hypokalemia; diabetes</td></tr>
+      <tr><td>Adverse Reactions</td><td>Palpitations, tachyarrhythmias, hyperglycemia, hypokalemia, headache, seizure, tremor, nervous-feeling, muscle cramps, weakness, paradoxical bronchospasm, pulmonary edema</td></tr>
+      <tr><td>Pregnancy</td><td>Crosses placenta; may affect uterine contractility; use caution for bronchospasm in pregnant patients; has been used in preterm labor management</td></tr>
+    </table>
+    <div class="kp-list">
+      <h4>Key Points &mdash; LFN 12.80</h4>
+      <ul>
+        <li><strong>Adult:</strong> Preterm labor only &mdash; <strong>NO adult standing order for asthma</strong></li>
+        <li><strong>Pediatric:</strong> Asthma in extremis only &mdash; no pedi preterm labor order</li>
+        <li>Preterm labor: <strong>0.25 mg SQ</strong> &middot; repeat <strong>q30 min</strong> &middot; max 3 doses &middot; <strong>Hold if HR &gt;120</strong></li>
+        <li>Pedi asthma: <strong>10 mcg/kg SQ/IM or IV over 10 min</strong> &middot; max 400 mcg &middot; q20 min &middot; max 3 doses</li>
+        <li>Pedi infusion: <strong>0.4 mcg/kg/min</strong> start, max <strong>5 mcg/kg/min</strong> &mdash; requires provider consult</li>
+        <li>MOA: <strong>stimulates adenyl cyclase &rarr; increased intracellular AMP &rarr; bronchial smooth muscle relaxation + inhibits inflammatory mediators</strong></li>
+        <li>Category: <strong>Beta-2 agonist, bronchodilator, sympathomimetic</strong></li>
+        <li>Trade: <strong>Brethine</strong> &middot; Mixture: <strong>1 mg/100 mL</strong></li>
+        <li>Onset: <strong>15&ndash;30 min</strong> / Peak: <strong>variable</strong> / Duration: <strong>2&ndash;5 hours</strong></li>
+        <li>Contraindication: <strong>hypersensitivity only</strong> &mdash; cardiovascular disease/HTN are <em>warnings</em>, not CI</li>
+        <li>Key adverse reactions: <strong>tachyarrhythmias, tremor, hypokalemia, hyperglycemia, paradoxical bronchospasm, pulmonary edema, seizure</strong></li>
+      </ul>
+    </div>
+    <button class="btn btn-primary" onclick="restartQuiz()" style="margin-top:22px">Restart Quiz</button>
+  </div>
+</div>
+
+<div class="overlay" id="overlay" onclick="closePopup()"></div>
+<div class="popup" id="popup">
+  <div class="popup-head">
+    <h3>LFN Protocol &mdash; Exact Wording</h3>
+    <button class="popup-close" onclick="closePopup()">&times;</button>
+  </div>
+  <div class="popup-body" id="popupBody"></div>
+</div>
+
+<script>
+function switchMode(m){
+  document.getElementById('refPanel').classList.toggle('active',m==='ref');
+  document.getElementById('quizPanel').classList.toggle('active',m==='quiz');
+  document.querySelectorAll('.mode-tab').forEach((t,i)=>t.classList.toggle('active',(m==='ref'&&i===0)||(m==='quiz'&&i===1)));
+}
+function switchRef(e,id){
+  document.querySelectorAll('.ref-section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('ref-'+id).classList.add('active');
+  document.querySelectorAll('.ref-tab').forEach(t=>t.classList.remove('active'));
+  e.target.classList.add('active');
+}
+const PROTO={
+  indications:`INDICATIONS (LFN 12.80):
+
+ADULT:
+"• Preterm labor"
+  Dose: 0.25 mg SQ
+        Repeat q 30 min until tocolysis
+        achieved or max of 3 doses
+        Hold if HR >120
+  Pediatric: No LFN Standing Order
+
+PEDIATRIC:
+"• Asthma in extremis"
+  Dose: 10 mcg/kg SQ/IM OR
+        10 mcg/kg IV over 10 min
+        Maximum 400 mcg/dose SC/IM/IV
+        May repeat q 20 min PRN,
+        max 3 total doses
+  Adult: No LFN Standing Order
+
+Pharmacologic Category:
+"Beta-2 agonist, bronchodilator,
+sympathomimetic"
+
+Trade Name: "Brethine"
+
+KEY DISTINCTIONS:
+• Adult: preterm labor ONLY
+• Peds: asthma in extremis ONLY
+• Cross-over does NOT apply`,
+
+  dosing_preterm:`PRETERM LABOR DOSING (LFN 12.80):
+
+ADULT:
+"0.25 mg SQ
+ • Repeat q 30 min until tocolysis
+   achieved or max of 3 doses
+ • Hold if HR >120"
+
+PEDIATRIC:
+"No LFN Standing Order"
+
+Key points:
+• Route: SQ (subcutaneous)
+• Repeat interval: q 30 MINUTES
+  (NOT q 20 min — common error)
+• Max: 3 total doses
+• Hold threshold: HR >120 bpm
+  (listed directly in dosing table)
+• "Until tocolysis achieved" — stop
+  when contractions cease, even
+  before 3 doses
+
+Goal of tocolysis:
+• Delay delivery to allow:
+  - Betamethasone for fetal lung maturity
+  - Maternal transport
+  - Magnesium sulfate neuroprotection`,
+
+  dosing_asthma:`ASTHMA IN EXTREMIS DOSING (LFN 12.80):
+
+PEDIATRIC:
+"10 mcg/kg SQ/IM OR
+ 10 mcg/kg IV over 10 min
+ • Maximum 400 mcg/dose SC/IM/IV
+ • May repeat q 20 minutes PRN,
+   for a maximum of 3 total doses"
+
+INFUSION (after initial bolus):
+"• After initial bolus dose,
+   initiate at 0.4 mcg/kg/min
+ • Titrate by 0.1 – 0.5 mcg/kg/min
+   q 30 min
+ • Max dose 5 mcg/kg/min
+ • Requires consult with
+   sending/receiving provider"
+
+ADULT: No LFN Standing Order
+
+Calculation examples:
+• 20 kg: 20 × 10 mcg = 200 mcg
+• 30 kg: 30 × 10 mcg = 300 mcg
+• 40 kg: 40 × 10 mcg = 400 mcg (at max)
+• 50 kg: 50 × 10 mcg = 500 mcg
+  → Exceeds max, give 400 mcg only
+
+Recommended Mixture: 1 mg / 100 mL`,
+
+  moa:`MECHANISM OF ACTION (LFN 12.80):
+
+"Stimulates adenyl cyclase resulting
+in increased levels of intracellular AMP.
+Elevated cAMP triggers relaxation of
+bronchial smooth muscle and inhibition
+of release of inflammatory mediators."
+
+Pharmacologic Category:
+"Beta-2 agonist, bronchodilator,
+sympathomimetic"
+
+Pathway:
+Terbutaline → Adenyl cyclase activation
+→ Increased intracellular AMP (cAMP)
+→ (1) Bronchial smooth muscle relaxation
+→ (2) Inhibition of inflammatory mediators
+
+Note: LFN 12.80 MOA focuses on the
+adenyl cyclase / cAMP pathway.
+This is distinct from the generic
+"beta-2 receptor relaxes smooth muscle"
+description in the placeholder.`,
+
+  ci:`CONTRAINDICATIONS (LFN 12.80):
+
+"Hypersensitivity"
+
+ONLY ONE CONTRAINDICATION listed.
+
+WARNINGS / PRECAUTIONS (LFN 12.80):
+
+"Caution in cardiovascular disease;
+uncontrolled HTN; hypokalemia;
+diabetes."
+
+Critical distinction:
+• Cardiovascular disease = CAUTION
+  (not a contraindication in LFN 12.80)
+• The placeholder incorrectly listed
+  "cardiac disease and/or arrhythmias"
+  as a contraindication — LFN 12.80
+  lists this as a caution/warning only
+• <20 weeks gestation is NOT listed
+  as a contraindication in LFN 12.80`,
+
+  adverse:`ADVERSE REACTIONS (LFN 12.80):
+
+"Palpitations, tachyarrhythmias,
+hyperglycemia, hypokalemia, headache,
+seizure, tremor, nervous-feeling,
+muscle cramps, weakness, paradoxical
+bronchospasm, pulmonary edema"
+
+Noteworthy inclusions:
+• SEIZURE — listed (neurologic risk)
+• PARADOXICAL BRONCHOSPASM — worsening
+  of the condition being treated
+• PULMONARY EDEMA — especially relevant
+  with prolonged/high-dose use
+• TACHYARRHYTHMIAS — not just tachycardia
+
+WARNINGS / PRECAUTIONS:
+"Caution in cardiovascular disease;
+uncontrolled HTN; hypokalemia;
+diabetes."
+
+Metabolic effects:
+• Hypokalemia: K+ shifts into cells
+• Hyperglycemia: glycogenolysis,
+  gluconeogenesis`,
+
+  onset:`ONSET / PEAK / DURATION (LFN 12.80):
+
+"15-30 min / variable / 2-5 hours"
+
+Onset:    15-30 minutes
+Peak:     variable (not a fixed time)
+Duration: 2-5 hours
+
+Recommended Mixture: 1 mg / 100 mL
+
+Clinical implications:
+• Onset is NOT 5-30 min (common error)
+• Peak is "variable" — individual response
+• Duration 2-5 hours (not 3-4 hours)
+• For preterm labor: may take 30+ min
+  to see contraction reduction
+  (hence q 30 min repeat interval)
+• For peds asthma: slower onset than
+  albuterol neb, but parenteral route
+  useful in extremis`,
+
+  pregnancy:`PREGNANCY CONSIDERATIONS (LFN 12.80):
+
+"Terbutaline crosses the placenta.
+Terbutaline may affect uterine
+contractility; use caution if needed
+to control bronchospasm in pregnant
+patients. Terbutaline has been used
+in the management of preterm labor."
+
+Key elements:
+1. CROSSES PLACENTA — confirmed
+2. AFFECTS UTERINE CONTRACTILITY —
+   use caution for bronchospasm in
+   pregnant patients (it may affect
+   the uterus while treating the lungs)
+3. HAS BEEN USED IN PRETERM LABOR —
+   acknowledgment of tocolytic use
+
+This differs from the placeholder which
+cited "Category B" and black box warnings
+against prolonged use. Those concepts
+are from FDA/manufacturer labeling;
+LFN 12.80 does not include them.`
+};
+function showPopup(k){
+  document.getElementById('popupBody').textContent=PROTO[k]||'See LFN 12.80.';
+  document.getElementById('popup').classList.add('show');
+  document.getElementById('overlay').classList.add('show');
+}
+function closePopup(){
+  document.getElementById('popup').classList.remove('show');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+const Qs=[
+  {n:1,type:'recall',
+   scenario:'You are reviewing the LFN formulary for terbutaline and need to know which patient populations have standing orders.',
+   boxes:[],
+   q:'What are the indications for terbutaline per LFN 12.80, and which age groups have standing orders for each?',
+   opts:[
+     {t:'Preterm labor (adult and peds); Severe asthma (adult and peds)',c:false},
+     {t:'Preterm labor (adult only, No LFN Standing Order for peds); Asthma in extremis (peds only, No LFN Standing Order for adult)',c:true},
+     {t:'Severe asthma (adult only)',c:false},
+     {t:'Preterm labor and asthma for all ages',c:false}
+   ],
+   fb:'Per LFN 12.80: <strong>Preterm labor = adult dose only (no pedi standing order). Asthma in extremis = pediatric dose only (no adult standing order).</strong>',
+   ins:'<strong>Asymmetric standing orders — this is a high-yield LFN 12.80 fact.</strong> Adults use terbutaline for preterm labor tocolysis. Pediatric patients use it for asthma in extremis. There is no adult standing order for asthma (adults use albuterol, racemic epinephrine, and magnesium per the asthma PCG) and no pediatric standing order for preterm labor (a pedi patient would not present with preterm labor).',
+   proto:'indications'},
+
+  {n:2,type:'recall',
+   scenario:'A patient at 30 weeks in preterm labor receives terbutaline. You need to know the correct repeat interval.',
+   boxes:[{cls:'s-preterm',t:'PRETERM LABOR | 30 weeks | Initial 0.25 mg SQ given | Repeat interval?'}],
+   q:'What is the repeat interval for terbutaline in preterm labor per LFN 12.80?',
+   opts:[
+     {t:'Repeat q 20 min up to 3 doses',c:false},
+     {t:'Repeat q 30 min until tocolysis achieved or max of 3 doses',c:true},
+     {t:'Single dose only — do not repeat',c:false},
+     {t:'Repeat q 60 min up to 2 doses',c:false}
+   ],
+   fb:'Per LFN 12.80 preterm labor dosing: <strong>0.25 mg SQ &middot; Repeat q 30 min until tocolysis achieved or max of 3 doses.</strong>',
+   ins:'<strong>q30 min — not q20 min.</strong> The preterm labor repeat interval is 30 minutes. The q20 min interval belongs to the pediatric asthma dosing. Also note the protocol says "until tocolysis achieved" — you stop when contractions cease even if fewer than 3 doses have been given. Maximum is 3 doses regardless.',
+   proto:'dosing_preterm'},
+
+  {n:3,type:'clinical',
+   scenario:'A preterm labor patient on terbutaline has a pulse of 128 bpm. Her last dose was 25 minutes ago. Contractions are still present.',
+   boxes:[{cls:'s-hr',t:'PRETERM LABOR | Terbutaline on board | HR 128 bpm | Next dose due | Give or hold?'}],
+   q:'What does LFN 12.80 instruct when maternal pulse exceeds 120 bpm?',
+   opts:[
+     {t:'No pulse parameter listed — continue dosing',c:false},
+     {t:'Hold the dose — LFN 12.80 states "Hold if HR >120" in the dosing table',c:true},
+     {t:'Hold only if HR >150 bpm',c:false},
+     {t:'Reduce dose to 0.125 mg and continue',c:false}
+   ],
+   fb:'Per LFN 12.80 preterm labor dosing table: <strong>"Hold if HR &gt;120."</strong> At HR 128 bpm, do not administer the next dose.',
+   ins:'<strong>"Hold if HR &gt;120" is embedded in the LFN dosing table — not a separate special consideration.</strong> This is a protocol-level instruction that appears alongside the dose and repeat interval. Terbutaline stimulates beta-2 receptors but also has beta-1 effects at clinical doses, causing tachycardia. A rate above 120 bpm signals excessive adrenergic stimulation and increased risk of arrhythmia or myocardial stress. Hold the dose and reassess.',
+   proto:'dosing_preterm'},
+
+  {n:4,type:'calculation',
+   scenario:'A 30 kg child presents in status asthmaticus (asthma in extremis) unresponsive to nebulized albuterol.',
+   boxes:[{cls:'s-peds',t:'PEDS ASTHMA IN EXTREMIS | 30 kg | Calculate terbutaline dose'}],
+   q:'What is the correct dose for this pediatric patient per LFN 12.80?',
+   opts:[
+     {t:'0.25 mg SQ (adult preterm labor dose)',c:false},
+     {t:'10 mcg/kg = 300 mcg SQ/IM or IV over 10 min; max 400 mcg/dose',c:true},
+     {t:'0.01 mg/kg = 0.3 mg SubQ',c:false},
+     {t:'0.5 mg/kg IV',c:false}
+   ],
+   fb:'Per LFN 12.80 pedi asthma dosing: <strong>10 mcg/kg SQ/IM or IV over 10 min &middot; Max 400 mcg/dose.</strong> For this 30 kg patient: 30 &times; 10 mcg = <strong>300 mcg</strong> (below max).',
+   ins:'<strong>LFN 12.80 uses mcg/kg notation &mdash; 10 mcg/kg, not 0.01 mg/kg.</strong> They are mathematically equivalent (10 mcg = 0.01 mg) but the protocol lists mcg. At 30 kg: 300 mcg, well under the 400 mcg cap. The max matters for patients &ge;40 kg (40 &times; 10 = 400 mcg, exactly at ceiling; above 40 kg always give 400 mcg). Three routes are available: SQ, IM, or IV over 10 minutes.',
+   proto:'dosing_asthma'},
+
+  {n:5,type:'recall',
+   scenario:'A student asks you to explain how terbutaline works, specifically mentioning the intracellular messenger involved.',
+   boxes:[],
+   q:'What is the mechanism of action of terbutaline per LFN 12.80?',
+   opts:[
+     {t:'Beta-2-adrenergic agonist that relaxes bronchial and uterine smooth muscle via action on beta-2 receptors',c:false},
+     {t:'Stimulates adenyl cyclase resulting in increased levels of intracellular AMP; elevated cAMP triggers relaxation of bronchial smooth muscle and inhibition of inflammatory mediators',c:true},
+     {t:'Blocks muscarinic receptors, reducing bronchoconstriction',c:false},
+     {t:'Directly inhibits phosphodiesterase, preventing cAMP breakdown',c:false}
+   ],
+   fb:'Per LFN 12.80 MOA: <strong>"Stimulates adenyl cyclase resulting in increased levels of intracellular AMP. Elevated cAMP triggers relaxation of bronchial smooth muscle and inhibition of release of inflammatory mediators."</strong>',
+   ins:'<strong>LFN 12.80 MOA focuses on the adenyl cyclase/cAMP pathway, not just "beta-2 receptor relaxes smooth muscle."</strong> The sequence is: terbutaline &rarr; activates adenyl cyclase &rarr; increased intracellular cAMP &rarr; (1) relaxation of bronchial smooth muscle AND (2) inhibition of inflammatory mediators. The LFN entry also focuses on bronchial effects only &mdash; the uterine tocolytic mechanism is implied by the preterm labor indication but the MOA text describes bronchial smooth muscle.',
+   proto:'moa'},
+
+  {n:6,type:'critical',
+   scenario:'A flight crew debates whether cardiac disease is an absolute contraindication to terbutaline in a patient with known mild cardiomyopathy who is in preterm labor.',
+   boxes:[{cls:'s-ci',t:'PRETERM LABOR | Known cardiomyopathy | Is cardiac disease a contraindication in LFN 12.80?'}],
+   q:'What does LFN 12.80 list as contraindications vs. warnings regarding cardiovascular disease?',
+   opts:[
+     {t:'Cardiac disease is a contraindication — do not give',c:false},
+     {t:'Cardiovascular disease is listed as a WARNING/CAUTION only; the only contraindication in LFN 12.80 is hypersensitivity',c:true},
+     {t:'Both cardiac disease and hypersensitivity are contraindications',c:false},
+     {t:'No cardiac warnings at all in LFN 12.80',c:false}
+   ],
+   fb:'Per LFN 12.80 Contraindications: <strong>"Hypersensitivity"</strong> (only). Per Warnings/Precautions: <strong>"Caution in cardiovascular disease; uncontrolled HTN; hypokalemia; diabetes."</strong>',
+   ins:'<strong>Critical LFN 12.80 distinction: cardiovascular disease is a caution, not a contraindication.</strong> This differs from general pharmacology references that list cardiac disease as a relative or absolute contraindication to beta-agonists. LFN 12.80 places it in the warnings/precautions field with three other conditions (HTN, hypokalemia, diabetes). The only absolute contraindication listed is hypersensitivity. Clinical judgment still applies, but the LFN-specific categorization matters for exam purposes.',
+   proto:'ci'},
+
+  {n:7,type:'recall',
+   scenario:'A paramedic student recites terbutaline onset as "5 to 30 minutes" based on a general pharmacology reference.',
+   boxes:[],
+   q:'What are the onset, peak, and duration of terbutaline per LFN 12.80?',
+   opts:[
+     {t:'Onset 5&ndash;30 min / Peak 30&ndash;60 min / Duration 3&ndash;4 hours',c:false},
+     {t:'Onset 15&ndash;30 min / Peak variable / Duration 2&ndash;5 hours',c:true},
+     {t:'Onset immediate / Peak 5 min / Duration 1 hour',c:false},
+     {t:'Onset 30&ndash;60 min / Peak 90 min / Duration 6 hours',c:false}
+   ],
+   fb:'Per LFN 12.80 Onset/Peak/Duration: <strong>15&ndash;30 min / variable / 2&ndash;5 hours.</strong>',
+   ins:'<strong>Three LFN-specific values to memorize: 15&ndash;30 min onset, variable peak, 2&ndash;5 hours duration.</strong> The onset starts at 15 minutes (not 5), the peak is "variable" (individual response varies), and the duration is 2&ndash;5 hours (not 3&ndash;4). These differences from commonly cited textbook values are clinically meaningful for preterm labor: the 15&ndash;30 min onset explains why the repeat interval is 30 minutes &mdash; you wait for the drug to take effect before deciding to re-dose.',
+   proto:'onset'},
+
+  {n:8,type:'clinical',
+   scenario:'A 25 kg child in asthma in extremis has received an initial terbutaline bolus of 250 mcg IV over 10 minutes. Bronchospasm persists.',
+   boxes:[{cls:'s-peds',t:'PEDS ASTHMA | 25 kg | Initial terbutaline bolus given | Persistent bronchospasm | Infusion?'}],
+   q:'What does LFN 12.80 specify for a terbutaline infusion after the initial bolus in pediatric asthma in extremis?',
+   opts:[
+     {t:'No infusion option in LFN 12.80',c:false},
+     {t:'Initiate at 0.4 mcg/kg/min; titrate 0.1&ndash;0.5 mcg/kg/min q 30 min; max 5 mcg/kg/min; requires provider consult',c:true},
+     {t:'Infuse at 0.25 mg/hr fixed rate',c:false},
+     {t:'Repeat bolus dose q 5 min instead of infusion',c:false}
+   ],
+   fb:'Per LFN 12.80 pedi infusion: <strong>Initiate at 0.4 mcg/kg/min &middot; Titrate by 0.1&ndash;0.5 mcg/kg/min q 30 min &middot; Max 5 mcg/kg/min &middot; Requires consult with sending/receiving provider.</strong>',
+   ins:'<strong>LFN 12.80 includes a pediatric terbutaline infusion protocol for asthma in extremis.</strong> This is a CCT-level intervention. The infusion is started after the initial bolus, at 0.4 mcg/kg/min. It can be titrated upward by 0.1&ndash;0.5 mcg/kg/min every 30 minutes, with a ceiling of 5 mcg/kg/min. Provider consult is explicitly required. Recommended mixture is 1 mg/100 mL (10 mcg/mL) NS for easy weight-based rate calculation.',
+   proto:'dosing_asthma'},
+
+  {n:9,type:'recall',
+   scenario:'After giving terbutaline for asthma in extremis, a 20 kg child develops worsening wheezing.',
+   boxes:[{cls:'s-asthma',t:'POST-TERBUTALINE | Worsening wheezing | Expected adverse reaction?'}],
+   q:'Which adverse reaction listed in LFN 12.80 explains worsening bronchospasm after terbutaline administration?',
+   opts:[
+     {t:'Pulmonary edema',c:false},
+     {t:'Paradoxical bronchospasm',c:true},
+     {t:'Sedation',c:false},
+     {t:'Hypertension',c:false}
+   ],
+   fb:'Per LFN 12.80 Adverse Reactions: <strong>"paradoxical bronchospasm"</strong> is explicitly listed and explains worsening airway obstruction after administration.',
+   ins:'<strong>Paradoxical bronchospasm is an LFN-listed adverse reaction.</strong> This counterintuitive reaction &mdash; a bronchodilator causing bronchoconstriction &mdash; may result from propellant hypersensitivity, mucosal irritation, or cold aerosol stimulation of airway receptors. When bronchospasm worsens after terbutaline, discontinue the drug immediately and switch to an alternative agent. This is distinct from treatment failure (unchanged bronchospasm), which might prompt escalation.',
+   proto:'adverse'},
+
+  {n:10,type:'clinical',
+   scenario:'A pregnant patient at 28 weeks presents with severe asthma exacerbation. The team considers terbutaline.',
+   boxes:[{cls:'s-preg',t:'PREGNANCY | 28 weeks | Severe asthma | Terbutaline considerations?'}],
+   q:'What does LFN 12.80 state about terbutaline use in pregnant patients with bronchospasm?',
+   opts:[
+     {t:'Contraindicated in pregnancy',c:false},
+     {t:'Terbutaline crosses the placenta; may affect uterine contractility; use caution if needed to control bronchospasm in pregnant patients',c:true},
+     {t:'Safe in pregnancy without restriction',c:false},
+     {t:'Only permitted in the third trimester',c:false}
+   ],
+   fb:'Per LFN 12.80 Pregnancy Considerations: <strong>"Terbutaline crosses the placenta. Terbutaline may affect uterine contractility; use caution if needed to control bronchospasm in pregnant patients. Terbutaline has been used in the management of preterm labor."</strong>',
+   ins:'<strong>The LFN pregnancy statement flags a dual-effect risk unique to this drug.</strong> When given for bronchospasm in a pregnant patient, terbutaline crosses the placenta AND may affect uterine contractility &mdash; meaning it could inadvertently trigger or suppress labor depending on gestational context. The statement says "use caution," not "do not use" &mdash; the drug is not contraindicated in pregnancy, but the interaction between its bronchodilator and tocolytic effects requires awareness. Albuterol is the preferred SABA in pregnancy per LFN 12.05.',
+   proto:'pregnancy'}
+];
+
+let cur=1,score=0,answered=[];
+const total=Qs.length;
+
+function buildQuiz(){
+  const c=document.getElementById('qContainer');
+  Qs.forEach((q,i)=>{
+    const num=i+1;
+    const bHTML=q.boxes.map(b=>`<div class="s-box ${b.cls}">${b.t}</div>`).join('');
+    const oHTML=q.opts.map((o,j)=>`<div class="option" data-correct="${o.c}"><span class="opt-letter">${String.fromCharCode(65+j)}</span>${o.t}</div>`).join('');
+    c.innerHTML+=`<div class="q-card ${num===1?'active':''}" data-q="${num}">
+      <div class="q-header"><span class="q-num">Question ${num}</span><span class="q-type type-${q.type}">${q.type}</span></div>
+      <div class="scenario"><h3>Clinical Scenario</h3><p>${q.scenario}</p>${bHTML}</div>
+      <p class="q-text">${q.q}</p>
+      <div class="options">${oHTML}</div>
+      <div class="feedback">
+        <h4><span class="fb-icon"></span> <span class="fb-title"></span></h4>
+        <p>${q.fb}</p>
+        <div class="insight-box"><h5>Clinical Insight</h5><p>${q.ins}</p></div>
+        <div class="proto-ref">Protocol Reference: <span class="proto-link" onclick="showPopup('${q.proto}')">View exact LFN wording</span></div>
+      </div>
+      <div class="nav-row">
+        <button class="btn btn-secondary" ${num===1?'disabled':''} onclick="goQ(${num-1})">&#8592; Previous</button>
+        <button class="btn btn-primary" id="next${num}" disabled onclick="${num===total?'showResults()':'goQ('+(num+1)+')'}">
+          ${num===total?'View Results &#8594;':'Next Question &#8594;'}
+        </button>
+      </div>
+    </div>`;
+  });
+  document.querySelectorAll('.option').forEach(opt=>{
+    opt.addEventListener('click',function(){
+      if(this.classList.contains('disabled'))return;
+      const card=this.closest('.q-card');
+      const num=parseInt(card.dataset.q);
+      card.querySelectorAll('.option').forEach(o=>{o.classList.add('disabled');if(o.dataset.correct==='true')o.classList.add('correct');});
+      const ok=this.dataset.correct==='true';
+      if(!ok)this.classList.add('incorrect');
+      if(ok)score++;
+      answered[num]=ok;
+      const fb=card.querySelector('.feedback');
+      fb.classList.add('show',ok?'correct-fb':'incorrect-fb');
+      fb.querySelector('.fb-icon').textContent=ok?'&#10003;':'&#10007;';
+      fb.querySelector('.fb-title').textContent=ok?'Correct!':'Incorrect';
+      document.getElementById('next'+num).disabled=false;
+    });
+  });
+}
+
+function goQ(n){
+  document.querySelectorAll('.q-card').forEach(c=>c.classList.remove('active'));
+  document.querySelector('[data-q="'+n+'"]').classList.add('active');
+  cur=n;
+  document.getElementById('pFill').style.width=((n/total)*100)+'%';
+  document.getElementById('pText').textContent='Question '+n+' of '+total;
+}
+
+function showResults(){
+  document.getElementById('qContainer').style.display='none';
+  document.querySelector('.progress-wrap').style.display='none';
+  document.getElementById('resultsCard').classList.add('active');
+  const pct=Math.round((score/total)*100);
+  document.getElementById('rPct').textContent=pct+'%';
+  document.getElementById('rCorrect').textContent=score;
+  document.getElementById('rIncorrect').textContent=total-score;
+  const m=document.getElementById('rMsg');
+  if(pct>=90){m.className='perf-msg perf-excellent';m.innerHTML='<strong>Excellent!</strong> Outstanding command of LFN 12.80. You correctly identified: adult = preterm labor only (no adult asthma order); peds = asthma in extremis only; preterm repeat q30 min (not q20); hold if HR &gt;120; 10 mcg/kg pedi dose; adenyl cyclase/cAMP MOA; hypersensitivity as the only CI; cardiovascular disease as a caution; onset 15&ndash;30 min / variable peak / 2&ndash;5 hr; paradoxical bronchospasm as adverse reaction; pregnancy crosses placenta and affects uterine contractility.';}
+  else if(pct>=70){m.className='perf-msg perf-good';m.innerHTML='<strong>Good Performance!</strong> Review: adult = preterm labor only; peds = asthma in extremis only; preterm dose 0.25 mg SQ q30 min max 3 doses hold HR &gt;120; pedi 10 mcg/kg max 400 mcg q20 min max 3 doses; infusion 0.4 mcg/kg/min max 5 mcg/kg/min; MOA = adenyl cyclase/cAMP; only CI = hypersensitivity; cardiovascular disease = WARNING not CI; onset 15&ndash;30 min; adverse includes paradoxical bronchospasm, seizure, pulmonary edema.';}
+  else{m.className='perf-msg perf-review';m.innerHTML='<strong>Keep Studying!</strong> Focus: standing orders are asymmetric (adult=preterm only; peds=asthma only); preterm q30 min not q20 min; hold HR &gt;120; pedi 10 mcg/kg (mcg not mg); max 400 mcg; infusion starts 0.4 mcg/kg/min, max 5 mcg/kg/min, requires provider consult; MOA = adenyl cyclase &rarr; cAMP; only CI = hypersensitivity; cardiovascular disease = caution; onset 15&ndash;30 min / variable / 2&ndash;5 hr; paradoxical bronchospasm is listed adverse reaction.';}
+}
+
+function restartQuiz(){
+  score=0;cur=1;answered=[];
+  document.querySelectorAll('.option').forEach(o=>o.classList.remove('disabled','correct','incorrect'));
+  document.querySelectorAll('.feedback').forEach(f=>f.classList.remove('show','correct-fb','incorrect-fb'));
+  Qs.forEach((_,i)=>{const b=document.getElementById('next'+(i+1));if(b)b.disabled=true;});
+  document.getElementById('qContainer').style.display='block';
+  document.querySelector('.progress-wrap').style.display='block';
+  document.getElementById('resultsCard').classList.remove('active');
+  goQ(1);
+}
+
+buildQuiz();
+</script>
+</body>
+</html>

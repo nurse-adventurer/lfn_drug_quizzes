@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LFN Drug Quiz | Tenecteplase (12.79)</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --primary:#9d174d;
+  --primary-light:#be185d;
+  --primary-dark:#831843;
+  --success-bg:#dcfce7;
+  --error-bg:#fee2e2;
+  --warning-bg:#fef3c7;
+  --warning-border:#f59e0b;
+  --card:#ffffff;
+  --text:#1f2937;
+  --text-secondary:#4b5563;
+  --border:#e5e7eb;
+  --shadow:0 2px 8px rgba(0,0,0,0.10);
+  --shadow-lg:0 8px 24px rgba(157,23,77,0.18);
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#fdf2f8 0%,#fbcfe8 50%,#f9a8d4 100%);min-height:100vh;padding:16px}
+.container{max-width:820px;margin:0 auto}
+.header{background:var(--card);border-radius:16px;padding:28px 24px 20px;margin-bottom:20px;box-shadow:var(--shadow-lg);text-align:center}
+.header h1{font-size:2rem;color:var(--primary);margin-bottom:6px}
+.header .subtitle{color:var(--primary-light);font-size:1rem;margin-bottom:12px}
+.drug-class-badge{display:inline-block;background:linear-gradient(135deg,var(--primary-light),var(--primary));color:#fff;padding:7px 20px;border-radius:20px;font-size:0.85rem;font-weight:700;margin-bottom:12px}
+.badge-row{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;margin-top:4px}
+.badge{display:inline-block;padding:5px 11px;border-radius:14px;font-size:0.7rem;font-weight:700;border:2px solid}
+.badge-stemi{background:#fee2e2;color:#991b1b;border-color:#ef4444}
+.badge-stroke{background:#fef3c7;color:#92400e;border-color:#f59e0b}
+.badge-clot{background:#fce7f3;color:#9d174d;border-color:#ec4899}
+.badge-wt{background:#dbeafe;color:#1e40af;border-color:#3b82f6}
+.badge-recon{background:#f3e8ff;color:#6b21a8;border-color:#a855f7}
+.mode-tabs{display:flex;background:var(--card);border-radius:12px;padding:6px;margin-bottom:18px;box-shadow:var(--shadow);gap:6px}
+.mode-tab{flex:1;padding:11px;text-align:center;border-radius:8px;cursor:pointer;font-weight:700;font-size:0.92rem;transition:all 0.2s;border:none;background:transparent;color:var(--text-secondary)}
+.mode-tab.active{background:linear-gradient(135deg,var(--primary-light),var(--primary));color:#fff;box-shadow:0 2px 8px rgba(157,23,77,0.3)}
+.ref-panel,.quiz-panel{display:none}
+.ref-panel.active,.quiz-panel.active{display:block}
+.ref-tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.ref-tab{padding:7px 14px;border-radius:8px;border:2px solid var(--border);background:var(--card);color:var(--text-secondary);font-size:0.8rem;font-weight:600;cursor:pointer;transition:all 0.2s}
+.ref-tab.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.ref-content{background:var(--card);border-radius:12px;padding:22px;box-shadow:var(--shadow)}
+.ref-section{display:none}
+.ref-section.active{display:block}
+.ref-section h3{color:var(--primary);font-size:1rem;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #fbcfe8}
+.dose-table{width:100%;border-collapse:collapse;font-size:0.83rem;margin-bottom:12px}
+.dose-table th{background:var(--primary);color:#fff;padding:9px 10px;text-align:left;font-size:0.78rem}
+.dose-table td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5}
+.dose-table tr:nth-child(even) td{background:#fdf2f8}
+.dose-table td strong{color:var(--primary-dark)}
+.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:12px}
+.info-card{background:#fdf2f8;border-radius:8px;padding:12px;border-left:3px solid var(--primary-light)}
+.info-card .lbl{font-size:0.7rem;color:var(--text-secondary);text-transform:uppercase;font-weight:700;margin-bottom:4px}
+.info-card .val{font-size:0.88rem;color:var(--text);font-weight:600;line-height:1.4}
+.warn-card{background:var(--error-bg);border:2px solid #ef4444;border-radius:8px;padding:14px;margin-bottom:10px}
+.warn-card h4{color:#7f1d1d;font-size:0.85rem;margin-bottom:7px}
+.warn-card p,.warn-card li{font-size:0.83rem;color:#991b1b;line-height:1.5}
+.warn-card ul{margin-left:16px;margin-top:4px}
+.note-card{background:var(--warning-bg);border:2px solid var(--warning-border);border-radius:8px;padding:14px;margin-bottom:10px}
+.note-card h4{color:#92400e;font-size:0.85rem;margin-bottom:6px}
+.note-card p,.note-card li{font-size:0.83rem;color:#78350f;line-height:1.5}
+.note-card ul{margin-left:16px;margin-top:4px}
+.ok-card{background:var(--success-bg);border:2px solid #22c55e;border-radius:8px;padding:14px;margin-bottom:10px}
+.ok-card h4{color:#166534;font-size:0.85rem;margin-bottom:6px}
+.ok-card p{font-size:0.83rem;color:#166534;line-height:1.5}
+.ci-card{background:#fff1f2;border:2px solid #fb7185;border-radius:8px;padding:14px;margin-bottom:10px}
+.ci-card h4{color:#9f1239;font-size:0.85rem;margin-bottom:6px}
+.ci-card li{font-size:0.83rem;color:#9f1239;line-height:1.5;margin-left:16px;margin-bottom:2px}
+.sc-card{background:#f5f3ff;border:2px solid #a78bfa;border-radius:8px;padding:14px;margin-bottom:10px}
+.sc-card h4{color:#5b21b6;font-size:0.85rem;margin-bottom:6px}
+.sc-card p,.sc-card li{font-size:0.83rem;color:#4c1d95;line-height:1.5}
+.sc-card ul{margin-left:16px;margin-top:4px}
+.preg-card{background:#fce7f3;border:2px solid #ec4899;border-radius:8px;padding:14px;margin-bottom:10px}
+.preg-card h4{color:#9d174d;font-size:0.85rem;margin-bottom:6px}
+.preg-card p{font-size:0.83rem;color:#831843;line-height:1.5}
+.progress-wrap{background:var(--card);border-radius:12px;padding:16px 20px;margin-bottom:16px;box-shadow:var(--shadow)}
+.progress-bar{height:10px;background:var(--border);border-radius:8px;overflow:hidden;margin-bottom:7px}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--primary-light),var(--primary));border-radius:8px;transition:width 0.4s ease}
+.progress-text{text-align:center;color:var(--primary);font-weight:700;font-size:0.88rem}
+.q-card{background:var(--card);border-radius:16px;padding:26px;margin-bottom:18px;box-shadow:var(--shadow-lg);display:none}
+.q-card.active{display:block;animation:fadeUp 0.4s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.q-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.q-num{background:linear-gradient(135deg,var(--primary-light),var(--primary));color:#fff;padding:6px 14px;border-radius:14px;font-size:0.85rem;font-weight:700}
+.q-type{padding:5px 11px;border-radius:12px;font-size:0.72rem;font-weight:700;text-transform:uppercase}
+.type-recall{background:#dbeafe;color:#1e40af}
+.type-clinical{background:#dcfce7;color:#166534}
+.type-critical{background:#fce7f3;color:#be185d}
+.type-calculation{background:#f3e8ff;color:#7c3aed}
+.scenario{background:linear-gradient(135deg,#fce7f3,#fbcfe8);border-left:4px solid var(--primary-light);padding:16px;border-radius:0 10px 10px 0;margin-bottom:16px}
+.scenario h3{color:var(--primary-dark);font-size:0.9rem;margin-bottom:6px}
+.scenario p{color:var(--primary-dark);font-size:0.93rem;line-height:1.6}
+.s-box{padding:10px 13px;border-radius:8px;margin-top:10px;font-size:0.87rem;font-weight:600;line-height:1.4}
+.s-stemi{background:#fee2e2;border:2px solid #ef4444;color:#991b1b}
+.s-stroke{background:#fef3c7;border:2px solid #f59e0b;color:#92400e}
+.s-bleed{background:#fee2e2;border:2px solid #dc2626;color:#7f1d1d}
+.s-ci{background:#fee2e2;border:2px solid #dc2626;color:#7f1d1d}
+.s-recon{background:#f5f3ff;border:2px solid #a78bfa;color:#4c1d95}
+.s-preg{background:#fce7f3;border:2px solid #ec4899;color:#9d174d}
+.q-text{font-size:1.1rem;color:var(--text);margin-bottom:20px;line-height:1.6;font-weight:500}
+.options{display:flex;flex-direction:column;gap:10px}
+.option{padding:15px 18px;background:#f9fafb;border:2px solid var(--border);border-radius:10px;cursor:pointer;transition:all 0.2s;font-size:0.95rem;color:var(--text);display:flex;align-items:flex-start;gap:10px}
+.option:hover:not(.disabled){border-color:var(--primary-light);background:#fce7f3;transform:translateX(4px)}
+.opt-letter{min-width:28px;height:28px;line-height:28px;text-align:center;background:var(--primary);color:#fff;border-radius:50%;font-weight:700;font-size:0.82rem;flex-shrink:0}
+.option.correct{border-color:#22c55e;background:var(--success-bg);color:#166534}
+.option.incorrect{border-color:#ef4444;background:var(--error-bg);color:#991b1b}
+.option.disabled{cursor:not-allowed;opacity:0.75}
+.feedback{margin-top:20px;padding:20px;border-radius:12px;display:none}
+.feedback.show{display:block;animation:fadeUp 0.3s ease}
+.feedback.correct-fb{background:linear-gradient(135deg,#dcfce7,#bbf7d0);border:2px solid #22c55e}
+.feedback.incorrect-fb{background:linear-gradient(135deg,#fee2e2,#fecaca);border:2px solid #ef4444}
+.feedback h4{font-size:1.05rem;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.feedback.correct-fb h4{color:#166534}
+.feedback.incorrect-fb h4{color:#991b1b}
+.feedback p{color:var(--text);font-size:0.93rem;line-height:1.6;margin-bottom:10px}
+.insight-box{background:rgba(255,255,255,0.75);border-left:4px solid var(--primary-light);padding:13px;border-radius:0 8px 8px 0;margin-top:12px}
+.insight-box h5{color:var(--primary);font-size:0.88rem;margin-bottom:6px}
+.insight-box p{font-size:0.88rem;color:var(--text);margin-bottom:0}
+.proto-ref{background:rgba(255,255,255,0.8);padding:10px 13px;border-radius:7px;margin-top:12px;font-size:0.85rem;color:var(--primary)}
+.proto-link{color:var(--primary-dark);text-decoration:underline;cursor:pointer;font-weight:700}
+.nav-row{display:flex;justify-content:space-between;margin-top:20px;gap:10px}
+.btn{padding:12px 26px;border:none;border-radius:9px;font-size:0.95rem;font-weight:700;cursor:pointer;transition:all 0.2s}
+.btn-primary{background:linear-gradient(135deg,var(--primary-light),var(--primary));color:#fff}
+.btn-primary:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 4px 14px rgba(157,23,77,0.35)}
+.btn-secondary{background:var(--border);color:var(--text)}
+.btn:disabled{opacity:0.45;cursor:not-allowed;transform:none}
+.results{background:var(--card);border-radius:16px;padding:36px;text-align:center;box-shadow:var(--shadow-lg);display:none}
+.results.active{display:block;animation:fadeUp 0.4s ease}
+.results-score{font-size:4.5rem;font-weight:800;color:var(--primary);line-height:1}
+.results-label{font-size:1.3rem;color:var(--text-secondary);margin:8px 0 24px}
+.results-counts{display:flex;justify-content:center;gap:40px;margin-bottom:24px}
+.rc-item .num{font-size:2.2rem;font-weight:800}
+.rc-item .lbl{color:var(--text-secondary);font-size:0.85rem}
+.rc-correct .num{color:#22c55e}
+.rc-incorrect .num{color:#ef4444}
+.perf-msg{padding:18px;border-radius:12px;margin-bottom:22px;font-size:0.93rem;line-height:1.6}
+.perf-excellent{background:#dcfce7;color:#166534}
+.perf-good{background:#dbeafe;color:#1e40af}
+.perf-review{background:var(--warning-bg);color:#92400e}
+.sum-table{width:100%;border-collapse:collapse;font-size:0.8rem;margin:14px 0;text-align:left}
+.sum-table th{background:var(--primary);color:#fff;padding:8px 10px}
+.sum-table td{padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top}
+.sum-table tr:nth-child(even) td{background:#fdf2f8}
+.kp-list{background:#fdf2f8;border-radius:10px;padding:16px;margin-top:14px;text-align:left}
+.kp-list h4{color:var(--primary);margin-bottom:10px;font-size:0.92rem}
+.kp-list li{font-size:0.85rem;color:var(--text);line-height:1.6;margin-left:18px;margin-bottom:4px}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:998}
+.overlay.show{display:block}
+.popup{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border:3px solid var(--primary-light);border-radius:14px;padding:22px;width:90%;max-width:540px;max-height:80vh;overflow-y:auto;z-index:999;box-shadow:0 20px 60px rgba(0,0,0,0.25)}
+.popup.show{display:block;animation:popIn 0.25s ease}
+@keyframes popIn{from{opacity:0;transform:translate(-50%,-55%)}to{opacity:1;transform:translate(-50%,-50%)}}
+.popup-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:10px;border-bottom:2px solid #fbcfe8}
+.popup-head h3{color:var(--primary-dark);font-size:1rem}
+.popup-close{background:var(--primary-light);color:#fff;border:none;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:1.1rem;line-height:1}
+.popup-body{background:#fce7f3;padding:14px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.8rem;color:var(--primary-dark);line-height:1.65;white-space:pre-wrap}
+@media(max-width:600px){
+  .header h1{font-size:1.6rem}.q-card{padding:18px}.nav-row{flex-direction:column}.btn{width:100%}.results-counts{gap:24px}.ref-tabs{gap:4px}.ref-tab{padding:6px 10px;font-size:0.75rem}
+}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+  <h1>&#129504; Tenecteplase</h1>
+  <p class="subtitle">LFN Drug Formulary Section 12.79 &middot; Clinical Application Quiz</p>
+  <div class="drug-class-badge">Thrombolytic Agent</div>
+  <div class="badge-row">
+    <span class="badge badge-stemi">STEMI</span>
+    <span class="badge badge-stroke">Ischemic Stroke</span>
+    <span class="badge badge-clot">Fibrinolytic</span>
+    <span class="badge badge-wt">Weight-Based</span>
+    <span class="badge badge-recon">Reconstitution Required</span>
+  </div>
+</div>
+
+<div class="mode-tabs">
+  <button class="mode-tab active" onclick="switchMode('ref')">&#128203; Quick Reference</button>
+  <button class="mode-tab" onclick="switchMode('quiz')">&#127919; Quiz (10 Questions)</button>
+</div>
+
+<div class="ref-panel active" id="refPanel">
+  <div class="ref-tabs">
+    <button class="ref-tab active" onclick="switchRef(event,'dosing')">Dosing / Indications</button>
+    <button class="ref-tab" onclick="switchRef(event,'pharma')">Pharmacology</button>
+    <button class="ref-tab" onclick="switchRef(event,'considerations')">Considerations</button>
+    <button class="ref-tab" onclick="switchRef(event,'warnings')">Warnings</button>
+  </div>
+  <div class="ref-content">
+
+    <div class="ref-section active" id="ref-dosing">
+      <h3>Dosing &amp; Indications</h3>
+      <table class="dose-table">
+        <tr><th>Indication</th><th>Adult Dose</th><th>Pediatric</th></tr>
+        <tr>
+          <td><strong>STEMI</strong></td>
+          <td>
+            Single bolus over 5 seconds:<br>
+            &bull; &lt;60 kg: <strong>30 mg</strong><br>
+            &bull; 60&ndash;69 kg: <strong>35 mg</strong><br>
+            &bull; 70&ndash;79 kg: <strong>40 mg</strong><br>
+            &bull; 80&ndash;89 kg: <strong>45 mg</strong><br>
+            &bull; &ge;90 kg: <strong>50 mg</strong>
+          </td>
+          <td>No LFN Standing Order</td>
+        </tr>
+        <tr>
+          <td><strong>Ischemic Stroke</strong></td>
+          <td><strong>0.25 mg/kg IV</strong><br>&bull; Max 25 mg</td>
+          <td>No LFN Standing Order</td>
+        </tr>
+      </table>
+      <div class="note-card">
+        <h4>STEMI Weight Tiers vs Stroke Weight-Based</h4>
+        <p>STEMI uses <strong>tiered flat doses by weight band</strong>. Stroke uses a <strong>continuous weight-based calculation</strong> (0.25 mg/kg, capped at 25 mg). These are different dosing systems &mdash; do not apply stroke math to STEMI or vice versa.</p>
+      </div>
+    </div>
+
+    <div class="ref-section" id="ref-pharma">
+      <h3>Pharmacology</h3>
+      <div class="info-grid">
+        <div class="info-card"><div class="lbl">Mechanism of Action</div><div class="val">Binds to fibrin and converts tissue plasminogen to plasmin, promoting fibrinolysis</div></div>
+        <div class="info-card"><div class="lbl">Pharmacologic Category</div><div class="val">Thrombolytic</div></div>
+        <div class="info-card"><div class="lbl">Trade Name</div><div class="val">TNKase</div></div>
+        <div class="info-card"><div class="lbl">Onset/Peak/Duration</div><div class="val">Not listed in LFN 12.79</div></div>
+        <div class="info-card"><div class="lbl">Adverse Reactions</div><div class="val">Intracranial hemorrhage, stroke, bleeding, arrhythmia, reperfusion, anaphylaxis, angioedema, cholesterol embolism, hypersensitivity reaction</div></div>
+        <div class="info-card"><div class="lbl">Warnings</div><div class="val">Reperfusion arrhythmias; internal/external bleeding; hypersensitivity reactions — monitor during infusion and several hours after</div></div>
+      </div>
+      <div class="preg-card">
+        <h4>Pregnancy</h4>
+        <p>Bleeding may occur with tenecteplase therapy and the risk of bleeding complications may be increased in pregnant patients; however, use may be considered if other treatment options are not feasible or appropriate.</p>
+      </div>
+    </div>
+
+    <div class="ref-section" id="ref-considerations">
+      <h3>Special Considerations &mdash; Reconstitution &amp; Administration</h3>
+      <div class="sc-card">
+        <h4>SC 1 &mdash; Reconstituting and Administering Tenecteplase (TNKase)</h4>
+        <ul>
+          <li>Using the syringe, needle, and Sterile Water supplied, draw the full <strong>10 mL sterile water</strong> into the syringe</li>
+          <li><strong>DO NOT use bacteriostatic water</strong></li>
+          <li>Inject the 10 mL sterile water into the TNKase, directing the stream into the powder. There may be some foaming. Allow the vial to settle until bubbles dissipate</li>
+          <li>Swirl the vial gently until contents are completely dissolved. <strong>DO NOT shake vial</strong></li>
+          <li>Final concentration is <strong>50 mg/10 mL</strong>. Liquid should be clear and colorless/pale yellow</li>
+          <li>Draw the appropriate volume into the syringe. Leave extra solution in the vial to avoid inadvertent overdosing</li>
+          <li>Administer TNKase as a <strong>bolus over 5 seconds via a dedicated line</strong></li>
+          <li>Tenecteplase is <strong>incompatible with dextrose</strong> &mdash; flush dextrose-containing lines with NS before and after administration</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="ref-section" id="ref-warnings">
+      <h3>Warnings, Contraindications &amp; Adverse Reactions</h3>
+      <div class="ci-card">
+        <h4>Contraindications (per LFN 12.79)</h4>
+        <ul>
+          <li>Active internal bleeding</li>
+          <li>Intracranial surgery or trauma within last 2 months</li>
+          <li>Intracranial aneurysm</li>
+          <li>Coagulation disorder</li>
+          <li>Severe uncontrolled HTN</li>
+          <li>Recent GI/GU bleeding</li>
+        </ul>
+      </div>
+      <div class="warn-card">
+        <h4>Warnings / Precautions</h4>
+        <ul>
+          <li>Coronary thrombolysis may result in <strong>reperfusion arrhythmias</strong></li>
+          <li>Internal/external <strong>bleeding may occur</strong></li>
+          <li><strong>Hypersensitivity reactions</strong> have been reported &mdash; monitor closely during infusion and for several hours after</li>
+        </ul>
+      </div>
+      <div class="warn-card">
+        <h4>Adverse Reactions</h4>
+        <p>Intracranial hemorrhage, stroke, bleeding, arrhythmia, reperfusion, anaphylaxis, angioedema, cholesterol embolism, hypersensitivity reaction</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="quiz-panel" id="quizPanel">
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="pFill" style="width:10%"></div></div>
+    <div class="progress-text" id="pText">Question 1 of 10</div>
+  </div>
+  <div id="qContainer"></div>
+  <div class="results" id="resultsCard">
+    <h2 style="color:var(--primary);margin-bottom:8px">Quiz Complete!</h2>
+    <div class="results-score" id="rPct">&mdash;</div>
+    <div class="results-label">Final Score</div>
+    <div class="results-counts">
+      <div class="rc-item rc-correct"><div class="num" id="rCorrect">0</div><div class="lbl">Correct</div></div>
+      <div class="rc-item rc-incorrect"><div class="num" id="rIncorrect">0</div><div class="lbl">Incorrect</div></div>
+    </div>
+    <div class="perf-msg" id="rMsg"></div>
+    <table class="sum-table">
+      <tr><th>Parameter</th><th>LFN 12.79 Value</th></tr>
+      <tr><td>Indications</td><td>STEMI; Ischemic Stroke</td></tr>
+      <tr><td>STEMI Dose</td><td>&lt;60 kg=30 mg &middot; 60&ndash;69=35 mg &middot; 70&ndash;79=40 mg &middot; 80&ndash;89=45 mg &middot; &ge;90=50 mg &middot; Single bolus over 5 sec</td></tr>
+      <tr><td>Stroke Dose</td><td>0.25 mg/kg IV &middot; Max 25 mg</td></tr>
+      <tr><td>Mechanism</td><td>Binds to fibrin and converts tissue plasminogen to plasmin, promoting fibrinolysis</td></tr>
+      <tr><td>Category</td><td>Thrombolytic</td></tr>
+      <tr><td>Trade Name</td><td>TNKase</td></tr>
+      <tr><td>Onset/Peak/Duration</td><td>Not listed in LFN 12.79</td></tr>
+      <tr><td>Contraindications</td><td>Active internal bleeding; intracranial surgery/trauma &lt;2 months; intracranial aneurysm; coagulation disorder; severe uncontrolled HTN; recent GI/GU bleeding</td></tr>
+      <tr><td>Adverse Reactions</td><td>Intracranial hemorrhage, stroke, bleeding, arrhythmia, reperfusion, anaphylaxis, angioedema, cholesterol embolism, hypersensitivity reaction</td></tr>
+      <tr><td>Warnings</td><td>Reperfusion arrhythmias; bleeding; hypersensitivity reactions &mdash; monitor during and hours after</td></tr>
+      <tr><td>Pregnancy</td><td>Bleeding risk increased; use may be considered if other treatment options not feasible or appropriate</td></tr>
+      <tr><td>Reconstitution</td><td>10 mL sterile water (not bacteriostatic); DO NOT shake; final 50 mg/10 mL; bolus over 5 sec via dedicated line; incompatible with dextrose &mdash; flush with NS</td></tr>
+    </table>
+    <div class="kp-list">
+      <h4>Key Points &mdash; LFN 12.79</h4>
+      <ul>
+        <li>Two indications: <strong>STEMI</strong> and <strong>Ischemic Stroke</strong></li>
+        <li>STEMI: tiered weight-band dosing (<strong>30/35/40/45/50 mg</strong> by 10 kg bands) &mdash; single bolus over 5 seconds</li>
+        <li>Stroke: <strong>0.25 mg/kg IV, max 25 mg</strong> &mdash; single bolus over 5 seconds</li>
+        <li>MOA: <strong>binds to fibrin, converts tissue plasminogen to plasmin</strong>, promoting fibrinolysis</li>
+        <li>Trade name: <strong>TNKase</strong> &mdash; final concentration <strong>50 mg/10 mL</strong></li>
+        <li>Reconstitution: <strong>10 mL sterile water only</strong> (not bacteriostatic); swirl, do not shake</li>
+        <li>Administration: <strong>dedicated line, bolus over 5 sec</strong>; <strong>incompatible with dextrose</strong> &mdash; flush with NS</li>
+        <li>6 contraindications including <strong>active internal bleeding, intracranial aneurysm, coagulation disorder</strong></li>
+        <li>Most significant adverse reaction: <strong>intracranial hemorrhage</strong> (listed first)</li>
+        <li>Warning: <strong>reperfusion arrhythmias</strong> and <strong>hypersensitivity reactions</strong> &mdash; monitor during infusion and several hours after</li>
+        <li>Pregnancy: bleeding risk increased; <strong>use may be considered if no other options</strong></li>
+      </ul>
+    </div>
+    <button class="btn btn-primary" onclick="restartQuiz()" style="margin-top:22px">Restart Quiz</button>
+  </div>
+</div>
+
+<div class="overlay" id="overlay" onclick="closePopup()"></div>
+<div class="popup" id="popup">
+  <div class="popup-head">
+    <h3>LFN Protocol &mdash; Exact Wording</h3>
+    <button class="popup-close" onclick="closePopup()">&times;</button>
+  </div>
+  <div class="popup-body" id="popupBody"></div>
+</div>
+
+<script>
+function switchMode(m){
+  document.getElementById('refPanel').classList.toggle('active',m==='ref');
+  document.getElementById('quizPanel').classList.toggle('active',m==='quiz');
+  document.querySelectorAll('.mode-tab').forEach((t,i)=>t.classList.toggle('active',(m==='ref'&&i===0)||(m==='quiz'&&i===1)));
+}
+function switchRef(e,id){
+  document.querySelectorAll('.ref-section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('ref-'+id).classList.add('active');
+  document.querySelectorAll('.ref-tab').forEach(t=>t.classList.remove('active'));
+  e.target.classList.add('active');
+}
+const PROTO={
+  indication:`INDICATIONS (LFN 12.79):
+"• STEMI
+ • Ischemic Stroke"
+
+Pharmacologic Category: "Thrombolytic"
+Trade Name: "TNKase"`,
+
+  dosing_stemi:`STEMI DOSING (LFN 12.79):
+
+"Administer a single bolus over 5 seconds:
+ • < 60 kg: 30 mg
+ • 60 – 69 kg: 35 mg
+ • 70 – 79 kg: 40 mg
+ • 80 – 89 kg: 45 mg
+ • ≥ 90 kg: 50 mg"
+
+Pediatric: No LFN Standing Order
+
+Key points:
+• Weight bands are INCLUSIVE of upper bound
+  (60-69, 70-79, 80-89 — not <70, <80, <89)
+• Single bolus, not infusion
+• Administered over 5 seconds
+• Via dedicated line
+• Incompatible with dextrose`,
+
+  dosing_stroke:`STROKE DOSING (LFN 12.79):
+
+"0.25 mg/kg IV
+ • Max 25 mg"
+
+Pediatric: No LFN Standing Order
+
+Calculation examples:
+• 60 kg: 60 × 0.25 = 15 mg
+• 80 kg: 80 × 0.25 = 20 mg
+• 100 kg: 100 × 0.25 = 25 mg (at max)
+• 120 kg: 120 × 0.25 = 30 mg → give 25 mg
+
+Note: Stroke uses continuous weight-based
+math. STEMI uses flat tiered bands.
+Different systems entirely.`,
+
+  moa:`MECHANISM OF ACTION (LFN 12.79):
+
+"Binds to fibrin and converts tissue
+plasminogen to plasmin, promoting
+fibrinolysis"
+
+Pharmacologic Category: "Thrombolytic"
+
+Compare with LFN 12.06 Alteplase MOA:
+"Initiates fibrinolysis by binding to fibrin
+in a thrombus and converting entrapped
+plasminogen to plasmin (the active
+substance), which works to break up
+blood clots."
+
+Both are fibrin-binding thrombolytics but
+the LFN wording for each is distinct.`,
+
+  ci:`CONTRAINDICATIONS (LFN 12.79):
+
+"Active internal bleeding; intracranial
+surgery or trauma within last 2 months;
+intracranial aneurysm; coagulation
+disorder; severe uncontrolled HTN;
+recent GI/GU bleeding"
+
+Six contraindications:
+1. Active internal bleeding
+2. Intracranial surgery or trauma
+   within last 2 months
+3. Intracranial aneurysm
+4. Coagulation disorder
+5. Severe uncontrolled HTN
+6. Recent GI/GU bleeding
+
+Note: LFN 12.79 does NOT list specific
+BP thresholds (no >185/110 or >180/110).
+It simply states "severe uncontrolled HTN."
+Those specific numbers come from other
+guidelines, not LFN 12.79.`,
+
+  warnings:`WARNINGS / PRECAUTIONS (LFN 12.79):
+
+"Coronary thrombolysis may result in
+reperfusion arrhythmias; internal/external
+bleeding may occur; Hypersensitivity
+reactions have been reported after
+administration. Monitor closely for
+hypersensitivity reactions during infusion
+and for several hours after,"
+
+ADVERSE REACTIONS (LFN 12.79):
+
+"Intracranial hemorrhage, stroke,
+bleeding, arrhythmia, reperfusion,
+anaphylaxis, angioedema, cholesterol
+embolism, hypersensitivity reaction"
+
+Note: ICH is listed FIRST among adverse
+reactions. Bleeding is broadly listed.
+Reperfusion reactions (including
+arrhythmias) are explicitly listed.`,
+
+  pregnancy:`PREGNANCY CONSIDERATIONS (LFN 12.79):
+
+"Bleeding may occur with tenecteplase
+therapy and the risk of bleeding
+complications may be increased in
+pregnant patients; however, use may
+be considered if other treatment options
+are not feasible or appropriate"
+
+Key distinction from other drugs:
+• Does NOT say "benefit justifies risk"
+• Specifically mentions INCREASED bleeding
+  risk in pregnant patients
+• Permits use when other options are
+  not feasible or appropriate`,
+
+  sc:`SPECIAL CONSIDERATIONS (LFN 12.79):
+
+SC 1 — Reconstituting and Administering
+Tenecteplase (TNKase):
+
+a. Using syringe, needle, and Sterile
+   Water supplied, draw full 10 mL
+   sterile water into the syringe.
+
+b. DO NOT use bacteriostatic water.
+
+c. Inject 10 mL sterile water into the
+   TNKase, directing stream into powder.
+   There may be some foaming. Allow
+   vial to settle until bubbles dissipate.
+
+d. Swirl the vial gently until contents
+   are completely dissolved.
+   DO NOT shake vial.
+
+e. Final concentration is 50 mg/10 mL.
+   Liquid should be clear and
+   colorless/pale yellow.
+
+f. Draw the appropriate volume into
+   the syringe. Leave extra solution
+   in the vial to avoid inadvertent
+   overdosing.
+
+g. Administer TNKase as a bolus over
+   5 seconds via a dedicated line.
+
+h. Tenecteplase is incompatible with
+   dextrose, so flush dextrose-containing
+   lines with NS before and after
+   administration.`
+};
+function showPopup(k){
+  document.getElementById('popupBody').textContent=PROTO[k]||'See LFN 12.79.';
+  document.getElementById('popup').classList.add('show');
+  document.getElementById('overlay').classList.add('show');
+}
+function closePopup(){
+  document.getElementById('popup').classList.remove('show');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+const Qs=[
+  {n:1,type:'recall',
+   scenario:'You are reviewing thrombolytic agents available in the LFN formulary.',
+   boxes:[],
+   q:'What are the indications for tenecteplase per LFN 12.79?',
+   opts:[
+     {t:'STEMI only',c:false},
+     {t:'STEMI; Ischemic Stroke',c:true},
+     {t:'Ischemic stroke only',c:false},
+     {t:'Pulmonary embolism; STEMI',c:false}
+   ],
+   fb:'Per LFN 12.79, tenecteplase has two indications: <strong>STEMI</strong> and <strong>Ischemic Stroke</strong>.',
+   ins:'<strong>Two indications: STEMI and Ischemic Stroke.</strong> Both involve arterial occlusion — coronary for STEMI, cerebral for stroke. The drug works identically in both contexts (fibrin-binding thrombolytic) but the dosing system, dose amount, and patient selection criteria differ significantly between the two indications.',
+   proto:'indication'},
+
+  {n:2,type:'calculation',
+   scenario:'A 75 kg patient presents with STEMI. No contraindications are identified.',
+   boxes:[{cls:'s-stemi',t:'STEMI | 75 kg | No contraindications | Calculate tenecteplase dose'}],
+   q:'What is the correct tenecteplase dose for this STEMI patient per LFN 12.79?',
+   opts:[
+     {t:'35 mg (60–69 kg band)',c:false},
+     {t:'40 mg (70–79 kg band)',c:true},
+     {t:'45 mg (80–89 kg band)',c:false},
+     {t:'0.25 mg/kg = 18.75 mg (stroke dosing)',c:false}
+   ],
+   fb:'Per LFN 12.79 STEMI dosing: 75 kg falls in the <strong>70–79 kg band = 40 mg</strong>, administered as a single bolus over 5 seconds.',
+   ins:'<strong>STEMI uses tiered weight bands, not continuous math.</strong> The bands are: &lt;60=30, 60–69=35, 70–79=40, 80–89=45, &ge;90=50 mg. At 75 kg this patient is clearly in the 70–79 kg band. Common error: applying the stroke dose formula (0.25 mg/kg) to a STEMI patient — that formula does not apply here. Also note the band upper boundaries are 69, 79, 89 kg — not &lt;70, &lt;80, &lt;90.',
+   proto:'dosing_stemi'},
+
+  {n:3,type:'calculation',
+   scenario:'An 88 kg patient presents with ischemic stroke. Symptom onset was 2 hours ago. No contraindications.',
+   boxes:[{cls:'s-stroke',t:'ISCHEMIC STROKE | 88 kg | 2 hours from onset | Calculate tenecteplase dose'}],
+   q:'What is the correct tenecteplase dose for this stroke patient per LFN 12.79?',
+   opts:[
+     {t:'45 mg (STEMI 80–89 kg band — wrong dosing system)',c:false},
+     {t:'0.25 mg/kg IV = 22 mg for this patient; max 25 mg',c:true},
+     {t:'25 mg flat dose regardless of weight',c:false},
+     {t:'0.9 mg/kg IV over 60 min (alteplase dosing)',c:false}
+   ],
+   fb:'Per LFN 12.79 stroke dosing: <strong>0.25 mg/kg IV, max 25 mg.</strong> For this 88 kg patient: 88 &times; 0.25 = <strong>22 mg IVP</strong> (below the 25 mg cap).',
+   ins:'<strong>Stroke uses weight-based math, not tiers.</strong> 0.25 mg/kg &times; 88 kg = 22 mg &mdash; under the 25 mg maximum, so give 22 mg. The cap matters when weight &ge;100 kg (100 &times; 0.25 = 25 mg, at ceiling). Do not confuse with STEMI dosing: this patient at 88 kg would be 45 mg for STEMI, but for stroke it is only 22 mg. Also do not confuse with alteplase (0.9 mg/kg over 60 min), which is a completely different drug and regimen.',
+   proto:'dosing_stroke'},
+
+  {n:4,type:'recall',
+   scenario:'A student asks how tenecteplase dissolves blood clots at the molecular level.',
+   boxes:[],
+   q:'What is the mechanism of action of tenecteplase per LFN 12.79?',
+   opts:[
+     {t:'Blocks platelet ADP receptors, preventing aggregation',c:false},
+     {t:'Binds to fibrin and converts tissue plasminogen to plasmin, promoting fibrinolysis',c:true},
+     {t:'Directly inhibits thrombin, preventing fibrin formation',c:false},
+     {t:'Activates antithrombin III to inhibit coagulation factors',c:false}
+   ],
+   fb:'Per LFN 12.79 MOA: <strong>"Binds to fibrin and converts tissue plasminogen to plasmin, promoting fibrinolysis."</strong>',
+   ins:'<strong>LFN 12.79 MOA is specific — memorize the exact wording.</strong> Two key actions: (1) binds to fibrin in the existing clot, and (2) converts tissue plasminogen to plasmin. Plasmin then degrades the fibrin matrix, dissolving the clot. Note the LFN wording uses "tissue plasminogen" while the alteplase entry (12.06) says "entrapped plasminogen" — these are distinct phrasings for the two drugs.',
+   proto:'moa'},
+
+  {n:5,type:'critical',
+   scenario:'A STEMI patient has a known intracranial aneurysm identified on prior imaging. The team is considering tenecteplase while awaiting transport.',
+   boxes:[{cls:'s-ci',t:'STEMI | Known intracranial aneurysm | Is tenecteplase contraindicated?'}],
+   q:'What does LFN 12.79 list as contraindications to tenecteplase?',
+   opts:[
+     {t:'Only active bleeding and recent surgery',c:false},
+     {t:'Active internal bleeding; intracranial surgery or trauma within last 2 months; intracranial aneurysm; coagulation disorder; severe uncontrolled HTN; recent GI/GU bleeding',c:true},
+     {t:'Pregnancy and recent surgery within 14 days',c:false},
+     {t:'BP &gt;185/110 mmHg and active bleeding',c:false}
+   ],
+   fb:'Per LFN 12.79 Contraindications: <strong>"Active internal bleeding; intracranial surgery or trauma within last 2 months; intracranial aneurysm; coagulation disorder; severe uncontrolled HTN; recent GI/GU bleeding."</strong> Intracranial aneurysm is an absolute contraindication.',
+   ins:'<strong>Intracranial aneurysm is a hard contraindication in LFN 12.79.</strong> The fear is that a thrombolytic could dissolve the clot wall stabilizing the aneurysm, triggering rupture and catastrophic subarachnoid hemorrhage. The LFN CI list has 6 items &mdash; notably, it does NOT include specific BP thresholds (no >185/110 or >180/110 numbers). Those values come from other clinical guidelines; LFN 12.79 simply lists "severe uncontrolled HTN."',
+   proto:'ci'},
+
+  {n:6,type:'recall',
+   scenario:'After administering tenecteplase for STEMI, you observe what appear to be runs of ventricular tachycardia on the monitor.',
+   boxes:[{cls:'s-bleed',t:'POST-TENECTEPLASE | Ventricular tachycardia on monitor | Expected complication?'}],
+   q:'What does LFN 12.79 list as warnings/precautions regarding arrhythmias?',
+   opts:[
+     {t:'Arrhythmias are not listed in warnings',c:false},
+     {t:'Coronary thrombolysis may result in reperfusion arrhythmias',c:true},
+     {t:'Only bradycardia is expected',c:false},
+     {t:'Arrhythmias only occur with stroke dosing',c:false}
+   ],
+   fb:'Per LFN 12.79 Warnings/Precautions: <strong>"Coronary thrombolysis may result in reperfusion arrhythmias."</strong>',
+   ins:'<strong>Reperfusion arrhythmias are a recognized consequence of successful thrombolysis.</strong> When the occluded coronary artery reopens, the sudden restoration of blood flow to ischemic myocardium can trigger accelerated idioventricular rhythm (AIVR), ventricular tachycardia, or other dysrhythmias. These are often transient and paradoxically indicate that the drug is working. LFN 12.79 lists both "arrhythmia" and "reperfusion" separately in the adverse reactions field, and specifically calls out reperfusion arrhythmias in the warnings.',
+   proto:'warnings'},
+
+  {n:7,type:'recall',
+   scenario:'You are preparing to administer tenecteplase and need to reconstitute it correctly.',
+   boxes:[{cls:'s-recon',t:'RECONSTITUTION | TNKase vial | Sterile water vs bacteriostatic water | Shake or swirl?'}],
+   q:'Per LFN 12.79 Special Considerations, what is the correct diluent and the final concentration of reconstituted tenecteplase?',
+   opts:[
+     {t:'Bacteriostatic water; final concentration 5 mg/mL',c:false},
+     {t:'10 mL sterile water (not bacteriostatic); DO NOT shake; final concentration 50 mg/10 mL',c:true},
+     {t:'Normal saline; final concentration 10 mg/mL',c:false},
+     {t:'D5W; shake vigorously; final concentration 50 mg/5 mL',c:false}
+   ],
+   fb:'Per LFN 12.79 SC 1: <strong>10 mL sterile water supplied with kit (DO NOT use bacteriostatic water). Swirl gently — DO NOT shake. Final concentration: 50 mg/10 mL.</strong>',
+   ins:'<strong>Four reconstitution rules to memorize from LFN SC 1:</strong> (1) sterile water only — not bacteriostatic, (2) swirl gently, do not shake, (3) final concentration is 50 mg/10 mL, (4) leave extra solution in vial to avoid inadvertent overdosing. Shaking causes foaming and may denature the protein. Bacteriostatic water contains benzyl alcohol, which is incompatible. Knowing the final concentration (50 mg/10 mL = 5 mg/mL) lets you calculate the draw volume for any dose.',
+   proto:'sc'},
+
+  {n:8,type:'clinical',
+   scenario:'You are about to administer tenecteplase for ischemic stroke via an existing IV line that has been running D5W.',
+   boxes:[{cls:'s-ci',t:'IV LINE RUNNING D5W | About to give tenecteplase | Safe to push through dextrose line?'}],
+   q:'What does LFN 12.79 state about dextrose compatibility?',
+   opts:[
+     {t:'Compatible with all IV solutions including dextrose',c:false},
+     {t:'Incompatible with dextrose — flush dextrose-containing lines with NS before and after administration',c:true},
+     {t:'Compatible with D5W but not D10W',c:false},
+     {t:'Use a separate IV access only; flushing does not help',c:false}
+   ],
+   fb:'Per LFN 12.79 SC 1h: <strong>"Tenecteplase is incompatible with dextrose, so flush dextrose-containing lines with NS before and after administration of Tenecteplase."</strong>',
+   ins:'<strong>Dextrose incompatibility is an explicit protocol step, not a general caution.</strong> Contact between tenecteplase and dextrose can cause precipitation or inactivation of the drug. LFN 12.79 specifies the exact workaround: flush the dextrose line with NS both before and after the bolus. This preserves a single IV access site while preventing the incompatibility. It also applies when the primary IV fluid is any dextrose-containing solution (D5W, D5NS, etc.).',
+   proto:'sc'},
+
+  {n:9,type:'critical',
+   scenario:'A patient with known active GI bleeding from a duodenal ulcer presents with STEMI. The team is debating whether to administer tenecteplase.',
+   boxes:[{cls:'s-bleed',t:'ACTIVE GI BLEEDING | Duodenal ulcer | STEMI | Tenecteplase contraindicated?'}],
+   q:'Which two LFN 12.79 contraindications apply to this patient?',
+   opts:[
+     {t:'Only recent surgery within 14 days',c:false},
+     {t:'Active internal bleeding AND recent GI/GU bleeding — both are LFN 12.79 contraindications',c:true},
+     {t:'Coagulation disorder only',c:false},
+     {t:'No contraindications — STEMI benefit outweighs GI bleeding risk',c:false}
+   ],
+   fb:'Per LFN 12.79 Contraindications: <strong>"Active internal bleeding"</strong> and <strong>"recent GI/GU bleeding"</strong> are both explicitly listed. This patient meets at least two contraindications.',
+   ins:'<strong>Active GI bleeding triggers two separate LFN CI entries simultaneously.</strong> The contraindication list is not a simple yes/no &mdash; understanding which CI categories a patient meets helps explain the clinical reasoning. Active internal bleeding is the most immediate concern; recent GI/GU bleeding as a separate category catches patients whose acute bleed may have been recently treated but tissue is still healing. Both are absolute contraindications to tenecteplase in LFN 12.79.',
+   proto:'ci'},
+
+  {n:10,type:'clinical',
+   scenario:'A pregnant patient at 28 weeks presents with confirmed ischemic stroke. Symptom onset was 90 minutes ago. No other treatment options are immediately available.',
+   boxes:[{cls:'s-preg',t:'PREGNANCY | 28 weeks | Ischemic stroke | 90 min from onset | No other options available'}],
+   q:'What does LFN 12.79 state about tenecteplase use in pregnancy?',
+   opts:[
+     {t:'Absolutely contraindicated in pregnancy',c:false},
+     {t:'Bleeding risk is increased in pregnant patients; use may be considered if other treatment options are not feasible or appropriate',c:true},
+     {t:'Safe at any gestational age without restriction',c:false},
+     {t:'Permitted only after 20 weeks gestation',c:false}
+   ],
+   fb:'Per LFN 12.79 Pregnancy Considerations: <strong>"Bleeding may occur with tenecteplase therapy and the risk of bleeding complications may be increased in pregnant patients; however, use may be considered if other treatment options are not feasible or appropriate."</strong>',
+   ins:'<strong>LFN 12.79 pregnancy language focuses on increased bleeding risk, not teratogenicity.</strong> Unlike many drugs that frame pregnancy use as "benefit vs. fetal risk," tenecteplase\'s LFN entry specifically names the increased maternal bleeding risk in pregnancy as the concern. The permissive language ("may be considered") applies only when other treatment options are not feasible or appropriate &mdash; a narrower threshold than some other drugs. For this patient with no other options at 90 minutes from onset, the statement supports consideration of tenecteplase.',
+   proto:'pregnancy'}
+];
+
+let cur=1,score=0,answered=[];
+const total=Qs.length;
+
+function buildQuiz(){
+  const c=document.getElementById('qContainer');
+  Qs.forEach((q,i)=>{
+    const num=i+1;
+    const bHTML=q.boxes.map(b=>`<div class="s-box ${b.cls}">${b.t}</div>`).join('');
+    const oHTML=q.opts.map((o,j)=>`<div class="option" data-correct="${o.c}"><span class="opt-letter">${String.fromCharCode(65+j)}</span>${o.t}</div>`).join('');
+    c.innerHTML+=`<div class="q-card ${num===1?'active':''}" data-q="${num}">
+      <div class="q-header"><span class="q-num">Question ${num}</span><span class="q-type type-${q.type}">${q.type}</span></div>
+      <div class="scenario"><h3>Clinical Scenario</h3><p>${q.scenario}</p>${bHTML}</div>
+      <p class="q-text">${q.q}</p>
+      <div class="options">${oHTML}</div>
+      <div class="feedback">
+        <h4><span class="fb-icon"></span> <span class="fb-title"></span></h4>
+        <p>${q.fb}</p>
+        <div class="insight-box"><h5>Clinical Insight</h5><p>${q.ins}</p></div>
+        <div class="proto-ref">Protocol Reference: <span class="proto-link" onclick="showPopup('${q.proto}')">View exact LFN wording</span></div>
+      </div>
+      <div class="nav-row">
+        <button class="btn btn-secondary" ${num===1?'disabled':''} onclick="goQ(${num-1})">&#8592; Previous</button>
+        <button class="btn btn-primary" id="next${num}" disabled onclick="${num===total?'showResults()':'goQ('+(num+1)+')'}">
+          ${num===total?'View Results &#8594;':'Next Question &#8594;'}
+        </button>
+      </div>
+    </div>`;
+  });
+  document.querySelectorAll('.option').forEach(opt=>{
+    opt.addEventListener('click',function(){
+      if(this.classList.contains('disabled'))return;
+      const card=this.closest('.q-card');
+      const num=parseInt(card.dataset.q);
+      card.querySelectorAll('.option').forEach(o=>{o.classList.add('disabled');if(o.dataset.correct==='true')o.classList.add('correct');});
+      const ok=this.dataset.correct==='true';
+      if(!ok)this.classList.add('incorrect');
+      if(ok)score++;
+      answered[num]=ok;
+      const fb=card.querySelector('.feedback');
+      fb.classList.add('show',ok?'correct-fb':'incorrect-fb');
+      fb.querySelector('.fb-icon').textContent=ok?'&#10003;':'&#10007;';
+      fb.querySelector('.fb-title').textContent=ok?'Correct!':'Incorrect';
+      document.getElementById('next'+num).disabled=false;
+    });
+  });
+}
+
+function goQ(n){
+  document.querySelectorAll('.q-card').forEach(c=>c.classList.remove('active'));
+  document.querySelector('[data-q="'+n+'"]').classList.add('active');
+  cur=n;
+  document.getElementById('pFill').style.width=((n/total)*100)+'%';
+  document.getElementById('pText').textContent='Question '+n+' of '+total;
+}
+
+function showResults(){
+  document.getElementById('qContainer').style.display='none';
+  document.querySelector('.progress-wrap').style.display='none';
+  document.getElementById('resultsCard').classList.add('active');
+  const pct=Math.round((score/total)*100);
+  document.getElementById('rPct').textContent=pct+'%';
+  document.getElementById('rCorrect').textContent=score;
+  document.getElementById('rIncorrect').textContent=total-score;
+  const m=document.getElementById('rMsg');
+  if(pct>=90){m.className='perf-msg perf-excellent';m.innerHTML='<strong>Excellent!</strong> Outstanding command of LFN 12.79. You correctly identified STEMI and stroke indications; STEMI tiered dosing (30/35/40/45/50 mg); stroke 0.25 mg/kg max 25 mg; fibrin-binding MOA; 6 contraindications; reperfusion arrhythmias warning; reconstitution with sterile water (not bacteriostatic), swirl not shake, 50 mg/10 mL; dextrose incompatibility; and pregnancy bleeding risk language.';}
+  else if(pct>=70){m.className='perf-msg perf-good';m.innerHTML='<strong>Good Performance!</strong> Review: two indications (STEMI, ischemic stroke); STEMI tiers &lt;60/60&ndash;69/70&ndash;79/80&ndash;89/&ge;90 kg = 30/35/40/45/50 mg; stroke 0.25 mg/kg max 25 mg; MOA binds fibrin, converts tissue plasminogen to plasmin; 6 CIs (active bleeding, IC surgery/trauma &lt;2 months, IC aneurysm, coagulation disorder, severe HTN, recent GI/GU bleed); reperfusion arrhythmias; sterile water only, DO NOT shake, 50 mg/10 mL; dextrose incompatible &mdash; flush NS.';}
+  else{m.className='perf-msg perf-review';m.innerHTML='<strong>Keep Studying!</strong> Focus: STEMI and stroke are both indications; STEMI = tiered weight bands (not 0.25 mg/kg); stroke = 0.25 mg/kg max 25 mg; MOA = binds fibrin, converts tissue plasminogen to plasmin; CIs include intracranial aneurysm, active bleeding, recent GI/GU bleeding; reperfusion arrhythmias warning; reconstitution = 10 mL sterile water, swirl not shake, 50 mg/10 mL; incompatible with dextrose; pregnancy = increased bleeding risk.';}
+}
+
+function restartQuiz(){
+  score=0;cur=1;answered=[];
+  document.querySelectorAll('.option').forEach(o=>o.classList.remove('disabled','correct','incorrect'));
+  document.querySelectorAll('.feedback').forEach(f=>f.classList.remove('show','correct-fb','incorrect-fb'));
+  Qs.forEach((_,i)=>{const b=document.getElementById('next'+(i+1));if(b)b.disabled=true;});
+  document.getElementById('qContainer').style.display='block';
+  document.querySelector('.progress-wrap').style.display='block';
+  document.getElementById('resultsCard').classList.remove('active');
+  goQ(1);
+}
+
+buildQuiz();
+</script>
+</body>
+</html>
