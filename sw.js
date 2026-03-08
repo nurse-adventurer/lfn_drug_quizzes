@@ -1,7 +1,8 @@
-const CACHE_NAME = 'lfn-drug-quizzes-v5';
+const CACHE_NAME = 'lfn-drug-quizzes-v6';
 const ASSETS = [
   './',
   './index.html',
+  './calculator.html',
   './manifest.json',
   './quizzes/acetaminophen_quiz.html',
   './quizzes/activated_charcoal_quiz.html',

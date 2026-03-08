@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0c1929">
+<title>LFN Weight-Based Drug Calculator</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;500;700;800&family=DM+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg: #0c1929;
+  --bg-card: #13243b;
+  --bg-card2: #0f1e30;
+  --teal: #0891b2;
+  --teal-glow: rgba(8,145,178,0.2);
+  --green: #16a34a;
+  --amber: #d97706;
+  --red: #dc2626;
+  --purple: #7c3aed;
+  --pink: #db2777;
+  --text: #e2e8f0;
+  --dim: #94a3b8;
+  --muted: #475569;
+  --border: rgba(148,163,184,0.1);
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: 'DM Sans', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding-top: calc(var(--safe-top) + 56px);
+  padding-bottom: calc(var(--safe-bottom) + 24px);
+  overflow-x: hidden;
+}
+
+/* ── Ambient bg ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 700px 500px at 15% 5%, rgba(8,145,178,0.10) 0%, transparent 70%),
+    radial-gradient(ellipse 600px 400px at 85% 90%, rgba(22,163,74,0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 400px 300px at 50% 50%, rgba(124,58,237,0.04) 0%, transparent 70%);
+}
+
+/* ── Nav ── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+  display: flex; align-items: center; gap: 10px;
+  padding: calc(var(--safe-top) + 8px) 16px 8px;
+  background: rgba(12,25,41,0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-home {
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 14px;
+  background: rgba(255,255,255,0.08);
+  color: var(--text); text-decoration: none;
+  border-radius: 8px; font-size: .82rem; font-weight: 700;
+  white-space: nowrap; border: 1px solid rgba(255,255,255,0.12);
+  transition: background .2s;
+}
+.nav-home:hover { background: rgba(255,255,255,0.14); }
+.nav-search-wrap { flex: 1; position: relative; max-width: 460px; }
+.nav-search {
+  width: 100%; padding: 7px 14px;
+  border-radius: 8px; border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.07); color: var(--text);
+  font-size: .85rem; outline: none;
+}
+.nav-search::placeholder { color: rgba(255,255,255,0.4); }
+.nav-search:focus { border-color: rgba(8,145,178,0.6); background: rgba(255,255,255,0.1); }
+.nav-results {
+  position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+  background: #1a2f48; border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  max-height: 300px; overflow-y: auto; display: none; z-index: 1000;
+}
+.nav-results.open { display: block; }
+.nav-result {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px; cursor: pointer;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  text-decoration: none; color: var(--text); transition: background .15s;
+}
+.nav-result:last-child { border-bottom: none; }
+.nav-result:hover { background: rgba(255,255,255,0.06); }
+.nav-result-name { font-size: .88rem; font-weight: 600; }
+.nav-result-sec { font-size: .72rem; color: var(--dim); }
+
+/* ── Page ── */
+.page { position: relative; z-index: 1; max-width: 780px; margin: 0 auto; padding: 0 16px; }
+
+.page-header { text-align: center; padding: 28px 0 24px; }
+.page-title { font-size: 1.6rem; font-weight: 800; color: var(--text); margin-bottom: 6px; }
+.page-title span { color: var(--teal); }
+.page-sub { font-size: .88rem; color: var(--dim); }
+
+/* ── Weight Input ── */
+.weight-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px 20px 18px;
+  margin-bottom: 24px;
+  box-shadow: 0 0 40px rgba(8,145,178,0.08);
+}
+.weight-label { font-size: .72rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--teal); margin-bottom: 12px; }
+.weight-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.weight-input-wrap { display: flex; align-items: center; gap: 0; flex: 1; min-width: 180px; }
+.weight-input {
+  flex: 1; padding: 14px 16px;
+  background: rgba(255,255,255,0.05);
+  border: 2px solid rgba(8,145,178,0.4);
+  border-right: none;
+  border-radius: 10px 0 0 10px;
+  color: var(--text);
+  font-size: 1.5rem; font-weight: 800;
+  font-family: 'DM Mono', monospace;
+  outline: none; width: 100%;
+  transition: border-color .2s;
+}
+.weight-input:focus { border-color: var(--teal); }
+.weight-input::placeholder { color: var(--muted); font-size: 1.1rem; }
+.unit-toggle {
+  display: flex; flex-direction: column; overflow: hidden;
+  border-radius: 0 10px 10px 0;
+  border: 2px solid rgba(8,145,178,0.4);
+  border-left: none;
+}
+.unit-btn {
+  padding: 7px 16px; background: rgba(255,255,255,0.04);
+  border: none; color: var(--dim); font-size: .8rem; font-weight: 700;
+  cursor: pointer; transition: all .15s; white-space: nowrap;
+  font-family: 'DM Sans', sans-serif;
+}
+.unit-btn.active { background: var(--teal); color: #fff; }
+.weight-display {
+  background: rgba(8,145,178,0.1);
+  border: 1px solid rgba(8,145,178,0.25);
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: .85rem;
+  color: var(--teal);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.weight-display.hidden { display: none; }
+
+/* ── Category Tabs ── */
+.cat-tabs {
+  display: flex; gap: 6px; overflow-x: auto;
+  padding-bottom: 2px; margin-bottom: 20px;
+  scrollbar-width: none;
+}
+.cat-tabs::-webkit-scrollbar { display: none; }
+.cat-tab {
+  padding: 8px 14px; border-radius: 8px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.04);
+  color: var(--dim); font-size: .78rem; font-weight: 700;
+  cursor: pointer; white-space: nowrap; transition: all .2s;
+  font-family: 'DM Sans', sans-serif;
+}
+.cat-tab:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
+.cat-tab.active { background: var(--teal); color: #fff; border-color: var(--teal); }
+
+/* ── Drug Category Section ── */
+.cat-section { display: none; }
+.cat-section.active { display: block; }
+.cat-heading {
+  font-size: .7rem; font-weight: 700; letter-spacing: 1.2px;
+  text-transform: uppercase; color: var(--dim);
+  margin-bottom: 12px; padding-left: 4px;
+}
+
+/* ── Drug Cards ── */
+.drug-cards { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+
+.drug-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.drug-card-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px 10px;
+  border-bottom: 1px solid var(--border);
+}
+.drug-name { font-size: .95rem; font-weight: 700; }
+.drug-section { font-size: .72rem; color: var(--dim); font-family: 'DM Mono', monospace; }
+.drug-class-tag {
+  font-size: .68rem; font-weight: 700; padding: 3px 8px;
+  border-radius: 5px; letter-spacing: .3px;
+}
+.tag-rsi { background: rgba(124,58,237,0.2); color: #a78bfa; }
+.tag-sedation { background: rgba(107,33,168,0.2); color: #c084fc; }
+.tag-analgesic { background: rgba(234,88,12,0.2); color: #fb923c; }
+.tag-cardiac { background: rgba(220,38,38,0.2); color: #f87171; }
+.tag-vasopressor { background: rgba(185,28,28,0.2); color: #fca5a5; }
+.tag-seizure { background: rgba(8,145,178,0.2); color: #67e8f9; }
+.tag-antidote { background: rgba(22,163,74,0.2); color: #86efac; }
+.tag-fluid { background: rgba(14,116,144,0.2); color: #22d3ee; }
+.tag-nmb { background: rgba(79,70,229,0.2); color: #a5b4fc; }
+.tag-peds { background: rgba(219,39,119,0.2); color: #f9a8d4; }
+.tag-infusion { background: rgba(217,119,6,0.2); color: #fcd34d; }
+
+.dose-rows { padding: 10px 16px 12px; display: flex; flex-direction: column; gap: 6px; }
+.dose-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.dose-indication {
+  font-size: .78rem; color: var(--dim);
+  flex: 1; padding-top: 2px; line-height: 1.4;
+}
+.dose-value {
+  font-family: 'DM Mono', monospace;
+  font-size: .92rem; font-weight: 500;
+  color: #fff;
+  text-align: right;
+  white-space: nowrap;
+}
+.dose-value.calculated { color: #34d399; font-weight: 700; font-size: 1rem; }
+.dose-value.no-weight { color: var(--muted); font-size: .82rem; }
+.dose-max {
+  font-size: .7rem; color: var(--amber);
+  text-align: right; margin-top: 1px;
+  font-family: 'DM Mono', monospace;
+}
+.dose-note {
+  font-size: .7rem; color: var(--muted);
+  grid-column: 1/-1; line-height: 1.4;
+  padding-top: 4px; border-top: 1px solid var(--border);
+  margin-top: 4px;
+}
+
+.dose-block { display: flex; flex-direction: column; align-items: flex-end; }
+
+/* ── Placeholder ── */
+.enter-weight {
+  text-align: center; padding: 32px 0;
+  color: var(--muted); font-size: .88rem;
+}
+.enter-weight-icon { font-size: 2rem; margin-bottom: 8px; display: block; }
+
+/* ── Warning strip ── */
+.warn-strip {
+  background: rgba(220,38,38,0.1); border: 1px solid rgba(220,38,38,0.3);
+  border-radius: 8px; padding: 8px 12px;
+  font-size: .75rem; color: #fca5a5; margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+/* ── Footer disclaimer ── */
+.disclaimer {
+  text-align: center; font-size: .72rem; color: var(--muted);
+  padding: 16px; border-top: 1px solid var(--border); margin-top: 16px;
+  line-height: 1.6;
+}
+
+@media (max-width: 480px) {
+  .weight-input { font-size: 1.2rem; }
+  .page-title { font-size: 1.35rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── Nav ── -->
+<nav class="nav">
+  <a class="nav-home" href="./index.html">🏠 Home</a>
+  <div class="nav-search-wrap">
+    <input class="nav-search" type="text" placeholder="🔍 Search drug…" id="navSearch" autocomplete="off" />
+    <div class="nav-results" id="navResults"></div>
+  </div>
+</nav>
+
+<div class="page">
+
+  <header class="page-header">
+    <div class="page-title">⚖️ <span>Weight-Based</span> Calculator</div>
+    <div class="page-sub">LFN Formulary Sections 12.02 – 12.84 · Verify all doses with current PCGs</div>
+  </header>
+
+  <!-- ── Weight Input ── -->
+  <div class="weight-card">
+    <div class="weight-label">Patient Weight</div>
+    <div class="weight-row">
+      <div class="weight-input-wrap">
+        <input class="weight-input" type="number" id="weightInput" placeholder="0" min="1" max="400" inputmode="decimal" />
+        <div class="unit-toggle">
+          <button class="unit-btn active" id="btnKg" onclick="setUnit('kg')">kg</button>
+          <button class="unit-btn" id="btnLb" onclick="setUnit('lb')">lb</button>
+        </div>
+      </div>
+      <div class="weight-display hidden" id="weightDisplay"></div>
+    </div>
+  </div>
+
+  <!-- ── Category Tabs ── -->
+  <div class="cat-tabs" id="catTabs">
+    <button class="cat-tab active" onclick="showCat('rsi')">🫁 RSI / Intubation</button>
+    <button class="cat-tab" onclick="showCat('sedation')">💤 Sedation</button>
+    <button class="cat-tab" onclick="showCat('analgesia')">💊 Analgesia</button>
+    <button class="cat-tab" onclick="showCat('cardiac')">❤️ Cardiac</button>
+    <button class="cat-tab" onclick="showCat('vasopressors')">🔴 Vasopressors</button>
+    <button class="cat-tab" onclick="showCat('seizure')">⚡ Seizure</button>
+    <button class="cat-tab" onclick="showCat('antidotes')">🧪 Antidotes</button>
+    <button class="cat-tab" onclick="showCat('fluids')">💧 Fluids / Electrolytes</button>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       RSI / INTUBATION
+  ══════════════════════════════════════════════════════ -->
+  <div class="cat-section active" id="cat-rsi">
+
+    <div class="drug-cards">
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Succinylcholine</div><div class="drug-section">12.78</div></div>
+          <div class="drug-class-tag tag-nmb">Depolarizing NMB</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">RSI — IV</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*1.5" data-unit="mg" data-min-w="1.5" data-max="200">—</div>
+              <div class="dose-max">1.5 mg/kg · max 200 mg</div>
+            </div>
+          </div>
+          <div class="dose-row">
+            <div class="dose-indication">RSI — IM (if no IV)</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*4" data-unit="mg" data-min-w="4" data-max="400">—</div>
+              <div class="dose-max">4 mg/kg · max 400 mg</div>
+            </div>
+          </div>
+          <p class="dose-note">⚠️ CI: hyperkalemia, crush injury &gt;24 hr, denervation, burns &gt;24 hr, malignant hyperthermia hx</p>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Rocuronium</div><div class="drug-section">12.74</div></div>
+          <div class="drug-class-tag tag-nmb">Non-Dep. NMB</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">RSI — IV</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*1" data-unit="mg" data-min-w="1">—</div>
+              <div class="dose-max">1 mg/kg IV</div>
+            </div>
+          </div>
+          <div class="dose-row">
+            <div class="dose-indication">RSI — IM (if no IV)</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*1.8" data-unit="mg" data-min-w="1.8">—</div>
+              <div class="dose-max">1.8 mg/kg IM</div>
+            </div>
+          </div>
+          <div class="dose-row">
+            <div class="dose-indication">Maintenance / re-dose</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.5" data-unit="mg" data-min-w="0.5">—</div>
+              <div class="dose-max">0.5 mg/kg</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Vecuronium</div><div class="drug-section">12.84</div></div>
+          <div class="drug-class-tag tag-nmb">Non-Dep. NMB</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">Ongoing paralysis — IV bolus</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.1" data-unit="mg" data-min-w="0.1">—</div>
+              <div class="dose-max">0.1 mg/kg IV</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Cisatracurium</div><div class="drug-section">12.14</div></div>
+          <div class="drug-class-tag tag-nmb">Non-Dep. NMB</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">Intubation bolus</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.2" data-unit="mg" data-min-w="0.2">—</div>
+              <div class="dose-max">0.15–0.2 mg/kg IV</div>
+            </div>
+          </div>
+          <div class="dose-row">
+            <div class="dose-indication">Infusion start</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*1" data-unit="mcg/min" data-min-w="1">—</div>
+              <div class="dose-max">1–3 mcg/kg/min</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Etomidate</div><div class="drug-section">12.29</div></div>
+          <div class="drug-class-tag tag-rsi">RSI Induction</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">RSI induction</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.3" data-unit="mg" data-min-w="0.3">—</div>
+              <div class="dose-max">0.3 mg/kg IV</div>
+            </div>
+          </div>
+          <div class="dose-row">
+            <div class="dose-indication">Procedural sedation</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.1" data-unit="mg" data-min-w="0.1">—</div>
+              <div class="dose-max">0.1 mg/kg IV</div>
+            </div>
+          </div>
+          <p class="dose-note">⚠️ Single dose only — transient adrenal suppression</p>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Ketamine</div><div class="drug-section">12.42</div></div>
+          <div class="drug-class-tag tag-rsi">Dissociative</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">RSI induction — IV</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*2" data-unit="mg" data-min-w="2" data-max="300">—</div>
+              <div class="dose-max">1.5–2 mg/kg IV</div>
+            </div>
+          </div>
+          <div class="dose-row">
+            <div class="dose-indication">RSI induction — IM</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*4" data-unit="mg" data-min-w="4">—</div>
+              <div class="dose-max">4 mg/kg IM</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Fentanyl</div><div class="drug-section">12.30</div></div>
+          <div class="drug-class-tag tag-analgesic">Opioid</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">RSI pre-treatment (peds only) — IV</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*2" data-unit="mcg" data-min-w="2" data-max="100">—</div>
+              <div class="dose-max">2 mcg/kg IV · max 100 mcg</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       SEDATION
+  ══════════════════════════════════════════════════════ -->
+  <div class="cat-section" id="cat-sedation">
+    <div class="drug-cards">
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Ketamine</div><div class="drug-section">12.42</div></div>
+          <div class="drug-class-tag tag-sedation">Dissociative</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">Combative / behavioral — IV</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*1" data-unit="mg" data-min-w="1" data-max="150">—</div>
+              <div class="dose-max">0.5–1 mg/kg IV · max 150 mg</div>
+            </div>
+          </div>
+          <div class="dose-row">
+            <div class="dose-indication">Combative / behavioral — IM</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*4" data-unit="mg" data-min-w="4" data-max="500">—</div>
+              <div class="dose-max">4 mg/kg IM · max 500 mg</div>
+            </div>
+          </div>
+          <div class="dose-row">
+            <div class="dose-indication">Post-intubation sedation — infusion</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.2" data-unit="mg/hr" data-min-w="0.2">—</div>
+              <div class="dose-max">0.1–0.5 mg/kg/hr</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Midazolam</div><div class="drug-section">12.54</div></div>
+          <div class="drug-class-tag tag-sedation">Benzodiazepine</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">Sedation / combative — IV/IM</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.1" data-unit="mg" data-min-w="0.1" data-max="5">—</div>
+              <div class="dose-max">0.05–0.1 mg/kg · max 5 mg</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Lorazepam</div><div class="drug-section">12.48</div></div>
+          <div class="drug-class-tag tag-sedation">Benzodiazepine</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">Anxiolysis — IV</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.02" data-unit="mg" data-min-w="0.02" data-max="2">—</div>
+              <div class="dose-max">0.02 mg/kg IV · max 2 mg</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Dexmedetomidine</div><div class="drug-section">12.18</div></div>
+          <div class="drug-class-tag tag-sedation">Alpha₂ Agonist</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">Post-intubation infusion — start</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.3" data-unit="mcg/hr" data-min-w="0.3">—</div>
+              <div class="dose-max">0.2–0.4 mcg/kg/hr start</div>
+            </div>
+          </div>
+          <div class="dose-row">
+            <div class="dose-indication">Post-intubation infusion — max</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*1.5" data-unit="mcg/hr" data-min-w="1.5">—</div>
+              <div class="dose-max">max 1.5 mcg/kg/hr</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Propofol</div><div class="drug-section">12.72</div></div>
+          <div class="drug-class-tag tag-sedation">Anesthetic</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">Post-intubation sedation — start</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*5" data-unit="mcg/kg/min" data-min-w="5">—</div>
+              <div class="dose-max">5–50 mcg/kg/min infusion</div>
+            </div>
+          </div>
+          <p class="dose-note">⚠️ CI: egg/soy allergy. Monitor for propofol infusion syndrome &gt;48 hr.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       ANALGESIA
+  ══════════════════════════════════════════════════════ -->
+  <div class="cat-section" id="cat-analgesia">
+    <div class="drug-cards">
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Fentanyl</div><div class="drug-section">12.30</div></div>
+          <div class="drug-class-tag tag-analgesic">Opioid</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">Pain management — IV/IM/IN</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*1" data-unit="mcg" data-min-w="1" data-max="100">—</div>
+              <div class="dose-max">1 mcg/kg · max 100 mcg</div>
+            </div>
+          </div>
+          <div class="dose-row">
+            <div class="dose-indication">Pain — repeat dose</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.5" data-unit="mcg" data-min-w="0.5" data-max="50">—</div>
+              <div class="dose-max">0.5 mcg/kg q 5 min · max 50 mcg</div>
+            </div>
+          </div>
+          <div class="dose-row">
+            <div class="dose-indication">CCT infusion — start</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.5" data-unit="mcg/hr" data-min-w="0.5">—</div>
+              <div class="dose-max">0.5–2 mcg/kg/hr</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Ketamine</div><div class="drug-section">12.42</div></div>
+          <div class="drug-class-tag tag-analgesic">Dissociative</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">Sub-dissociative pain — IV</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.3" data-unit="mg" data-min-w="0.3" data-max="60">—</div>
+              <div class="dose-max">0.1–0.5 mg/kg IV · max 60 mg</div>
+            </div>
+          </div>
+          <div class="dose-row">
+            <div class="dose-indication">Sub-dissociative pain — IM/IN</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*1" data-unit="mg" data-min-w="1" data-max="100">—</div>
+              <div class="dose-max">0.5–1 mg/kg IM/IN</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Hydromorphone</div><div class="drug-section">12.37</div></div>
+          <div class="drug-class-tag tag-analgesic">Opioid</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">Pain — IV</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.015" data-unit="mg" data-min-w="0.015" data-max="2">—</div>
+              <div class="dose-max">0.015 mg/kg IV · max 2 mg</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Morphine Sulfate</div><div class="drug-section">12.56</div></div>
+          <div class="drug-class-tag tag-analgesic">Opioid</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">Pain — IV/IM</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.1" data-unit="mg" data-min-w="0.1" data-max="5">—</div>
+              <div class="dose-max">0.1 mg/kg · max 5 mg per dose</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Acetaminophen</div><div class="drug-section">12.02</div></div>
+          <div class="drug-class-tag tag-analgesic">Non-Opioid</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">Adult (≥ 50 kg): fixed dose</div>
+            <div class="dose-block">
+              <div class="dose-value">1000 mg IV</div>
+              <div class="dose-max">over 15 min · max 4000 mg/24hr</div>
+            </div>
+          </div>
+          <div class="dose-row">
+            <div class="dose-indication">Peds (&lt; 50 kg) — IV</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*15" data-unit="mg" data-min-w="15" data-max="750">—</div>
+              <div class="dose-max">15 mg/kg IV · max 750 mg</div>
+            </div>
+          </div>
+          <p class="dose-note">Dual criteria for adult dose: must be ≥ 13 years AND ≥ 50 kg</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       CARDIAC
+  ══════════════════════════════════════════════════════ -->
+  <div class="cat-section" id="cat-cardiac">
+    <div class="drug-cards">
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Epinephrine</div><div class="drug-section">12.26</div></div>
+          <div class="drug-class-tag tag-cardiac">Alpha/Beta Agonist</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">Cardiac arrest — IV (adult &amp; peds)</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.01" data-unit="mg" data-min-w="0.01" data-max="1">—</div>
+              <div class="dose-max">0.01 mg/kg q 3–5 min · max 1 mg</div>
+            </div>
+          </div>
+          <div class="dose-row">
+            <div class="dose-indication">Push dose — IV (10 mcg/mL conc.)</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*1" data-unit="mcg" data-min-w="1" data-max="20">—</div>
+              <div class="dose-max">1 mcg/kg · max 20 mcg per push</div>
+            </div>
+          </div>
+          <div class="dose-row">
+            <div class="dose-indication">Peds infusion — start</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.05" data-unit="mcg/min" data-min-w="0.05">—</div>
+              <div class="dose-max">0.05 mcg/kg/min start</div>
+            </div>
+          </div>
+          <div class="dose-row">
+            <div class="dose-indication">Traumatic arrest infusion</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.1" data-unit="mcg/min" data-min-w="0.1">—</div>
+              <div class="dose-max">0.1 mcg/kg/min — NO titration</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Adenosine</div><div class="drug-section">12.04</div></div>
+          <div class="drug-class-tag tag-cardiac">Antiarrhythmic</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">SVT — 1st dose IV rapid push</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.1" data-unit="mg" data-min-w="0.1" data-max="6">—</div>
+              <div class="dose-max">0.1 mg/kg · max 6 mg</div>
+            </div>
+          </div>
+          <div class="dose-row">
+            <div class="dose-indication">SVT — 2nd dose (if no response)</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.2" data-unit="mg" data-min-w="0.2" data-max="12">—</div>
+              <div class="dose-max">0.2 mg/kg · max 12 mg</div>
+            </div>
+          </div>
+          <p class="dose-note">Adult doses are fixed: 6 mg then 12 mg. Weight-based for peds only.</p>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Atropine</div><div class="drug-section">12.09</div></div>
+          <div class="drug-class-tag tag-cardiac">Anticholinergic</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">Bradycardia — peds IV/IO</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.02" data-unit="mg" data-min-w="0.02" data-max="0.5">—</div>
+              <div class="dose-max">0.02 mg/kg · min 0.1 mg · max 0.5 mg</div>
+            </div>
+          </div>
+          <p class="dose-note">Adult: fixed 1 mg IV. Peds max single dose 0.5 mg; max total 1 mg.</p>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Heparin</div><div class="drug-section">12.35</div></div>
+          <div class="drug-class-tag tag-cardiac">Anticoagulant</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">STEMI → TSE — bolus</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*60" data-unit="units" data-min-w="60" data-max="4000">—</div>
+              <div class="dose-max">60 u/kg · max 4,000 units</div>
+            </div>
+          </div>
+          <div class="dose-row">
+            <div class="dose-indication">STEMI → St. Charles Bend — bolus only</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*70" data-unit="units" data-min-w="70" data-max="5000">—</div>
+              <div class="dose-max">70 u/kg · max 5,000 units</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Alteplase / tPA</div><div class="drug-section">12.06</div></div>
+          <div class="drug-class-tag tag-cardiac">Fibrinolytic</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">Ischemic stroke — total dose</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.9" data-unit="mg" data-min-w="0.9" data-max="90">—</div>
+              <div class="dose-max">0.9 mg/kg · max 90 mg</div>
+            </div>
+          </div>
+          <div class="dose-row">
+            <div class="dose-indication">10% of total — IV bolus over 1 min</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.09" data-unit="mg" data-min-w="0.09" data-max="9">—</div>
+              <div class="dose-max">10% of total dose over 1 min</div>
+            </div>
+          </div>
+          <div class="dose-row">
+            <div class="dose-indication">Remaining 90% — IV over 60 min</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.81" data-unit="mg" data-min-w="0.81" data-max="81">—</div>
+              <div class="dose-max">90% of total dose over 60 min</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       VASOPRESSORS / INFUSIONS
+  ══════════════════════════════════════════════════════ -->
+  <div class="cat-section" id="cat-vasopressors">
+    <div class="drug-cards">
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Norepinephrine</div><div class="drug-section">12.63</div></div>
+          <div class="drug-class-tag tag-vasopressor">Vasopressor</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">Shock — infusion start</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.05" data-unit="mcg/min" data-min-w="0.05">—</div>
+              <div class="dose-max">0.05 mcg/kg/min</div>
+            </div>
+          </div>
+          <div class="dose-row">
+            <div class="dose-indication">Infusion — titration increments</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.05" data-unit="mcg/min" data-min-w="0.05">—</div>
+              <div class="dose-max">↑ 0.05 mcg/kg/min q 3–5 min</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Epinephrine Infusion</div><div class="drug-section">12.26</div></div>
+          <div class="drug-class-tag tag-vasopressor">Vasopressor</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">Infusion — start (peds)</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.05" data-unit="mcg/min" data-min-w="0.05">—</div>
+              <div class="dose-max">0.05 mcg/kg/min</div>
+            </div>
+          </div>
+          <div class="dose-row">
+            <div class="dose-indication">Max infusion rate</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*2" data-unit="mcg/min" data-min-w="2">—</div>
+              <div class="dose-max">max 2 mcg/kg/min</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Dopamine</div><div class="drug-section">12.24</div></div>
+          <div class="drug-class-tag tag-vasopressor">Vasopressor</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">Hypotension — low dose start</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*5" data-unit="mcg/min" data-min-w="5">—</div>
+              <div class="dose-max">5 mcg/kg/min start</div>
+            </div>
+          </div>
+          <div class="dose-row">
+            <div class="dose-indication">High dose (alpha dominant)</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*20" data-unit="mcg/min" data-min-w="20">—</div>
+              <div class="dose-max">up to 20 mcg/kg/min</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Dobutamine</div><div class="drug-section">12.23</div></div>
+          <div class="drug-class-tag tag-infusion">Inotrope</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">Cardiogenic shock — start</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*5" data-unit="mcg/min" data-min-w="5">—</div>
+              <div class="dose-max">2.5–5 mcg/kg/min start</div>
+            </div>
+          </div>
+          <div class="dose-row">
+            <div class="dose-indication">Max dose</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*20" data-unit="mcg/min" data-min-w="20">—</div>
+              <div class="dose-max">max 20 mcg/kg/min</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Phenylephrine</div><div class="drug-section">12.68</div></div>
+          <div class="drug-class-tag tag-vasopressor">Alpha-1</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">Infusion — start</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.5" data-unit="mcg/min" data-min-w="0.5">—</div>
+              <div class="dose-max">0.25–0.5 mcg/kg/min</div>
+            </div>
+          </div>
+          <div class="dose-row">
+            <div class="dose-indication">Infusion — max</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*5" data-unit="mcg/min" data-min-w="5">—</div>
+              <div class="dose-max">max 5 mcg/kg/min</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Milrinone</div><div class="drug-section">12.55</div></div>
+          <div class="drug-class-tag tag-infusion">PDE-3 Inhibitor</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">Load — IV over 10 min</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*50" data-unit="mcg" data-min-w="50">—</div>
+              <div class="dose-max">50 mcg/kg over 10 min</div>
+            </div>
+          </div>
+          <div class="dose-row">
+            <div class="dose-indication">Maintenance infusion — start</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.375" data-unit="mcg/min" data-min-w="0.375">—</div>
+              <div class="dose-max">0.375–0.75 mcg/kg/min</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Dexmedetomidine</div><div class="drug-section">12.18</div></div>
+          <div class="drug-class-tag tag-infusion">Alpha₂ Agonist</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">Infusion — start</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.3" data-unit="mcg/hr" data-min-w="0.3">—</div>
+              <div class="dose-max">0.2–0.4 mcg/kg/hr</div>
+            </div>
+          </div>
+          <div class="dose-row">
+            <div class="dose-indication">Infusion — max</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*1.5" data-unit="mcg/hr" data-min-w="1.5">—</div>
+              <div class="dose-max">max 1.5 mcg/kg/hr</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       SEIZURE
+  ══════════════════════════════════════════════════════ -->
+  <div class="cat-section" id="cat-seizure">
+    <div class="drug-cards">
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Levetiracetam</div><div class="drug-section">12.45</div></div>
+          <div class="drug-class-tag tag-seizure">Anticonvulsant</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">Status epilepticus — IV over 15 min</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*50" data-unit="mg" data-min-w="50" data-max="4500">—</div>
+              <div class="dose-max">50 mg/kg · max 4,500 mg</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Phenobarbital</div><div class="drug-section">12.67</div></div>
+          <div class="drug-class-tag tag-seizure">Barbiturate</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">Status epilepticus — IV at 60 mg/min</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*18" data-unit="mg" data-min-w="18">—</div>
+              <div class="dose-max">15–20 mg/kg at 60 mg/min</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Fosphenytoin</div><div class="drug-section">12.32</div></div>
+          <div class="drug-class-tag tag-seizure">Anticonvulsant</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">Status epilepticus — PE/kg IV</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*20" data-unit="mg PE" data-min-w="20" data-max="1500">—</div>
+              <div class="dose-max">20 mg PE/kg · max 1,500 mg PE</div>
+            </div>
+          </div>
+          <p class="dose-note">Dosed in mg Phenytoin Equivalent (PE). Max rate 150 mg PE/min.</p>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Diazepam</div><div class="drug-section">12.20</div></div>
+          <div class="drug-class-tag tag-seizure">Benzodiazepine</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">Seizures — IV</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.15" data-unit="mg" data-min-w="0.15" data-max="10">—</div>
+              <div class="dose-max">0.15–0.2 mg/kg IV · max 10 mg</div>
+            </div>
+          </div>
+          <div class="dose-row">
+            <div class="dose-indication">Seizures — rectal (DiaStat)</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.2" data-unit="mg" data-min-w="0.2" data-max="10">—</div>
+              <div class="dose-max">0.2 mg/kg PR · max 10 mg</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Midazolam</div><div class="drug-section">12.54</div></div>
+          <div class="drug-class-tag tag-seizure">Benzodiazepine</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">Seizures — IM/IN (preferred out-of-hospital)</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.2" data-unit="mg" data-min-w="0.2" data-max="10">—</div>
+              <div class="dose-max">0.2 mg/kg · max 10 mg</div>
+            </div>
+          </div>
+          <div class="dose-row">
+            <div class="dose-indication">Seizures — IV</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.1" data-unit="mg" data-min-w="0.1" data-max="5">—</div>
+              <div class="dose-max">0.1 mg/kg IV · max 5 mg</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Magnesium Sulfate</div><div class="drug-section">12.49</div></div>
+          <div class="drug-class-tag tag-seizure">Electrolyte</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">Peds asthma / seizure — IV</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*50" data-unit="mg" data-min-w="50" data-max="2000">—</div>
+              <div class="dose-max">25–50 mg/kg · max 2 g</div>
+            </div>
+          </div>
+          <p class="dose-note">Adult doses are fixed: Torsades 2g/15 min, Asthma 2g/20 min, Eclampsia 4g/20 min.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       ANTIDOTES
+  ══════════════════════════════════════════════════════ -->
+  <div class="cat-section" id="cat-antidotes">
+    <div class="drug-cards">
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Naloxone</div><div class="drug-section">12.58</div></div>
+          <div class="drug-class-tag tag-antidote">Opioid Antidote</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">Opioid OD — IV/IM/IN (peds)</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.01" data-unit="mg" data-min-w="0.01" data-max="0.4">—</div>
+              <div class="dose-max">0.01 mg/kg · max 0.4 mg</div>
+            </div>
+          </div>
+          <p class="dose-note">Adult: 0.4 mg IV/IM/IN fixed, titrate to respirations. Repeat q 2 min PRN.</p>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Hydroxocobalamin</div><div class="drug-section">12.38</div></div>
+          <div class="drug-class-tag tag-antidote">Cyanide Antidote</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">Cyanide poisoning — IV (peds)</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*70" data-unit="mg" data-min-w="70" data-max="5000">—</div>
+              <div class="dose-max">70 mg/kg · max 5 g</div>
+            </div>
+          </div>
+          <p class="dose-note">Adult: fixed 5 g IV over 15 min. Turns urine/skin red — expected.</p>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Lipid Emulsion</div><div class="drug-section">12.47</div></div>
+          <div class="drug-class-tag tag-antidote">Lipid Rescue</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">BB / CCB / LA toxicity — bolus</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*1.5" data-unit="mL" data-min-w="1.5" data-max="500">—</div>
+              <div class="dose-max">1.5 mL/kg IV bolus over 1 min</div>
+            </div>
+          </div>
+          <div class="dose-row">
+            <div class="dose-indication">Infusion — after bolus</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.25" data-unit="mL/min" data-min-w="0.25">—</div>
+              <div class="dose-max">0.25 mL/kg/min × 30–60 min</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Glucagon</div><div class="drug-section">12.34</div></div>
+          <div class="drug-class-tag tag-antidote">BB / CCB Antidote</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">BB / CCB OD — IV slow push</div>
+            <div class="dose-block">
+              <div class="dose-value">5–10 mg</div>
+              <div class="dose-max">Fixed adult dose — slow IVP</div>
+            </div>
+          </div>
+          <p class="dose-note">⚠️ Duration only 15 min. CI if glycogen depleted. No peds standing order.</p>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">N-Acetylcysteine</div><div class="drug-section">12.57</div></div>
+          <div class="drug-class-tag tag-antidote">Acetaminophen Antidote</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">Oral loading dose</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*140" data-unit="mg" data-min-w="140">—</div>
+              <div class="dose-max">140 mg/kg PO — then 70 mg/kg q 4hr × 68 hr</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Dextrose</div><div class="drug-section">12.19</div></div>
+          <div class="drug-class-tag tag-antidote">Hypoglycemia Tx</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">Adult D50 — IV</div>
+            <div class="dose-block">
+              <div class="dose-value">25 g (50 mL)</div>
+              <div class="dose-max">Fixed adult dose</div>
+            </div>
+          </div>
+          <div class="dose-row">
+            <div class="dose-indication">Peds D10 — IV/IO</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*5" data-unit="mL" data-min-w="5" data-max="250">—</div>
+              <div class="dose-max">0.5 g/kg = 5 mL/kg D10 · max 250 mL</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Insulin (Regular)</div><div class="drug-section">12.40</div></div>
+          <div class="drug-class-tag tag-antidote">DKA / Hyperkalemia</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">DKA — bolus</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.1" data-unit="units" data-min-w="0.1" data-max="10">—</div>
+              <div class="dose-max">0.1 u/kg IV · max 10 units</div>
+            </div>
+          </div>
+          <div class="dose-row">
+            <div class="dose-indication">DKA — infusion</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.1" data-unit="u/hr" data-min-w="0.1">—</div>
+              <div class="dose-max">0.1 u/kg/hr</div>
+            </div>
+          </div>
+          <div class="dose-row">
+            <div class="dose-indication">Hyperkalemia — IV (with D50)</div>
+            <div class="dose-block">
+              <div class="dose-value">10 units</div>
+              <div class="dose-max">Fixed adult dose with 50 mL D50</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       FLUIDS / ELECTROLYTES
+  ══════════════════════════════════════════════════════ -->
+  <div class="cat-section" id="cat-fluids">
+    <div class="drug-cards">
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Hypertonic Saline 3%</div><div class="drug-section">12.39</div></div>
+          <div class="drug-class-tag tag-fluid">Osmotic Agent</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">↑ICP / TBI — IV bolus</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*3" data-unit="mL" data-min-w="3" data-max="250">—</div>
+              <div class="dose-max">3 mL/kg · max 250 mL</div>
+            </div>
+          </div>
+          <div class="dose-row">
+            <div class="dose-indication">Hemorrhagic stroke / symptomatic hyponatremia</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*3" data-unit="mL" data-min-w="3" data-max="250">—</div>
+              <div class="dose-max">3 mL/kg · max 250 mL</div>
+            </div>
+          </div>
+          <p class="dose-note">Preferred over mannitol for hypovolemic patients. Give via large-bore or central line.</p>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Mannitol</div><div class="drug-section">12.50</div></div>
+          <div class="drug-class-tag tag-fluid">Osmotic Diuretic</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">Cerebral edema / herniation — IV over 15 min</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.75" data-unit="g" data-min-w="0.75">—</div>
+              <div class="dose-max">0.5–1 g/kg over 15 min</div>
+            </div>
+          </div>
+          <div class="dose-row">
+            <div class="dose-indication">DKA cerebral edema (peds)</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.75" data-unit="g" data-min-w="0.75">—</div>
+              <div class="dose-max">0.5–1 g/kg over 15 min</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Calcium Chloride</div><div class="drug-section">12.11</div></div>
+          <div class="drug-class-tag tag-fluid">Electrolyte</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">Hyperkalemia / Hypocalcemia — peds</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*20" data-unit="mg" data-min-w="20" data-max="1000">—</div>
+              <div class="dose-max">20–25 mg/kg IV · max 1 g</div>
+            </div>
+          </div>
+          <p class="dose-note">Adult: 1 g IV fixed. Calcium chloride has 3× more elemental Ca than gluconate.</p>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">Lactated Ringers</div><div class="drug-section">12.44</div></div>
+          <div class="drug-class-tag tag-fluid">Crystalloid</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">Adult fluid bolus</div>
+            <div class="dose-block">
+              <div class="dose-value">250–500 mL</div>
+              <div class="dose-max">Fixed adult bolus · repeat PRN</div>
+            </div>
+          </div>
+          <div class="dose-row">
+            <div class="dose-indication">Peds fluid bolus</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*20" data-unit="mL" data-min-w="20" data-max="500">—</div>
+              <div class="dose-max">20 mL/kg · max 500 mL per bolus</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="drug-card">
+        <div class="drug-card-header">
+          <div><div class="drug-name">TXA (Tranexamic Acid)</div><div class="drug-section">12.82</div></div>
+          <div class="drug-class-tag tag-fluid">Antifibrinolytic</div>
+        </div>
+        <div class="dose-rows">
+          <div class="dose-row">
+            <div class="dose-indication">Trauma hemorrhage ≤ 2 hr — fixed dose</div>
+            <div class="dose-block">
+              <div class="dose-value">1 g IV</div>
+              <div class="dose-max">Over 10 min · ≤ 2 hr from injury</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="disclaimer">
+    ⚕️ Personal study resource only — verify all doses against current LFN PCGs and medical direction.<br>
+    All doses are approximations. Max doses, contraindications, and clinical context must be applied.
+  </div>
+
+</div><!-- /page -->
+
+<script>
+// ── Drug search nav ──
+var NAV_DRUGS=[{name:"Acetaminophen",sec:"12.02",file:"acetaminophen_quiz.html"},{name:"Activated Charcoal",sec:"12.03",file:"activated_charcoal_quiz.html"},{name:"Adenosine",sec:"12.04",file:"adenosine_quiz.html"},{name:"Albumin",sec:"Non-PCG",file:"albumin_quiz.html"},{name:"Albuterol",sec:"12.05",file:"albuterol_quiz.html"},{name:"Alteplase / tPA",sec:"12.06",file:"alteplase_quiz.html"},{name:"Amiodarone",sec:"12.07",file:"amiodarone_quiz.html"},{name:"Aspirin",sec:"12.08",file:"aspirin_quiz.html"},{name:"Atropine",sec:"12.09",file:"atropine_quiz.html"},{name:"Betamethasone",sec:"12.10",file:"betamethasone_quiz.html"},{name:"Calcium Chloride",sec:"12.11",file:"calcium_chloride_quiz.html"},{name:"Calcium Gluconate",sec:"12.12",file:"calcium_gluconate_quiz.html"},{name:"Cefazolin",sec:"12.13",file:"cefazolin_quiz.html"},{name:"Cisatracurium",sec:"12.14",file:"cisatracurium_quiz.html"},{name:"Clevidipine",sec:"12.15",file:"clevidipine_quiz.html"},{name:"CroFab",sec:"12.16",file:"crofab_quiz.html"},{name:"Dexamethasone",sec:"12.17",file:"dexamethasone_quiz.html"},{name:"Dexmedetomidine",sec:"12.18",file:"dexmedetomidine_quiz.html"},{name:"Dextrose",sec:"12.19",file:"dextrose_quiz.html"},{name:"Diazepam",sec:"12.20",file:"diazepam_quiz.html"},{name:"Diltiazem",sec:"12.21",file:"diltiazem_quiz.html"},{name:"Diphenhydramine",sec:"12.22",file:"diphenhydramine_quiz.html"},{name:"Dobutamine",sec:"12.23",file:"dobutamine_quiz__1_.html"},{name:"Dopamine",sec:"12.24",file:"dopamine_quiz__1_.html"},{name:"Droperidol",sec:"12.25",file:"droperidol_quiz.html"},{name:"Epinephrine",sec:"12.26",file:"epinephrine_12_26.html"},{name:"Epoprostenol",sec:"12.27",file:"epoprostenol_quiz__1_.html"},{name:"Esmolol",sec:"12.28",file:"esmolol_quiz__1_.html"},{name:"Etomidate",sec:"12.29",file:"etomidate_quiz.html"},{name:"Fentanyl",sec:"12.30",file:"fentanyl_quiz.html"},{name:"Flumazenil",sec:"12.31",file:"flumazenil_quiz.html"},{name:"Fosphenytoin",sec:"12.32",file:"fosphenytoin_quiz.html"},{name:"Furosemide",sec:"12.33",file:"furosemide_quiz.html"},{name:"Glucagon",sec:"12.34",file:"lfn_glucagon_12-34.html"},{name:"Heparin",sec:"12.35",file:"heparin_quiz.html"},{name:"Hydralazine",sec:"12.36",file:"hydralazine_quiz.html"},{name:"Hydromorphone",sec:"12.37",file:"hydromorphone_quiz.html"},{name:"Hydroxocobalamin",sec:"12.38",file:"hydroxocobalamin_quiz.html"},{name:"Hypertonic Saline 3%",sec:"12.39",file:"hypertonic_saline_12_39.html"},{name:"Insulin",sec:"12.40",file:"insulin_quiz.html"},{name:"Ipratropium",sec:"12.41",file:"ipratropium_quiz.html"},{name:"Ketamine",sec:"12.42",file:"ketamine_quiz.html"},{name:"Labetalol",sec:"12.43",file:"labetalol_12_43.html"},{name:"Lactated Ringers",sec:"12.44",file:"lactated_ringers_quiz.html"},{name:"Levetiracetam",sec:"12.45",file:"levetiracetam_quiz.html"},{name:"Lidocaine",sec:"12.46",file:"lidocaine_12_46.html"},{name:"Lipid Emulsion",sec:"12.47",file:"lipid_emulsion_quiz.html"},{name:"Lorazepam",sec:"12.48",file:"lorazepam_quiz.html"},{name:"Magnesium Sulfate",sec:"12.49",file:"magnesium_sulfate_quiz.html"},{name:"Mannitol",sec:"12.50",file:"lfn_mannitol_12-50.html"},{name:"Methylergonovine",sec:"12.51",file:"lfn_methylergonovine_12-51.html"},{name:"Methylprednisolone",sec:"12.52",file:"lfn_methylprednisolone_12-52.html"},{name:"Metoprolol",sec:"12.53",file:"lfn_metoprolol_12-53.html"},{name:"Midazolam",sec:"12.54",file:"lfn_midazolam_12-54.html"},{name:"Milrinone",sec:"12.55",file:"lfn_milrinone_12-55.html"},{name:"Morphine Sulfate",sec:"12.56",file:"lfn_morphine_12-56.html"},{name:"N-Acetylcysteine",sec:"12.57",file:"lfn_nac_12-57.html"},{name:"Naloxone",sec:"12.58",file:"lfn_naloxone_12-58.html"},{name:"Nicardipine",sec:"12.59",file:"lfn_nicardipine_12-59.html"},{name:"Nifedipine",sec:"12.60",file:"lfn_nifedipine_12-60.html"},{name:"Nitroglycerin",sec:"12.61",file:"nitroglycerin_quiz.html"},{name:"Nitroprusside",sec:"12.62",file:"lfn_nitroprusside_12-62.html"},{name:"Norepinephrine",sec:"12.63",file:"lfn_norepinephrine_12-63.html"},{name:"Octreotide",sec:"12.64",file:"lfn_octreotide_12-64.html"},{name:"Ondansetron",sec:"12.65",file:"lfn_ondansetron_12-65.html"},{name:"Oxytocin",sec:"12.66",file:"lfn_oxytocin_12-66.html"},{name:"Phenobarbital",sec:"12.67",file:"lfn_phenobarbital_12-67.html"},{name:"Phenylephrine",sec:"12.68",file:"lfn_phenylephrine_12-68.html"},{name:"Potassium Chloride",sec:"12.69",file:"lfn_potassium_chloride_12-69.html"},{name:"Pralidoxime",sec:"12.70",file:"lfn_pralidoxime_12-70.html"},{name:"Promethazine",sec:"12.71",file:"lfn_promethazine_12-71.html"},{name:"Propofol",sec:"12.72",file:"lfn_propofol_12-72.html"},{name:"Racemic Epinephrine",sec:"12.73",file:"lfn_racemic_epi_12-73.html"},{name:"Rocuronium",sec:"12.74",file:"lfn_rocuronium_12-74.html"},{name:"Sodium Bicarbonate",sec:"12.75",file:"lfn_sodium_bicarb_12-75.html"},{name:"Sodium Chloride",sec:"12.76",file:"lfn_sodium_chloride_12-76.html"},{name:"Sodium Polystyrene",sec:"12.77",file:"lfn_sodium_polystyrene_12-77.html"},{name:"Succinylcholine",sec:"12.78",file:"lfn_succinylcholine_12-78.html"},{name:"Tenecteplase",sec:"12.79",file:"lfn_tenecteplase_12-79.html"},{name:"Terbutaline",sec:"12.80",file:"lfn_terbutaline_12-80.html"},{name:"Ticagrelor",sec:"12.81",file:"ticagrelor_quiz.html"},{name:"Tranexamic Acid (TXA)",sec:"12.82",file:"txa_quiz__1_.html"},{name:"Vasopressin",sec:"12.83",file:"vasopressin_quiz__1_.html"},{name:"Vecuronium",sec:"12.84",file:"vecuronium_quiz__1_.html"}];
+(function(){
+  var inp=document.getElementById('navSearch'),box=document.getElementById('navResults');
+  inp.addEventListener('input',function(){
+    var q=this.value.trim().toLowerCase();
+    box.innerHTML='';
+    if(!q){box.classList.remove('open');return;}
+    var hits=NAV_DRUGS.filter(function(d){return d.name.toLowerCase().includes(q)||d.sec.includes(q);}).slice(0,8);
+    if(!hits.length){box.classList.remove('open');return;}
+    hits.forEach(function(d){
+      var a=document.createElement('a');
+      a.className='nav-result';
+      a.href='./quizzes/'+d.file;
+      a.innerHTML='<span class="nav-result-name">'+d.name+'</span><span class="nav-result-sec">'+d.sec+'</span>';
+      box.appendChild(a);
+    });
+    box.classList.add('open');
+  });
+  document.addEventListener('click',function(e){if(!e.target.closest('.nav-search-wrap'))box.classList.remove('open');});
+  inp.addEventListener('keydown',function(e){if(e.key==='Escape'){box.classList.remove('open');inp.value='';}});
+})();
+
+// ── Weight logic ──
+var unit='kg', weightKg=0;
+
+function setUnit(u){
+  unit=u;
+  document.getElementById('btnKg').classList.toggle('active',u==='kg');
+  document.getElementById('btnLb').classList.toggle('active',u==='lb');
+  var inp=document.getElementById('weightInput');
+  if(weightKg>0){
+    inp.value=u==='kg'?Math.round(weightKg*10)/10:Math.round(weightKg*2.20462*10)/10;
+  }
+  recalc();
+}
+
+document.getElementById('weightInput').addEventListener('input',recalc);
+
+function recalc(){
+  var raw=parseFloat(document.getElementById('weightInput').value)||0;
+  weightKg=unit==='kg'?raw:raw/2.20462;
+  var display=document.getElementById('weightDisplay');
+  if(weightKg>0){
+    var other=unit==='kg'?Math.round(weightKg*2.20462)+' lb':Math.round(weightKg)+' kg';
+    display.textContent='≈ '+other;
+    display.classList.remove('hidden');
+  } else {
+    display.classList.add('hidden');
+  }
+  updateDoses();
+}
+
+function updateDoses(){
+  var els=document.querySelectorAll('[data-formula]');
+  els.forEach(function(el){
+    var formula=el.dataset.formula; // e.g. "w*1.5"
+    var unit=el.dataset.unit||'';
+    var max=el.dataset.max?parseFloat(el.dataset.max):null;
+    if(!weightKg){
+      el.textContent='—';
+      el.classList.remove('calculated');
+      el.classList.add('no-weight');
+      return;
+    }
+    var w=weightKg;
+    var result;
+    try{ result=Function('w','return '+formula)(w); } catch(e){ result=0; }
+    var capped=max&&result>max;
+    var display=Math.round(result*10)/10;
+    if(display===Math.round(display))display=Math.round(display);
+    el.textContent=(capped?'⚠️ MAX ':'')+display+' '+unit;
+    el.classList.add('calculated');
+    el.classList.remove('no-weight');
+    if(capped) el.style.color='#fbbf24';
+    else el.style.color='';
+  });
+}
+
+function showCat(id){
+  document.querySelectorAll('.cat-section').forEach(function(s){s.classList.remove('active');});
+  document.getElementById('cat-'+id).classList.add('active');
+  document.querySelectorAll('.cat-tab').forEach(function(t){t.classList.remove('active');});
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>
