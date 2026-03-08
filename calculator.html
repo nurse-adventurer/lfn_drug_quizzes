@@ -434,8 +434,8 @@ body::before {
           <div class="dose-row">
             <div class="dose-indication">Procedural sedation</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*0.1" data-unit="mg" data-min-w="0.1">—</div>
-              <div class="dose-max">0.1 mg/kg IV</div>
+              <div class="dose-value" data-formula="w*0.3" data-unit="mg" data-min-w="0.3" data-max="20">—</div>
+              <div class="dose-max">0.3 mg/kg IV · max 20 mg · may repeat ×2</div>
             </div>
           </div>
           <p class="dose-note">⚠️ Single dose only — transient adrenal suppression</p>
@@ -451,8 +451,8 @@ body::before {
           <div class="dose-row">
             <div class="dose-indication">RSI induction — IV</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*2" data-unit="mg" data-min-w="2" data-max="300">—</div>
-              <div class="dose-max">1.5–2 mg/kg IV</div>
+              <div class="dose-value" data-formula="w*1" data-unit="mg" data-min-w="1" data-max="150">—</div>
+              <div class="dose-max">0.5–1 mg/kg IV/IO · max 150 mg</div>
             </div>
           </div>
           <div class="dose-row">
@@ -472,10 +472,10 @@ body::before {
         </div>
         <div class="dose-rows">
           <div class="dose-row">
-            <div class="dose-indication">RSI pre-treatment (peds only) — IV</div>
+            <div class="dose-indication">RSI pre-treatment (peds w/ midazolam RSI) — IV</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*2" data-unit="mcg" data-min-w="2" data-max="100">—</div>
-              <div class="dose-max">2 mcg/kg IV · max 100 mcg</div>
+              <div class="dose-value" data-formula="w*1" data-unit="mcg" data-min-w="1" data-max="100">—</div>
+              <div class="dose-max">1 mcg/kg IV · max 100 mcg</div>
             </div>
           </div>
         </div>
@@ -511,10 +511,10 @@ body::before {
             </div>
           </div>
           <div class="dose-row">
-            <div class="dose-indication">Post-intubation sedation — infusion</div>
+            <div class="dose-indication">Post-intubation sedation — IV bolus PRN</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*0.2" data-unit="mg/hr" data-min-w="0.2">—</div>
-              <div class="dose-max">0.1–0.5 mg/kg/hr</div>
+              <div class="dose-value" data-formula="w*1.5" data-unit="mg" data-min-w="1.5" data-max="200">—</div>
+              <div class="dose-max">1–2 mg/kg slow IVP · repeat q 15 min PRN</div>
             </div>
           </div>
         </div>
@@ -545,8 +545,8 @@ body::before {
           <div class="dose-row">
             <div class="dose-indication">Anxiolysis — IV</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*0.02" data-unit="mg" data-min-w="0.02" data-max="2">—</div>
-              <div class="dose-max">0.02 mg/kg IV · max 2 mg</div>
+              <div class="dose-value" data-formula="w*0.05" data-unit="mg" data-min-w="0.05" data-max="4">—</div>
+              <div class="dose-max">0.05–0.1 mg/kg IV/IM q 20 min</div>
             </div>
           </div>
         </div>
@@ -610,22 +610,22 @@ body::before {
           <div class="dose-row">
             <div class="dose-indication">Pain management — IV/IM/IN</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*1" data-unit="mcg" data-min-w="1" data-max="100">—</div>
-              <div class="dose-max">1 mcg/kg · max 100 mcg</div>
+              <div class="dose-value" data-formula="w*1" data-unit="mcg" data-min-w="1" data-max="150">—</div>
+              <div class="dose-max">1–2 mcg/kg · max 150 mcg single dose</div>
             </div>
           </div>
           <div class="dose-row">
             <div class="dose-indication">Pain — repeat dose</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*0.5" data-unit="mcg" data-min-w="0.5" data-max="50">—</div>
-              <div class="dose-max">0.5 mcg/kg q 5 min · max 50 mcg</div>
+              <div class="dose-value" data-formula="w*1" data-unit="mcg" data-min-w="1" data-max="150">—</div>
+              <div class="dose-max">Repeat 1–2 mcg/kg q 10 min · max 150 mcg per dose</div>
             </div>
           </div>
           <div class="dose-row">
             <div class="dose-indication">CCT infusion — start</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*0.5" data-unit="mcg/hr" data-min-w="0.5">—</div>
-              <div class="dose-max">0.5–2 mcg/kg/hr</div>
+              <div class="dose-value" data-formula="w*1" data-unit="mcg/hr" data-min-w="1">—</div>
+              <div class="dose-max">1 mcg/kg/hr start · titrate 1 mcg/kg/hr q 10 min · max 3 mcg/kg/hr</div>
             </div>
           </div>
         </div>
@@ -810,14 +810,6 @@ body::before {
               <div class="dose-max">60 u/kg · max 4,000 units</div>
             </div>
           </div>
-          <div class="dose-row">
-            <div class="dose-indication">STEMI → St. Charles Bend — bolus only</div>
-            <div class="dose-block">
-              <div class="dose-value" data-formula="w*70" data-unit="units" data-min-w="70" data-max="5000">—</div>
-              <div class="dose-max">70 u/kg · max 5,000 units</div>
-            </div>
-          </div>
-        </div>
       </div>
 
       <div class="drug-card">
@@ -1038,8 +1030,8 @@ body::before {
           <div class="dose-row">
             <div class="dose-indication">Status epilepticus — IV over 15 min</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*50" data-unit="mg" data-min-w="50" data-max="4500">—</div>
-              <div class="dose-max">50 mg/kg · max 4,500 mg</div>
+              <div class="dose-value" data-formula="w*50" data-unit="mg" data-min-w="50" data-max="3000">—</div>
+              <div class="dose-max">50 mg/kg · max 3,000 mg</div>
             </div>
           </div>
         </div>
@@ -1070,8 +1062,8 @@ body::before {
           <div class="dose-row">
             <div class="dose-indication">Status epilepticus — PE/kg IV</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*20" data-unit="mg PE" data-min-w="20" data-max="1500">—</div>
-              <div class="dose-max">20 mg PE/kg · max 1,500 mg PE</div>
+              <div class="dose-value" data-formula="w*20" data-unit="mg PE" data-min-w="20" data-max="2000">—</div>
+              <div class="dose-max">15–20 mg PE/kg · max 2,000 mg PE · infuse at 150 mg PE/min</div>
             </div>
           </div>
           <p class="dose-note">Dosed in mg Phenytoin Equivalent (PE). Max rate 150 mg PE/min.</p>
@@ -1085,17 +1077,17 @@ body::before {
         </div>
         <div class="dose-rows">
           <div class="dose-row">
-            <div class="dose-indication">Seizures — IV</div>
+            <div class="dose-indication">Seizures — IV (adult fixed)</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*0.15" data-unit="mg" data-min-w="0.15" data-max="10">—</div>
-              <div class="dose-max">0.15–0.2 mg/kg IV · max 10 mg</div>
+              <div class="dose-value">5–10 mg</div>
+              <div class="dose-max">Repeat q 5 min · max total 30 mg</div>
             </div>
           </div>
           <div class="dose-row">
-            <div class="dose-indication">Seizures — rectal (DiaStat)</div>
+            <div class="dose-indication">Anxiety — IV (weight-based)</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*0.2" data-unit="mg" data-min-w="0.2" data-max="10">—</div>
-              <div class="dose-max">0.2 mg/kg PR · max 10 mg</div>
+              <div class="dose-value" data-formula="w*0.15" data-unit="mg" data-min-w="0.15" data-max="5">—</div>
+              <div class="dose-max">0.15 mg/kg IV · max 5 mg single dose</div>
             </div>
           </div>
         </div>
@@ -1108,17 +1100,17 @@ body::before {
         </div>
         <div class="dose-rows">
           <div class="dose-row">
-            <div class="dose-indication">Seizures — IM/IN (preferred out-of-hospital)</div>
+            <div class="dose-indication">Seizures — IN (preferred out-of-hospital)</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*0.2" data-unit="mg" data-min-w="0.2" data-max="10">—</div>
-              <div class="dose-max">0.2 mg/kg · max 10 mg</div>
+              <div class="dose-value" data-formula="w*0.3" data-unit="mg" data-min-w="0.3" data-max="10">—</div>
+              <div class="dose-max">0.3 mg/kg IN · max 10 mg · split both nostrils</div>
             </div>
           </div>
           <div class="dose-row">
-            <div class="dose-indication">Seizures — IV</div>
+            <div class="dose-indication">Seizures — IV/IM</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*0.1" data-unit="mg" data-min-w="0.1" data-max="5">—</div>
-              <div class="dose-max">0.1 mg/kg IV · max 5 mg</div>
+              <div class="dose-value" data-formula="w*0.1" data-unit="mg" data-min-w="0.1" data-max="2.5">—</div>
+              <div class="dose-max">0.05–0.1 mg/kg IV/IM · max 2.5 mg single dose · q 15 min</div>
             </div>
           </div>
         </div>
@@ -1157,10 +1149,17 @@ body::before {
         </div>
         <div class="dose-rows">
           <div class="dose-row">
-            <div class="dose-indication">Opioid OD — IV/IM/IN (peds)</div>
+            <div class="dose-indication">Opioid OD — IV/IM/IN (adult &amp; peds)</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*0.01" data-unit="mg" data-min-w="0.01" data-max="0.4">—</div>
-              <div class="dose-max">0.01 mg/kg · max 0.4 mg</div>
+              <div class="dose-value">0.4 mg</div>
+              <div class="dose-max">Fixed · repeat q 3–5 min PRN · titrate to respirations</div>
+            </div>
+          </div>
+          <div class="dose-row">
+            <div class="dose-indication">Clonidine OD — weight-based</div>
+            <div class="dose-block">
+              <div class="dose-value" data-formula="w*0.1" data-unit="mg" data-min-w="0.1" data-max="0.4">—</div>
+              <div class="dose-max">0.1 mg/kg · max 0.4 mg · repeat q 3–5 min PRN</div>
             </div>
           </div>
           <p class="dose-note">Adult: 0.4 mg IV/IM/IN fixed, titrate to respirations. Repeat q 2 min PRN.</p>
@@ -1309,17 +1308,17 @@ body::before {
         </div>
         <div class="dose-rows">
           <div class="dose-row">
-            <div class="dose-indication">↑ICP / TBI — IV bolus</div>
+            <div class="dose-indication">↑ICP / Hemorrhagic Stroke / Cerebral Edema</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*3" data-unit="mL" data-min-w="3" data-max="250">—</div>
-              <div class="dose-max">3 mL/kg · max 250 mL</div>
+              <div class="dose-value">250 mL</div>
+              <div class="dose-max">Fixed 250 mL over 15 min · may repeat ×1 PRN</div>
             </div>
           </div>
           <div class="dose-row">
-            <div class="dose-indication">Hemorrhagic stroke / symptomatic hyponatremia</div>
+            <div class="dose-indication">Hyponatremia mild/moderate (Na &lt;120)</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*3" data-unit="mL" data-min-w="3" data-max="250">—</div>
-              <div class="dose-max">3 mL/kg · max 250 mL</div>
+              <div class="dose-value" data-formula="w*5" data-unit="mL" data-min-w="5" data-max="250">—</div>
+              <div class="dose-max">5 mL/kg over 15 min · max 250 mL · may repeat ×1</div>
             </div>
           </div>
           <p class="dose-note">Preferred over mannitol for hypovolemic patients. Give via large-bore or central line.</p>
