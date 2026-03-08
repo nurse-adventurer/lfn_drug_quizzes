@@ -1,4 +1,4 @@
-const CACHE_NAME = 'lfn-drug-quizzes-v7';
+const CACHE_NAME = 'lfn-drug-quizzes-v8';
 const ASSETS = [
   './',
   './index.html',
@@ -13,7 +13,6 @@ const ASSETS = [
   './quizzes/amiodarone_quiz.html',
   './quizzes/aspirin_quiz.html',
   './quizzes/atropine_quiz.html',
-  './quizzes/atropine_quiz__1_.html',
   './quizzes/betamethasone_quiz.html',
   './quizzes/calcium_chloride_quiz.html',
   './quizzes/calcium_gluconate_quiz.html',
@@ -31,8 +30,6 @@ const ASSETS = [
   './quizzes/dopamine_quiz__1_.html',
   './quizzes/droperidol_quiz.html',
   './quizzes/epinephrine_12_26.html',
-  './quizzes/epinephrine_quiz.html',
-  './quizzes/epinephrine_quiz__1_.html',
   './quizzes/epoprostenol_quiz__1_.html',
   './quizzes/esmolol_quiz__1_.html',
   './quizzes/etomidate_quiz.html',
@@ -45,12 +42,10 @@ const ASSETS = [
   './quizzes/hydromorphone_quiz.html',
   './quizzes/hydroxocobalamin_quiz.html',
   './quizzes/hypertonic_saline_12_39.html',
-  './quizzes/hypertonic_saline_quiz.html',
   './quizzes/insulin_quiz.html',
   './quizzes/ipratropium_quiz.html',
   './quizzes/ketamine_quiz.html',
   './quizzes/labetalol_12_43.html',
-  './quizzes/labetalol_quiz.html',
   './quizzes/lactated_ringers_quiz.html',
   './quizzes/levetiracetam_quiz.html',
   './quizzes/lfn_glucagon_12-34.html',
@@ -85,7 +80,6 @@ const ASSETS = [
   './quizzes/lfn_tenecteplase_12-79.html',
   './quizzes/lfn_terbutaline_12-80.html',
   './quizzes/lidocaine_12_46.html',
-  './quizzes/lidocaine_quiz.html',
   './quizzes/lipid_emulsion_quiz.html',
   './quizzes/lorazepam_quiz.html',
   './quizzes/magnesium_sulfate_quiz.html',
