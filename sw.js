@@ -1,4 +1,4 @@
-const CACHE_NAME = 'lfn-drug-quizzes-v3';
+const CACHE_NAME = 'lfn-drug-quizzes-v4';
 const ASSETS = [
   './',
   './index.html',
@@ -35,6 +35,7 @@ const ASSETS = [
   './quizzes/epoprostenol_quiz__1_.html',
   './quizzes/esmolol_quiz__1_.html',
   './quizzes/etomidate_quiz.html',
+  './quizzes/fentanyl_quiz.html',
   './quizzes/flumazenil_quiz.html',
   './quizzes/fosphenytoin_quiz.html',
   './quizzes/furosemide_quiz.html',
@@ -51,6 +52,7 @@ const ASSETS = [
   './quizzes/labetalol_quiz.html',
   './quizzes/lactated_ringers_quiz.html',
   './quizzes/levetiracetam_quiz.html',
+  './quizzes/lfn_glucagon_12-34.html',
   './quizzes/lfn_mannitol_12-50.html',
   './quizzes/lfn_methylergonovine_12-51.html',
   './quizzes/lfn_methylprednisolone_12-52.html',
