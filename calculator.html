@@ -334,8 +334,8 @@ body::before {
           <div class="dose-row">
             <div class="dose-indication">RSI — IV</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*1.5" data-unit="mg" data-min-w="1.5" data-max="200">—</div>
-              <div class="dose-max">1.5 mg/kg · max 200 mg</div>
+              <div class="dose-value" data-formula="w*1" data-formula-high="w*2" data-unit="mg" data-min-w="1" data-max="200">—</div>
+              <div class="dose-max">1–2 mg/kg IV · max 200 mg</div>
             </div>
           </div>
           <div class="dose-row">
@@ -404,14 +404,14 @@ body::before {
           <div class="dose-row">
             <div class="dose-indication">Intubation bolus</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*0.2" data-unit="mg" data-min-w="0.2">—</div>
+              <div class="dose-value" data-formula="w*0.1" data-formula-high="w*0.2" data-unit="mg" data-min-w="0.1">—</div>
               <div class="dose-max">0.15–0.2 mg/kg IV</div>
             </div>
           </div>
           <div class="dose-row">
             <div class="dose-indication">Infusion start</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*1" data-unit="mcg/min" data-min-w="1">—</div>
+              <div class="dose-value" data-formula="w*1" data-formula-high="w*3" data-unit="mcg/min" data-min-w="1">—</div>
               <div class="dose-max">1–3 mcg/kg/min</div>
             </div>
           </div>
@@ -451,7 +451,7 @@ body::before {
           <div class="dose-row">
             <div class="dose-indication">RSI induction — IV</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*1" data-unit="mg" data-min-w="1" data-max="150">—</div>
+              <div class="dose-value" data-formula="w*0.5" data-formula-high="w*1" data-unit="mg" data-min-w="0.5" data-max="150">—</div>
               <div class="dose-max">0.5–1 mg/kg IV/IO · max 150 mg</div>
             </div>
           </div>
@@ -499,7 +499,7 @@ body::before {
           <div class="dose-row">
             <div class="dose-indication">Combative / behavioral — IV</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*1" data-unit="mg" data-min-w="1" data-max="150">—</div>
+              <div class="dose-value" data-formula="w*0.5" data-formula-high="w*1" data-unit="mg" data-min-w="0.5" data-max="150">—</div>
               <div class="dose-max">0.5–1 mg/kg IV · max 150 mg</div>
             </div>
           </div>
@@ -513,7 +513,7 @@ body::before {
           <div class="dose-row">
             <div class="dose-indication">Post-intubation sedation — IV bolus PRN</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*1.5" data-unit="mg" data-min-w="1.5" data-max="200">—</div>
+              <div class="dose-value" data-formula="w*1" data-formula-high="w*2" data-unit="mg" data-min-w="1" data-max="200">—</div>
               <div class="dose-max">1–2 mg/kg slow IVP · repeat q 15 min PRN</div>
             </div>
           </div>
@@ -529,7 +529,7 @@ body::before {
           <div class="dose-row">
             <div class="dose-indication">Sedation / combative — IV/IM</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*0.1" data-unit="mg" data-min-w="0.1" data-max="5">—</div>
+              <div class="dose-value" data-formula="w*0.05" data-formula-high="w*0.1" data-unit="mg" data-min-w="0.05" data-max="5">—</div>
               <div class="dose-max">0.05–0.1 mg/kg · max 5 mg</div>
             </div>
           </div>
@@ -545,7 +545,7 @@ body::before {
           <div class="dose-row">
             <div class="dose-indication">Anxiolysis — IV</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*0.05" data-unit="mg" data-min-w="0.05" data-max="4">—</div>
+              <div class="dose-value" data-formula="w*0.05" data-formula-high="w*0.1" data-unit="mg" data-min-w="0.05" data-max="4">—</div>
               <div class="dose-max">0.05–0.1 mg/kg IV/IM q 20 min</div>
             </div>
           </div>
@@ -561,8 +561,8 @@ body::before {
           <div class="dose-row">
             <div class="dose-indication">Post-intubation infusion — start</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*0.3" data-unit="mcg/hr" data-min-w="0.3">—</div>
-              <div class="dose-max">0.2–0.4 mcg/kg/hr start</div>
+              <div class="dose-value" data-formula="w*0.2" data-formula-high="w*0.4" data-unit="mcg/hr" data-min-w="0.2">—</div>
+              <div class="dose-max">0.2–0.4 mcg/kg/hr infusion</div>
             </div>
           </div>
           <div class="dose-row">
@@ -584,8 +584,8 @@ body::before {
           <div class="dose-row">
             <div class="dose-indication">Post-intubation sedation — start</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*5" data-unit="mcg/kg/min" data-min-w="5">—</div>
-              <div class="dose-max">5–50 mcg/kg/min infusion</div>
+              <div class="dose-value" data-formula="w*5" data-formula-high="w*50" data-unit="mcg/kg/min" data-min-w="5">—</div>
+              <div class="dose-max">5–50 mcg/kg/min infusion range</div>
             </div>
           </div>
           <p class="dose-note">⚠️ CI: egg/soy allergy. Monitor for propofol infusion syndrome &gt;48 hr.</p>
@@ -610,21 +610,21 @@ body::before {
           <div class="dose-row">
             <div class="dose-indication">Pain management — IV/IM/IN</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*1" data-unit="mcg" data-min-w="1" data-max="150">—</div>
+              <div class="dose-value" data-formula="w*1" data-formula-high="w*2" data-unit="mcg" data-min-w="1" data-max="150">—</div>
               <div class="dose-max">1–2 mcg/kg · max 150 mcg single dose</div>
             </div>
           </div>
           <div class="dose-row">
             <div class="dose-indication">Pain — repeat dose</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*1" data-unit="mcg" data-min-w="1" data-max="150">—</div>
+              <div class="dose-value" data-formula="w*1" data-formula-high="w*2" data-unit="mcg" data-min-w="1" data-max="150">—</div>
               <div class="dose-max">Repeat 1–2 mcg/kg q 10 min · max 150 mcg per dose</div>
             </div>
           </div>
           <div class="dose-row">
             <div class="dose-indication">CCT infusion — start</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*1" data-unit="mcg/hr" data-min-w="1">—</div>
+              <div class="dose-value" data-formula="w*1" data-formula-high="w*3" data-unit="mcg/hr" data-min-w="1">—</div>
               <div class="dose-max">1 mcg/kg/hr start · titrate 1 mcg/kg/hr q 10 min · max 3 mcg/kg/hr</div>
             </div>
           </div>
@@ -640,14 +640,14 @@ body::before {
           <div class="dose-row">
             <div class="dose-indication">Sub-dissociative pain — IV</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*0.3" data-unit="mg" data-min-w="0.3" data-max="60">—</div>
-              <div class="dose-max">0.1–0.5 mg/kg IV · max 60 mg</div>
+              <div class="dose-value" data-formula="w*0.1" data-formula-high="w*0.5" data-unit="mg" data-min-w="0.1" data-max="60">—</div>
+              <div class="dose-max">0.1–0.5 mg/kg slow IVP · max 60 mg</div>
             </div>
           </div>
           <div class="dose-row">
             <div class="dose-indication">Sub-dissociative pain — IM/IN</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*1" data-unit="mg" data-min-w="1" data-max="100">—</div>
+              <div class="dose-value" data-formula="w*0.5" data-formula-high="w*1" data-unit="mg" data-min-w="0.5" data-max="100">—</div>
               <div class="dose-max">0.5–1 mg/kg IM/IN</div>
             </div>
           </div>
@@ -679,7 +679,7 @@ body::before {
           <div class="dose-row">
             <div class="dose-indication">Pain — IV/IM</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*0.1" data-unit="mg" data-min-w="0.1" data-max="5">—</div>
+              <div class="dose-value" data-formula="w*0.05" data-formula-high="w*0.1" data-unit="mg" data-min-w="0.05" data-max="5">—</div>
               <div class="dose-max">0.1 mg/kg · max 5 mg per dose</div>
             </div>
           </div>
@@ -735,7 +735,7 @@ body::before {
           <div class="dose-row">
             <div class="dose-indication">Push dose — IV (10 mcg/mL conc.)</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*1" data-unit="mcg" data-min-w="1" data-max="20">—</div>
+              <div class="dose-value" data-formula="w*1" data-formula-high="w*2" data-unit="mcg" data-min-w="1" data-max="20">—</div>
               <div class="dose-max">1 mcg/kg · max 20 mcg per push</div>
             </div>
           </div>
@@ -772,7 +772,7 @@ body::before {
           <div class="dose-row">
             <div class="dose-indication">SVT — 2nd dose (if no response)</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*0.2" data-unit="mg" data-min-w="0.2" data-max="12">—</div>
+              <div class="dose-value" data-formula="w*0.1" data-formula-high="w*0.2" data-unit="mg" data-min-w="0.1" data-max="12">—</div>
               <div class="dose-max">0.2 mg/kg · max 12 mg</div>
             </div>
           </div>
@@ -907,7 +907,7 @@ body::before {
           <div class="dose-row">
             <div class="dose-indication">Hypotension — low dose start</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*5" data-unit="mcg/min" data-min-w="5">—</div>
+              <div class="dose-value" data-formula="w*2.5" data-formula-high="w*5" data-unit="mcg/min" data-min-w="2.5">—</div>
               <div class="dose-max">5 mcg/kg/min start</div>
             </div>
           </div>
@@ -930,7 +930,7 @@ body::before {
           <div class="dose-row">
             <div class="dose-indication">Cardiogenic shock — start</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*5" data-unit="mcg/min" data-min-w="5">—</div>
+              <div class="dose-value" data-formula="w*2.5" data-formula-high="w*5" data-unit="mcg/min" data-min-w="2.5">—</div>
               <div class="dose-max">2.5–5 mcg/kg/min start</div>
             </div>
           </div>
@@ -953,14 +953,14 @@ body::before {
           <div class="dose-row">
             <div class="dose-indication">Infusion — start</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*0.5" data-unit="mcg/min" data-min-w="0.5">—</div>
+              <div class="dose-value" data-formula="w*0.25" data-formula-high="w*0.5" data-unit="mcg/min" data-min-w="0.25">—</div>
               <div class="dose-max">0.25–0.5 mcg/kg/min</div>
             </div>
           </div>
           <div class="dose-row">
             <div class="dose-indication">Infusion — max</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*5" data-unit="mcg/min" data-min-w="5">—</div>
+              <div class="dose-value" data-formula="w*2.5" data-formula-high="w*5" data-unit="mcg/min" data-min-w="2.5">—</div>
               <div class="dose-max">max 5 mcg/kg/min</div>
             </div>
           </div>
@@ -983,8 +983,8 @@ body::before {
           <div class="dose-row">
             <div class="dose-indication">Maintenance infusion — start</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*0.375" data-unit="mcg/min" data-min-w="0.375">—</div>
-              <div class="dose-max">0.375–0.75 mcg/kg/min</div>
+              <div class="dose-value" data-formula="w*0.375" data-formula-high="w*0.75" data-unit="mcg/min" data-min-w="0.375">—</div>
+              <div class="dose-max">0.375–0.75 mcg/kg/min maintenance</div>
             </div>
           </div>
         </div>
@@ -999,7 +999,7 @@ body::before {
           <div class="dose-row">
             <div class="dose-indication">Infusion — start</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*0.3" data-unit="mcg/hr" data-min-w="0.3">—</div>
+              <div class="dose-value" data-formula="w*0.2" data-formula-high="w*0.4" data-unit="mcg/hr" data-min-w="0.2">—</div>
               <div class="dose-max">0.2–0.4 mcg/kg/hr</div>
             </div>
           </div>
@@ -1047,8 +1047,8 @@ body::before {
           <div class="dose-row">
             <div class="dose-indication">Status epilepticus — IV at 60 mg/min</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*18" data-unit="mg" data-min-w="18">—</div>
-              <div class="dose-max">15–20 mg/kg at 60 mg/min</div>
+              <div class="dose-value" data-formula="w*15" data-formula-high="w*20" data-unit="mg" data-min-w="15">—</div>
+              <div class="dose-max">15–20 mg/kg · infuse at 60 mg PE/min</div>
             </div>
           </div>
         </div>
@@ -1063,7 +1063,7 @@ body::before {
           <div class="dose-row">
             <div class="dose-indication">Status epilepticus — PE/kg IV</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*20" data-unit="mg PE" data-min-w="20" data-max="2000">—</div>
+              <div class="dose-value" data-formula="w*15" data-formula-high="w*20" data-unit="mg PE" data-min-w="15" data-max="2000">—</div>
               <div class="dose-max">15–20 mg PE/kg · max 2,000 mg PE · infuse at 150 mg PE/min</div>
             </div>
           </div>
@@ -1110,7 +1110,7 @@ body::before {
           <div class="dose-row">
             <div class="dose-indication">Seizures — IV/IM</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*0.1" data-unit="mg" data-min-w="0.1" data-max="2.5">—</div>
+              <div class="dose-value" data-formula="w*0.05" data-formula-high="w*0.1" data-unit="mg" data-min-w="0.05" data-max="2.5">—</div>
               <div class="dose-max">0.05–0.1 mg/kg IV/IM · max 2.5 mg single dose · q 15 min</div>
             </div>
           </div>
@@ -1126,8 +1126,8 @@ body::before {
           <div class="dose-row">
             <div class="dose-indication">Peds asthma / seizure — IV</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*50" data-unit="mg" data-min-w="50" data-max="2000">—</div>
-              <div class="dose-max">25–50 mg/kg · max 2 g</div>
+              <div class="dose-value" data-formula="w*25" data-formula-high="w*50" data-unit="mg" data-min-w="25" data-max="2000">—</div>
+              <div class="dose-max">25–50 mg/kg IV · max 2 g</div>
             </div>
           </div>
           <p class="dose-note">Adult doses are fixed: Torsades 2g/15 min, Asthma 2g/20 min, Eclampsia 4g/20 min.</p>
@@ -1200,8 +1200,8 @@ body::before {
           <div class="dose-row">
             <div class="dose-indication">Infusion — after bolus</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*0.25" data-unit="mL/min" data-min-w="0.25">—</div>
-              <div class="dose-max">0.25 mL/kg/min × 30–60 min</div>
+              <div class="dose-value" data-formula="w*0.25" data-formula-high="w*0.5" data-unit="mL/min" data-min-w="0.25">—</div>
+              <div class="dose-max">0.25–0.5 mL/kg/min × 30–60 min</div>
             </div>
           </div>
         </div>
@@ -1335,14 +1335,14 @@ body::before {
           <div class="dose-row">
             <div class="dose-indication">Cerebral edema / herniation — IV over 15 min</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*0.75" data-unit="g" data-min-w="0.75">—</div>
+              <div class="dose-value" data-formula="w*0.5" data-formula-high="w*1" data-unit="g" data-min-w="0.5">—</div>
               <div class="dose-max">0.5–1 g/kg over 15 min</div>
             </div>
           </div>
           <div class="dose-row">
             <div class="dose-indication">DKA cerebral edema (peds)</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*0.75" data-unit="g" data-min-w="0.75">—</div>
+              <div class="dose-value" data-formula="w*0.5" data-formula-high="w*1" data-unit="g" data-min-w="0.5">—</div>
               <div class="dose-max">0.5–1 g/kg over 15 min</div>
             </div>
           </div>
@@ -1358,7 +1358,7 @@ body::before {
           <div class="dose-row">
             <div class="dose-indication">Hyperkalemia / Hypocalcemia — peds</div>
             <div class="dose-block">
-              <div class="dose-value" data-formula="w*20" data-unit="mg" data-min-w="20" data-max="1000">—</div>
+              <div class="dose-value" data-formula="w*20" data-formula-high="w*25" data-unit="mg" data-min-w="20" data-max="1000">—</div>
               <div class="dose-max">20–25 mg/kg IV · max 1 g</div>
             </div>
           </div>
@@ -1472,26 +1472,43 @@ function recalc(){
 function updateDoses(){
   var els=document.querySelectorAll('[data-formula]');
   els.forEach(function(el){
-    var formula=el.dataset.formula; // e.g. "w*1.5"
+    var formulaLow=el.dataset.formula;
+    var formulaHigh=el.dataset.formulaHigh||'';
     var unit=el.dataset.unit||'';
     var max=el.dataset.max?parseFloat(el.dataset.max):null;
     if(!weightKg){
       el.textContent='—';
       el.classList.remove('calculated');
       el.classList.add('no-weight');
+      el.style.color='';
       return;
     }
     var w=weightKg;
-    var result;
-    try{ result=Function('w','return '+formula)(w); } catch(e){ result=0; }
-    var capped=max&&result>max;
-    var display=Math.round(result*10)/10;
-    if(display===Math.round(display))display=Math.round(display);
-    el.textContent=(capped?'⚠️ MAX ':'')+display+' '+unit;
+    function calc(f){ try{return Function('w','return '+f)(w);}catch(e){return 0;} }
+    function fmt(n){ var r=Math.round(n*10)/10; return r===Math.round(r)?Math.round(r):r; }
+    var low=calc(formulaLow);
+    var high=formulaHigh?calc(formulaHigh):null;
+    // Apply max cap
+    var cappedHigh=high&&max&&high>max;
+    var cappedLow=!high&&max&&low>max;
+    var dispLow=fmt(low);
+    var dispHigh=high?fmt(Math.min(high,max||high)):null;
+    var text, color='';
+    if(cappedHigh){
+      text='⚠️ '+dispLow+' – '+dispHigh+' '+unit+' (max)';
+      color='#fbbf24';
+    } else if(cappedLow){
+      text='⚠️ MAX '+fmt(max)+' '+unit;
+      color='#fbbf24';
+    } else if(dispHigh!==null){
+      text=dispLow+' – '+dispHigh+' '+unit;
+    } else {
+      text=dispLow+' '+unit;
+    }
+    el.textContent=text;
     el.classList.add('calculated');
     el.classList.remove('no-weight');
-    if(capped) el.style.color='#fbbf24';
-    else el.style.color='';
+    el.style.color=color;
   });
 }
 

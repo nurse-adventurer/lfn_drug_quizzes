@@ -1,4 +1,4 @@
-const CACHE_NAME = 'lfn-drug-quizzes-v10';
+const CACHE_NAME = 'lfn-drug-quizzes-v11';
 const ASSETS = [
   './',
   './index.html',
